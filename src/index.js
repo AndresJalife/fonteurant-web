@@ -3,11 +3,32 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {ChakraProvider, extendTheme} from '@chakra-ui/react'
+import {BrowserRouter} from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const theme = extendTheme({
+  colors: {
+    brand1: {
+      500: "#f3d503", // you need this
+    },
+    brand2: {
+      500: "#4C4637"
+    },
+    brand3: {
+      500: "#B1AB99"
+    }
+  }
+});
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+    </ChakraProvider>
   </React.StrictMode>
 );
 
