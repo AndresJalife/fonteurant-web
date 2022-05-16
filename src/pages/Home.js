@@ -7,7 +7,6 @@ import { useEffect } from "react";
 
 const Home = () => {
     const [restaurants, setRestaurants] = useState([]);
-
   let getRestaurants = async () => {
       let response = await ApiRoutes.getRestaurants();
       let restaurants = []

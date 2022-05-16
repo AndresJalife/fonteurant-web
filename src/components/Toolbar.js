@@ -35,28 +35,28 @@ const Toolbar = () => {
         <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
         <Spacer/>
         {!user && (
-            <div>
-                <Button
-                    mt='8px'
-                    mr='4px'
-                    colorScheme='brand2'
-                    color="white"
-                    variant='solid'
-                    onClick={() => navigate("/login")}
-                >
-                    Ingresar
-                </Button>
-                <Button
-                    mt='8px'
-                    ml='4px'
-                    colorScheme='brand2'
-                    color="white"
-                    variant='solid'
-                    onClick={() => navigate("/register")}
-                >
-                    Registrarse
-                </Button>
-            </div>
+          <div>
+            <Button
+              mt='8px'
+              mr='4px'
+              colorScheme='brand2'
+              color="white"
+              variant='solid'
+              onClick={() => navigate("/login")}
+            >
+              Ingresar
+            </Button>
+            <Button
+              mt='8px'
+              ml='4px'
+              colorScheme='brand2'
+              color="white"
+              variant='solid'
+              onClick={() => navigate("/register")}
+            >
+              Registrarse
+            </Button>
+          </div>
         )}
         {
           user && <Text fontSize='md'>{user.email}</Text>

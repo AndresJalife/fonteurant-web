@@ -21,9 +21,6 @@ const CFaLock = chakra(FaLock);
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
-  const handleRegister = () => {
-
-  };
 
   return (
     <LayoutDefault>
