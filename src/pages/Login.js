@@ -28,7 +28,6 @@ const Login = () => {
   const {signIn} = useAuth();
   const handleLogin = async e => {
     e.preventDefault();
-    console.log(e);
     setIsLoading(true);
     const result = await signIn(e.target.elements.email.value, e.target.elements.password.value);
     if (result.error) {
@@ -55,7 +54,7 @@ const Login = () => {
               backgroundColor="whiteAlpha.900"
               boxShadow="md"
             >
-              <FormControl>
+              <FormControl isInvalid={loginFailed}>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -64,7 +63,7 @@ const Login = () => {
                   <Input color='black' type="email" placeholder="Email" id='email' required/>
                 </InputGroup>
               </FormControl>
-              <FormControl>
+              <FormControl isInvalid={loginFailed}>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -84,6 +83,7 @@ const Login = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+                <FormErrorMessage>Email o contraseña incorrectos.</FormErrorMessage>
               </FormControl>
               <Button
                 isLoading={isLoading}
@@ -96,7 +96,6 @@ const Login = () => {
               >
                 Ingresar
               </Button>
-              <FormErrorMessage>{loginFailed ? 'Email o contraseña incorrectos.' : ''}</FormErrorMessage>
             </Stack>
           </form>
         </Box>
