@@ -1,6 +1,9 @@
 import {Button, Flex, Spacer} from "@chakra-ui/react";
 import styled from 'styled-components'
 import {ImSpoonKnife} from "react-icons/all";
+import {useAuth} from "./AuthProvider";
+import {Text} from "@chakra-ui/layout";
+import {useNavigate} from "react-router";
 
 
 const ToolbarContainer = styled.div`
@@ -21,22 +24,43 @@ const LogoTitle = styled.div`
   color: black;
 `
 
-const Toolbar = ({isLoginOpen, toggleLogin}) => {
+const Toolbar = () => {
+  const {user} = useAuth();
+  let navigate = useNavigate();
+
   return (
     <ToolbarContainer>
       <Flex alignItems='center'>
         <ImSpoonKnife color='black' size='28px' style={{marginTop: '10px', marginRight: '5px'}}/>
         <LogoTitle>Fonteurant</LogoTitle>
         <Spacer/>
-        <Button
-          mt='8px'
-          colorScheme='brand2'
-          color="white"
-          variant='solid'
-          onClick={toggleLogin}
-        >
-          {isLoginOpen ? "Registrarse" : "Ingresar"}
-        </Button>
+        {!user && (
+            <div>
+                <Button
+                    mt='8px'
+                    mr='4px'
+                    colorScheme='brand2'
+                    color="white"
+                    variant='solid'
+                    onClick={() => navigate("/login")}
+                >
+                    Ingresar
+                </Button>
+                <Button
+                    mt='8px'
+                    ml='4px'
+                    colorScheme='brand2'
+                    color="white"
+                    variant='solid'
+                    onClick={() => navigate("/register")}
+                >
+                    Registrarse
+                </Button>
+            </div>
+        )}
+        {
+          user && <Text fontSize='md'>{user.email}</Text>
+        }
       </Flex>
     </ToolbarContainer>
   )

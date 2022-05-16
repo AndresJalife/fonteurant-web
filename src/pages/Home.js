@@ -1,17 +1,17 @@
 import Toolbar from "../components/Toolbar";
-import Signup from "../components/Signup";
+import Signup from "./Signup";
 import {useState} from "react";
-import Login from "../components/Login";
+import Login from "./Login";
+import LayoutDefault from "../components/LayoutDefault";
+import {useAuth} from "../components/AuthProvider";
 
 const Home = () => {
-  const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const auth = useAuth();
 
   return (
-    <div className="App-header">
-      <Toolbar isLoginOpen={isLoginOpen} toggleLogin={() => setIsLoginOpen(!isLoginOpen)} />
-
-      {isLoginOpen ? <Login /> : <Signup/>}
-    </div>
+    <LayoutDefault>
+      <h1>Home!</h1>
+    </LayoutDefault>
   )
 }
 
