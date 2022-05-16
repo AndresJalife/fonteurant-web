@@ -1,5 +1,4 @@
 import LayoutDefault from "../components/LayoutDefault";
-// import {useAuth} from "../components/AuthProvider";
 import background from '../img/burger.jpg';
 import styled from 'styled-components'
 
@@ -15,7 +14,6 @@ const BurgerImg = styled.img`
 `
 
 const Home = () => {
-  // const auth = useAuth();
 
   return (
     <LayoutDefault>
