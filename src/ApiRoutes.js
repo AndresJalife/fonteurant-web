@@ -9,18 +9,18 @@ function getHeaders()
 const ApiRoutes = {
     register: (email, password, location, phoneNumber) => fetch(`${process.env.REACT_APP_BACKEND_URL}/user`, {
         method: 'POST',
-        body: {
+        body: JSON.stringify({
             email: email,
             password: password,
             location: location,
             phone_number: phoneNumber
-        },
+        }),
         headers: {
             'Content-Type': 'application/json',
         }
     }).then(r => r.json()),
 
-    signIn: (email, password) => fetch(`${process.env.REACT_APP_BACKEND_URL}/user`, {
+    signIn: (email, password) => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/sign_in`, {
         method: 'POST',
         body: JSON.stringify({
             email: email,
