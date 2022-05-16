@@ -7,26 +7,27 @@ import { useEffect } from "react";
 
 const Home = () => {
     const [restaurants, setRestaurants] = useState([]);
-  let getRestaurants = async () => {
-      let response = await ApiRoutes.getRestaurants();
-      let restaurants = []
-      Object.values(response).forEach((resto) => {
+
+    let getRestaurants = async () => {
+        let response = await ApiRoutes.getRestaurants();
+        let restaurants = []
+        Object.values(response).forEach((resto) => {
           restaurants.push(<RestaurantCard data={resto} key={resto.id}></RestaurantCard>)
-      })
-      setRestaurants(restaurants)
-  }
+        })
+        setRestaurants(restaurants)
+    }
 
-  useEffect(() => {
+    useEffect(() => {
       getRestaurants()
-  }, [])
+    }, [])
 
-  return (
-    <LayoutDefault>
-        <VStack className={"restList"}>
-            {restaurants}
-        </VStack>
-    </LayoutDefault>
-  )
+    return (
+        <LayoutDefault>
+            <VStack className={"restList"}>
+                {restaurants}
+            </VStack>
+        </LayoutDefault>
+    )
 }
 
 export default Home
