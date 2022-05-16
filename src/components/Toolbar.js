@@ -4,7 +4,7 @@ import {ImSpoonKnife} from "react-icons/all";
 import {useAuth} from "./AuthProvider";
 import {Text} from "@chakra-ui/layout";
 import {useNavigate} from "react-router";
-
+import { NavLink } from 'react-router-dom'
 
 const ToolbarContainer = styled.div`
   position: fixed;
@@ -32,7 +32,7 @@ const Toolbar = () => {
     <ToolbarContainer>
       <Flex alignItems='center'>
         <ImSpoonKnife color='black' size='28px' style={{marginTop: '10px', marginRight: '5px'}}/>
-        <LogoTitle>Fonteurant</LogoTitle>
+        <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
         <Spacer/>
         {!user && (
             <div>
