@@ -54,8 +54,8 @@ const Login = () => {
                 justifyContent="center"
                 alignItems="center"
             >
-                <Avatar bg="brand1.500"/>
-                <Heading color="brand1.500">Ingresar</Heading>
+                <Avatar bg="buttons.500"/>
+                <Heading color="#565656">Ingresar</Heading>
                 <Box minW={{base: "90%", md: "468px"}}>
                     <form onSubmit={handleLogin}>
                         <Stack
@@ -100,8 +100,8 @@ const Login = () => {
                                 borderRadius={0}
                                 type="submit"
                                 variant="solid"
-                                colorScheme="brand1"
-                                color='black'
+                                colorScheme="buttons"
+                                color='#565656'
                                 width="full"
                             >
                                 Ingresar

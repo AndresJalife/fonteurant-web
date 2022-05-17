@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {
-    Avatar,
     Box,
     Button,
     chakra,
@@ -9,7 +8,6 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
-    InputRightElement,
     Stack
 } from "@chakra-ui/react";
 import {FaMap, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt} from "react-icons/fa";
@@ -68,7 +66,7 @@ const Signup = () => {
                 alignItems="center"
                 marginTop="5%"
             >
-                <Heading color="brand1.500">Crear Restaurante</Heading>
+                <Heading color="#565656">Crear Restaurante</Heading>
                 <Box minW={{base: "90%", md: "468px"}}>
                     <form onSubmit={handleRegister}>
                         <Stack
@@ -136,8 +134,8 @@ const Signup = () => {
                                 borderRadius={0}
                                 type="submit"
                                 variant="solid"
-                                colorScheme="brand1"
-                                color='black'
+                                colorScheme="buttons"
+                                color='#565656'
                                 width="full"
                                 isLoading={isLoading}>
 
