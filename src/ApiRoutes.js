@@ -32,11 +32,27 @@ const ApiRoutes = {
         }
     }).then(r => r.json()),
 
-    profile: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/profile`, {headers: getHeaders()})
-        .then(r => r.json()),
+  profile: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/profile`, {headers: getHeaders()})
+      .then(r => r.json()),
 
-    getRestaurants: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {headers: getHeaders()})
-        .then(r => r.json())
+  getRestaurants: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {headers: getHeaders()})
+      .then(r => r.json()),
+
+  createRestaurant: (ownerId, name, address, cbu, wallet_address, schedule, location_scope) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {
+    method: 'POST',
+    body: JSON.stringify({
+      "owner_id": ownerId,
+      "name": name,
+      "address": address,
+      "cbu": cbu,
+      "wallet_address": wallet_address,
+      "schedule": schedule,
+      "location_scope": location_scope
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }).then(r => r.json()),
 }
 
 export default ApiRoutes;

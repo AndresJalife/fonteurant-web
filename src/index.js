@@ -18,6 +18,9 @@ const theme = extendTheme({
         },
         brand3: {
             500: "#B1AB99"
+        },
+        buttons: {
+            500 : "#EFE2CF"
         }
     }
 });
