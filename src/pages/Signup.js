@@ -96,8 +96,8 @@ const Signup = () => {
                 justifyContent="center"
                 alignItems="center"
             >
-                <Avatar bg="brand1.500"/>
-                <Heading color="brand1.500">Registrarse</Heading>
+                <Avatar bg="buttons.500"/>
+                <Heading color="#565656">Registrarse</Heading>
                 <Box minW={{base: "90%", md: "468px"}}>
                     <form onSubmit={handleRegister}>
                         <Stack
@@ -141,8 +141,8 @@ const Signup = () => {
                                 borderRadius={0}
                                 type="submit"
                                 variant="solid"
-                                colorScheme="brand1"
-                                color='black'
+                                colorScheme="buttons"
+                                color='#565656'
                                 width="full"
                                 isLoading={isLoading}
                             >

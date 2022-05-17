@@ -8,8 +8,12 @@ const RestaurantCard = (props) => {
     return (
         <Box className={"restoCard"}>
             <p><b>{props.data.name}</b></p>
-            <Button className={"restButton"} onClick={() => navigate(`/restaurant/${props.data?.id}`)}>
-                Ver Restaurant
+            <Button
+                className={"restButton"}
+                colorScheme="buttons" color="565656"
+                onClick={() => navigate(`/restaurant/${props.data?.id}`)}
+            >
+                Ver Restaurante
             </Button>
         </Box>
     )
