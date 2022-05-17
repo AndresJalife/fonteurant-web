@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
     Avatar,
     Box,
@@ -16,6 +16,7 @@ import {FaLock, FaUserAlt} from "react-icons/fa";
 import {useAuth} from "../components/AuthProvider";
 import LayoutDefault from "../components/LayoutDefault";
 import {FormErrorMessage} from "@chakra-ui/form-control";
+import {useNavigate} from "react-router";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -25,13 +26,22 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
     const handleShowClick = () => setShowPassword(!showPassword);
-    const {signIn} = useAuth();
+    const {user, signIn} = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user)
+            navigate('/');
+    }, [user, navigate]);
+
     const handleLogin = async e => {
         e.preventDefault();
         setIsLoading(true);
         const result = await signIn(e.target.elements.email.value, e.target.elements.password.value);
         if (result.error) {
             setLoginFailed(true);
+        } else {
+            navigate('/');
         }
         setIsLoading(false);
     };
