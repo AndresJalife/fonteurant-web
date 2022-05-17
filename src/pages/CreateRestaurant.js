@@ -12,19 +12,22 @@ import {
     InputRightElement,
     Stack
 } from "@chakra-ui/react";
-import {FaMap, FaPhone, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia} from "react-icons/fa";
+import {FaMap, FaPhone, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt} from "react-icons/fa";
 import LayoutDefault from "../components/LayoutDefault";
 import ApiRoutes from "../ApiRoutes";
 import {useNavigate} from "react-router";
+import {useAuth} from "../components/AuthProvider";
 
 const CFaPhone = chakra(FaPhone);
 const CFaBitcoin = chakra(FaBitcoin);
 const CFaCreditCard = chakra(FaCreditCard);
 const CFaCalendarTimes = chakra(FaCalendarTimes);
+const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
 const CFaAmilia = chakra(FaAmilia);
 const CFaMapLocation = chakra(FaMap);
 
 const Signup = () => {
+    const {user} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
@@ -32,25 +35,28 @@ const Signup = () => {
     const handleRegister = async e => {
         e.preventDefault();
         setIsLoading(true);
-        const elements = e.target.elements;
-        console.log(elements);
-        if (elements.password.value !== elements.password_confirmation.value) {
-            setFormError('Las contraseñas son distintas');
-        } else {
-            const result = await ApiRoutes.register(
-                elements.email.value,
-                elements.password.value,
-                elements.location.value,
-                elements.phone_number.value
-            );
-            console.log(result);
-            if (!result['id']) {
-                setFormError('El email ya existe');
-            } else {
-                navigate("/login");
-            }
+        if (!user){
+            setFormError('Tiene que iniciar sesión');
+            setIsLoading(false);
+            return;
         }
+        const elements = e.target.elements;
+        const result = await ApiRoutes.createRestaurant(
+            user.id,
+            elements.name.value,
+            elements.location.value,
+            elements.cbu.value,
+            elements.wallet.value,
+            elements.schedule.value,
+            elements.scope.value
 
+        );
+        console.log(result);
+        if (!result['id']) {
+            setFormError('El restaurante ya existe');
+        } else {
+            navigate("/");
+        }
         setIsLoading(false);
     };
 
@@ -61,8 +67,8 @@ const Signup = () => {
                 mb="2"
                 justifyContent="center"
                 alignItems="center"
+                marginTop="5%"
             >
-                <Avatar bg="brand1.500"/>
                 <Heading color="brand1.500">Crear Restaurante</Heading>
                 <Box minW={{base: "90%", md: "468px"}}>
                     <form onSubmit={handleRegister}>
@@ -85,18 +91,9 @@ const Signup = () => {
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents="none"
-                                        children={<CFaMapLocation color="gray.500"/>}
+                                        children={<CFaMapMarkerAlt color="gray.500"/>}
                                     />
                                     <Input color='black' type="text" required id={"location"} placeholder="Dirección"/>
-                                </InputGroup>
-                            </FormControl>
-                            <FormControl>
-                                <InputGroup>
-                                    <InputLeftElement
-                                        pointerEvents="none"
-                                        children={<CFaPhone color="gray.500"/>}
-                                    />
-                                    <Input color='black' type="tel" id={"phone_number"} required placeholder="Telefono"/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
@@ -114,9 +111,29 @@ const Signup = () => {
                                         pointerEvents="none"
                                         children={<CFaBitcoin color="gray.500"/>}
                                     />
-                                    <Input color='black' id={"wallet"} required placeholder="Billetera de Criptomonedas"/>
+                                    <Input color='black' id={"wallet"} placeholder="Billetera de Criptomonedas"/>
                                 </InputGroup>
                             </FormControl>
+                            <FormControl>
+                                <InputGroup>
+                                    <InputLeftElement
+                                        pointerEvents="none"
+                                        children={<CFaCalendarTimes color="gray.500"/>}
+                                    />
+                                    <Input color='black' id={"schedule"} required placeholder="Horarios de Apertura"/>
+                                </InputGroup>
+                            </FormControl>
+                            <FormControl>
+                                <InputGroup>
+                                    <InputLeftElement
+                                        pointerEvents="none"
+                                        children={<CFaMapLocation color="gray.500"/>}
+                                    />
+                                    <Input color='black' type="number" id={"scope"} required placeholder="Radio de cobertura (KM)"/>
+                                </InputGroup>
+                            </FormControl>
+                            <p className={"error"}>{formError ? formError : ''}</p>
+
                             <Button
                                 borderRadius={0}
                                 type="submit"
@@ -124,11 +141,12 @@ const Signup = () => {
                                 colorScheme="brand1"
                                 color='black'
                                 width="full"
-                                isLoading={isLoading}
-                            >
+                                isLoading={isLoading}>
+
                                 Crear
+
                             </Button>
-                            {formError ? formError : ''}
+
                         </Stack>
                     </form>
                 </Box>

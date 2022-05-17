@@ -3,7 +3,7 @@ import ApiRoutes from "../ApiRoutes";
 
 let AuthContext = React.createContext(null);
 
-export default function AuthProvider({ children }) {
+export default function AuthProvider({children}) {
     let [user, setUser] = React.useState(null);
 
     let signIn = async (email, password) => {
@@ -27,7 +27,7 @@ export default function AuthProvider({ children }) {
         callback();
     };
 
-    let value = { user, signIn, signOut };
+    let value = {user, signIn, signOut};
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
