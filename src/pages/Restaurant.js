@@ -27,7 +27,13 @@ const Restaurant = () => {
             <div>Id dueño: {restaurantData?.owner_id}</div>
             <div>Horarios: {restaurantData?.schedule}</div>
             <div>Wallet: {restaurantData?.wallet_address}</div>
-            <Button onClick={() => setOpenDishModal(true)}>Agregar Plato</Button>
+            <Button
+                colorScheme="brand1"
+                color='black'
+                onClick={() => setOpenDishModal(true)}
+            >
+                Agregar Plato
+            </Button>
             <DishForm
                 restaurantId={restaurantData?.id}
                 show={openDishModal}

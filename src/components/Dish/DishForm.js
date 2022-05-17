@@ -19,6 +19,7 @@ import {useRef, useState} from "react";
 import FileUpload from "../FileUpload";
 import {AiFillDollarCircle, BiDish, MdTitle} from "react-icons/all";
 import {uploadFile} from "../../utils/DropboxAPI";
+import ApiRoutes from "../../ApiRoutes";
 
 const CMdTitle = chakra(MdTitle);
 const CAiFillDollarCircle = chakra(AiFillDollarCircle);
@@ -34,7 +35,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
         if (onClose) onClose()
     }
 
-    const handleAddDish = (e) => {
+    const handleAddDish = async (e) => {
         e.preventDefault()
         setFormError(null)
 
@@ -63,12 +64,20 @@ const DishForm = ({restaurantId, show, onClose}) => {
         }
 
         setIsLoading(true)
-        console.log('crear plato')
-        // post dish get ID
-        // const dishId
-        // uploadFile(filename, file, dishId)
-        setIsLoading(false)
-        handleClose()
+        const closeCallback = () => {
+            setIsLoading(false)
+            handleClose()
+        }
+
+        try {
+            const dish = await ApiRoutes.postDish(restaurantId, name, price, description)
+            closeCallback()
+            uploadFile(file, filename, dish?.id, closeCallback, closeCallback)
+        } catch (e) {
+            console.log(e)
+            closeCallback()
+        }
+
     }
 
     return (

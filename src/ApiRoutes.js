@@ -1,10 +1,10 @@
 function getHeaders() {
-  return {
-    'Authorization': localStorage.getItem('token'),
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Access-Control-Allow-Origin': "*"
-  }
+    return {
+        'Authorization': localStorage.getItem('token'),
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': "*"
+    }
 }
 
 const ApiRoutes = {
@@ -39,7 +39,19 @@ const ApiRoutes = {
         .then(r => r.json()),
 
     getRestaurant: (id) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${id}`,
-        {headers: getHeaders()}).then(r => r.json())
+        {headers: getHeaders()}).then(r => r.json()),
+
+    postDish: (restaurantId, name, price, description) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish`, {
+            method: 'POST',
+            body: JSON.stringify({
+                restaurant_id: restaurantId,
+                name,
+                price,
+                description
+            }),
+            headers: getHeaders()
+        }
+    ).then(r => r.json()),
 }
 
 export default ApiRoutes;

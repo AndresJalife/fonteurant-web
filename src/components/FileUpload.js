@@ -11,7 +11,7 @@ const FileUpload = ({name, placeholder, stateRef}) => {
 
     useEffect(() => {
         stateRef.current = { filename, file }
-    }, [filename, file])
+    }, [filename, file, stateRef])
 
     const getFilenameFromPath = (path) => {
         const pathToArray = path?.split("\\") || []
