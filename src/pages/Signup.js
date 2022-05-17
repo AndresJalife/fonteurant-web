@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
     Avatar,
     Box,
@@ -15,19 +15,21 @@ import {
 import {FaLock, FaMap, FaPhone, FaUserAlt} from "react-icons/fa";
 import LayoutDefault from "../components/LayoutDefault";
 import ApiRoutes from "../ApiRoutes";
+import {FormErrorMessage} from "@chakra-ui/form-control";
 import {useNavigate} from "react-router";
+import {useAuth} from "../components/AuthProvider";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 const CFaPhone = chakra(FaPhone);
 const CFaMapLocation = chakra(FaMap);
 
-const ContraseñaInput = ({id, text}) => {
+const PasswordInput = ({id, text, isInvalid}) => {
     const [showPassword, setShowPassword] = useState(false);
     const handleShowClick = () => setShowPassword(!showPassword);
 
     return (
-        <FormControl>
+        <FormControl isInvalid={isInvalid}>
             <InputGroup>
                 <InputLeftElement
                     pointerEvents="none"
@@ -55,6 +57,12 @@ const Signup = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
+    const {user, signIn} = useAuth();
+
+    useEffect(() => {
+        if (user)
+            navigate('/');
+    }, [user]);
 
     const handleRegister = async e => {
         e.preventDefault();
@@ -70,11 +78,10 @@ const Signup = () => {
                 elements.location.value,
                 elements.phone_number.value
             );
-            console.log(result);
             if (!result['id']) {
-                setFormError('El email ya existe');
+                setFormError('Email invalido');
             } else {
-                navigate("/login");
+                await signIn(elements.email.value, elements.password.value);
             }
         }
 
@@ -99,7 +106,7 @@ const Signup = () => {
                             backgroundColor="whiteAlpha.900"
                             boxShadow="md"
                         >
-                            <FormControl>
+                            <FormControl isInvalid={!!formError}>
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents="none"
@@ -108,9 +115,9 @@ const Signup = () => {
                                     <Input color='black' type="email" id={"email"} required placeholder="Email"/>
                                 </InputGroup>
                             </FormControl>
-                            <ContraseñaInput text={"Contraseña"} id={'password'}/>
-                            <ContraseñaInput text={"Repetir Contraseña"} id={'password_confirmation'}/>
-                            <FormControl>
+                            <PasswordInput isInvalid={!!formError} text={"Contraseña"} id={'password'}/>
+                            <PasswordInput isInvalid={!!formError} text={"Repetir Contraseña"} id={'password_confirmation'}/>
+                            <FormControl isInvalid={!!formError}>
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents="none"
@@ -119,7 +126,7 @@ const Signup = () => {
                                     <Input color='black' type="text" required id={"location"} placeholder="Dirección"/>
                                 </InputGroup>
                             </FormControl>
-                            <FormControl>
+                            <FormControl isInvalid={!!formError}>
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents="none"
@@ -128,6 +135,7 @@ const Signup = () => {
                                     <Input color='black' type="tel" id={"phone_number"} required
                                            placeholder="Telefono"/>
                                 </InputGroup>
+                                <FormErrorMessage>{formError ? formError : ''}</FormErrorMessage>
                             </FormControl>
                             <Button
                                 borderRadius={0}
@@ -140,7 +148,6 @@ const Signup = () => {
                             >
                                 Crear cuenta
                             </Button>
-                            {formError ? formError : ''}
                         </Stack>
                     </form>
                 </Box>
