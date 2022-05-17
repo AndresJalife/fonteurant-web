@@ -3,18 +3,18 @@ export const uploadFile = (file, filename, id, onprogress, onloadSucceed, onload
     let xhr = new XMLHttpRequest();
 
     xhr.upload.onprogress = (evt) => {
-        const percentComplete = parseInt(100.0 * evt.loaded / evt.total);
+        // const percentComplete = parseInt(100.0 * evt.loaded / evt.total);
         // Upload in progress. Do something here with the percent complete.
         if (onprogress) onprogress()
     };
 
     xhr.onload = () => {
         if (xhr.status === 200) {
-            const fileInfo = JSON.parse(xhr.response);
+            // const fileInfo = JSON.parse(xhr.response);
             // Upload succeeded. Do something here with the file info.
             if (onloadSucceed) onloadSucceed()
         } else {
-            const errorMessage = xhr.response || 'Unable to upload file';
+            // const errorMessage = xhr.response || 'Unable to upload file';
             // Upload failed. Do something here with the error.
             if (onloadFailed) onloadFailed()
         }

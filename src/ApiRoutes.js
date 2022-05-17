@@ -36,7 +36,10 @@ const ApiRoutes = {
         .then(r => r.json()),
 
     getRestaurants: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {headers: getHeaders()})
-        .then(r => r.json())
+        .then(r => r.json()),
+
+    getRestaurant: (id) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${id}`,
+        {headers: getHeaders()}).then(r => r.json())
 }
 
 export default ApiRoutes;

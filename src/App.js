@@ -1,10 +1,11 @@
 import './App.css';
+import React from "react";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/Home";
 import AuthProvider from "./components/AuthProvider";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import React from "react";
+import Restaurant from "./pages/Restaurant";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Signup/>}/>
+                    <Route path="/restaurant/:id" element={<Restaurant/>}/>
                 </Routes>
             </AuthProvider>
         </div>

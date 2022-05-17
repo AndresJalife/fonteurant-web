@@ -1,6 +1,6 @@
 import {
-    Button,
-    chakra,
+    Button, Center,
+    chakra, Flex,
     FormControl,
     Input,
     InputGroup,
@@ -17,26 +17,34 @@ import {
 } from "@chakra-ui/react";
 import {useRef, useState} from "react";
 import FileUpload from "../FileUpload";
-import {AiFillDollarCircle, MdTitle} from "react-icons/all";
+import {AiFillDollarCircle, BiDish, MdTitle} from "react-icons/all";
 import {uploadFile} from "../../utils/DropboxAPI";
 
 const CMdTitle = chakra(MdTitle);
 const CAiFillDollarCircle = chakra(AiFillDollarCircle);
+const CBiDish = chakra(BiDish);
 
-const DishForm = (props) => {
+const DishForm = ({restaurantId, show, onClose}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const fileUpload = useRef();
 
+    const handleClose = () => {
+        setFormError(null)
+        if (onClose) onClose()
+    }
+
     const handleAddDish = (e) => {
         e.preventDefault()
+        setFormError(null)
+
         const elements = e.target.elements
         const name = elements?.name?.value
         const description = elements?.description?.value
         const price = elements?.price?.value
         const filename = fileUpload.current?.filename
         const file = fileUpload.current?.file
-        console.log("name", name)
+
         if (!name) {
             setFormError('Nombre requerido')
             return
@@ -53,23 +61,37 @@ const DishForm = (props) => {
             setFormError('Foto requerida')
             return
         }
+
         setIsLoading(true)
         console.log('crear plato')
-        // uploadFile(filename, file)
+        // post dish get ID
+        // const dishId
+        // uploadFile(filename, file, dishId)
         setIsLoading(false)
+        handleClose()
     }
 
     return (
         <Modal
-            isOpen={true}
-            onClose={{}}
+            isOpen={show}
+            onClose={handleClose}
             motionPreset='scale'
             isCentered
+            closeOnOverlayClick={false}
         >
             <form onSubmit={handleAddDish}>
                 <ModalOverlay/>
                 <ModalContent>
-                    <ModalHeader>Nuevo Plato</ModalHeader>
+                    <ModalHeader>
+                        <Center>
+                            <Flex>
+                                <Center mr={2}>
+                                    <CBiDish color="gray.500"/>
+                                </Center>
+                                <div>Nuevo Plato</div>
+                            </Flex>
+                        </Center>
+                    </ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
                         <Stack>
