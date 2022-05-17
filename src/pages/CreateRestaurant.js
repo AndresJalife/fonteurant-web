@@ -12,13 +12,12 @@ import {
     InputRightElement,
     Stack
 } from "@chakra-ui/react";
-import {FaMap, FaPhone, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt} from "react-icons/fa";
+import {FaMap, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt} from "react-icons/fa";
 import LayoutDefault from "../components/LayoutDefault";
 import ApiRoutes from "../ApiRoutes";
 import {useNavigate} from "react-router";
 import {useAuth} from "../components/AuthProvider";
 
-const CFaPhone = chakra(FaPhone);
 const CFaBitcoin = chakra(FaBitcoin);
 const CFaCreditCard = chakra(FaCreditCard);
 const CFaCalendarTimes = chakra(FaCalendarTimes);
@@ -48,7 +47,7 @@ const Signup = () => {
             elements.cbu.value,
             elements.wallet.value,
             elements.schedule.value,
-            elements.scope.value
+            parseInt(elements.scope.value)
 
         );
         console.log(result);
@@ -133,7 +132,6 @@ const Signup = () => {
                                 </InputGroup>
                             </FormControl>
                             <p className={"error"}>{formError ? formError : ''}</p>
-
                             <Button
                                 borderRadius={0}
                                 type="submit"

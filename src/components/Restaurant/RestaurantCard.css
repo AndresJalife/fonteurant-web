@@ -1,26 +1,22 @@
 .restoCard {
     /*height: 1%;*/
     width: 80%;
-    background-color: white;
-    color: black;
+    background-color: #FDF6EC;
+    color: #565656;
     border-radius: 10px;
     padding-top: 2%;
     padding-bottom: 2%;
     display: flex;
     align-items: center;
-    justify-content: center;
-}
+    padding-left: 5%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
 
-.restButton{
+.restButton {
     margin-left: 60%;
     right: 0;
-}
-
-.restList {
-    width: 100%;
-
-}
-
+    position: absolute !important;
+    margin-right: 15%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
 .error{
     color: red;
 }
