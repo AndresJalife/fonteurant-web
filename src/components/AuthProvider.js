@@ -1,34 +1,43 @@
 import * as React from "react";
 import ApiRoutes from "../ApiRoutes";
+import {useEffect} from "react";
 
 let AuthContext = React.createContext(null);
 
 export default function AuthProvider({children}) {
     let [user, setUser] = React.useState(null);
 
+    let loadUser = async () => {
+        const token = localStorage.getItem('token');
+        if (token)
+        {
+            const response = await ApiRoutes.profile();
+            setUser(response);
+        }
+    };
+
     let signIn = async (email, password) => {
-        let response = await ApiRoutes.signIn(email, password);
-        console.log(response);
-        let token = response['Authorization'];
+        const response = await ApiRoutes.signIn(email, password);
+        const token = response['Authorization'];
         if (!token) {
             console.log('LogIn failed.');
             return {error: true};
         }
         localStorage.setItem('token', token);
-        response = await ApiRoutes.profile();
-        console.log(response);
-        setUser(response);
+        await loadUser();
         return {};
     };
 
-    let signOut = (callback) => {
+    let signOut = () => {
         localStorage.removeItem('token');
         setUser(null);
-        callback();
     };
 
-    let value = {user, signIn, signOut};
+    useEffect(() => {
+        loadUser();
+    }, []);
 
+    let value = {user, signIn, signOut};
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
