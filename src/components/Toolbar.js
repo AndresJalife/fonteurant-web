@@ -24,8 +24,17 @@ const LogoTitle = styled.div`
   color: black;
 `
 
+const UserText = styled.span`
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 12px;
+  margin-right: 8px;
+  color: black;
+`
+
+
 const Toolbar = () => {
-    const {user} = useAuth();
+    const {user, signOut} = useAuth();
     let navigate = useNavigate();
 
     return (
@@ -64,7 +73,22 @@ const Toolbar = () => {
                     </div>
                 )}
                 {
-                    user && <Text fontSize='md'>{user.email}</Text>
+                    user && <div>
+                        <UserText >{user.email}</UserText>
+                        <Button
+                            mt='8px'
+                            ml='4px'
+                            colorScheme='brand2'
+                            color="white"
+                            variant='solid'
+                            onClick={() => {
+                                signOut();
+                                navigate('/login')
+                            }}
+                        >
+                            Salir
+                        </Button>
+                    </div>
                 }
             </Flex>
         </ToolbarContainer>
