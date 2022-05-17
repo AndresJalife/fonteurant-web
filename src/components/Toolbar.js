@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {ImSpoonKnife} from "react-icons/all";
 import {useAuth} from "./AuthProvider";
 import {useNavigate} from "react-router";
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 const ToolbarContainer = styled.div`
   position: fixed;
@@ -39,12 +39,14 @@ const Toolbar = () => {
     return (
         <ToolbarContainer>
             <Flex alignItems='center'>
-                <NavLink to={"/"}><ImSpoonKnife
-                    className="cursor-pointer"
-                    color='black'
-                    size='28px'
-                    style={{marginTop: '10px', marginRight: '5px'}}
-                /></NavLink>
+                <NavLink to={"/"}>
+                    <ImSpoonKnife
+                        className="cursor-pointer"
+                        color='black'
+                        size='28px'
+                        style={{marginTop: '10px', marginRight: '5px'}}
+                    />
+                </NavLink>
                 <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
                 <Spacer/>
                 {!user && (
@@ -73,7 +75,7 @@ const Toolbar = () => {
                 )}
                 {
                     user && <div>
-                        <UserText >{user.email}</UserText>
+                        <UserText>{user.email}</UserText>
                         <Button
                             mt='8px'
                             ml='4px'
