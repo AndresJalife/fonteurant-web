@@ -1,7 +1,8 @@
 function getHeaders() {
   return {
-    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    'Authorization': localStorage.getItem('token'),
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
     'Access-Control-Allow-Origin': "*"
   }
 }
