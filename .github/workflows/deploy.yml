@@ -15,5 +15,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "fonteurant"
           heroku_email: "juampi.rombola@gmail.com"
-        env:
-          NODE_ENV: "production"
+          procfile: "web: npm install -g serve && serve -s build"
