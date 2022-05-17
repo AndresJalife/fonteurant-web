@@ -2,7 +2,6 @@ import {Button, Flex, Spacer} from "@chakra-ui/react";
 import styled from 'styled-components'
 import {ImSpoonKnife} from "react-icons/all";
 import {useAuth} from "./AuthProvider";
-import {Text} from "@chakra-ui/layout";
 import {useNavigate} from "react-router";
 import { NavLink } from 'react-router-dom'
 

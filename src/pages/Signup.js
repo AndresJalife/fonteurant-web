@@ -62,7 +62,7 @@ const Signup = () => {
     useEffect(() => {
         if (user)
             navigate('/');
-    }, [user]);
+    }, [user, navigate]);
 
     const handleRegister = async e => {
         e.preventDefault();
