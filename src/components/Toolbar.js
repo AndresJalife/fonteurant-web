@@ -26,54 +26,54 @@ const LogoTitle = styled.div`
 `
 
 const Toolbar = () => {
-  const {user} = useAuth();
-  let navigate = useNavigate();
-  const handleOnClick = useCallback(() => navigate('/', {replace: true}), [navigate]);
+    const {user} = useAuth();
+    let navigate = useNavigate();
+    const handleOnClick = useCallback(() => navigate('/', {replace: true}), [navigate]);
 
-  return (
-    <ToolbarContainer>
-      <Flex alignItems='center'>
-        <ImSpoonKnife
-          className="cursor-pointer"
-          color='black'
-          size='28px'
-          style={{marginTop: '10px', marginRight: '5px'}}
-          onClick={handleOnClick}
-        />
-        <LogoTitle className="cursor-pointer" onClick={handleOnClick}>
-          Fonteurant
-        </LogoTitle>
-        <Spacer/>
-        {!user && (
-          <div>
-            <Button
-              mt='8px'
-              mr='4px'
-              colorScheme='brand2'
-              color="white"
-              variant='solid'
-              onClick={() => navigate("/login")}
-            >
-              Ingresar
-            </Button>
-            <Button
-              mt='8px'
-              ml='4px'
-              colorScheme='brand2'
-              color="white"
-              variant='solid'
-              onClick={() => navigate("/register")}
-            >
-              Registrarse
-            </Button>
-          </div>
-        )}
-        {
-          user && <Text fontSize='md'>{user.email}</Text>
-        }
-      </Flex>
-    </ToolbarContainer>
-  )
+    return (
+        <ToolbarContainer>
+            <Flex alignItems='center'>
+                <ImSpoonKnife
+                    className="cursor-pointer"
+                    color='black'
+                    size='28px'
+                    style={{marginTop: '10px', marginRight: '5px'}}
+                    onClick={handleOnClick}
+                />
+                <LogoTitle className="cursor-pointer" onClick={handleOnClick}>
+                    Fonteurant
+                </LogoTitle>
+                <Spacer/>
+                {!user && (
+                    <div>
+                        <Button
+                            mt='8px'
+                            mr='4px'
+                            colorScheme='brand2'
+                            color="white"
+                            variant='solid'
+                            onClick={() => navigate("/login")}
+                        >
+                            Ingresar
+                        </Button>
+                        <Button
+                            mt='8px'
+                            ml='4px'
+                            colorScheme='brand2'
+                            color="white"
+                            variant='solid'
+                            onClick={() => navigate("/register")}
+                        >
+                            Registrarse
+                        </Button>
+                    </div>
+                )}
+                {
+                    user && <Text fontSize='md'>{user.email}</Text>
+                }
+            </Flex>
+        </ToolbarContainer>
+    )
 }
 
 export default Toolbar

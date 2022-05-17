@@ -8,20 +8,20 @@ const BurgerContainer = styled.div`
 `
 
 const BurgerImg = styled.img`
-  width:5000px;
+  width: 5000px;
   height: 100vh;
   object-fit: cover;
 `
 
 const Home = () => {
 
-  return (
-    <LayoutDefault>
-      <BurgerContainer>
-        <BurgerImg src={background} alt="logo"/>
-      </BurgerContainer>
-    </LayoutDefault>
-  )
+    return (
+        <LayoutDefault>
+            <BurgerContainer>
+                <BurgerImg src={background} alt="logo"/>
+            </BurgerContainer>
+        </LayoutDefault>
+    )
 }
 
 export default Home
