@@ -25,45 +25,50 @@ const LogoTitle = styled.div`
 `
 
 const Toolbar = () => {
-  const {user} = useAuth();
-  let navigate = useNavigate();
+    const {user} = useAuth();
+    let navigate = useNavigate();
 
-  return (
-    <ToolbarContainer>
-      <Flex alignItems='center'>
-        <ImSpoonKnife color='black' size='28px' style={{marginTop: '10px', marginRight: '5px'}}/>
-        <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
-        <Spacer/>
-        {!user && (
-          <div>
-            <Button
-              mt='8px'
-              mr='4px'
-              colorScheme='brand2'
-              color="white"
-              variant='solid'
-              onClick={() => navigate("/login")}
-            >
-              Ingresar
-            </Button>
-            <Button
-              mt='8px'
-              ml='4px'
-              colorScheme='brand2'
-              color="white"
-              variant='solid'
-              onClick={() => navigate("/register")}
-            >
-              Registrarse
-            </Button>
-          </div>
-        )}
-        {
-          user && <Text fontSize='md'>{user.email}</Text>
-        }
-      </Flex>
-    </ToolbarContainer>
-  )
+    return (
+        <ToolbarContainer>
+            <Flex alignItems='center'>
+                <NavLink to={"/"}><ImSpoonKnife
+                    className="cursor-pointer"
+                    color='black'
+                    size='28px'
+                    style={{marginTop: '10px', marginRight: '5px'}}
+                /></NavLink>
+                <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
+                <Spacer/>
+                {!user && (
+                    <div>
+                        <Button
+                            mt='8px'
+                            mr='4px'
+                            colorScheme='brand2'
+                            color="white"
+                            variant='solid'
+                            onClick={() => navigate("/login")}
+                        >
+                            Ingresar
+                        </Button>
+                        <Button
+                            mt='8px'
+                            ml='4px'
+                            colorScheme='brand2'
+                            color="white"
+                            variant='solid'
+                            onClick={() => navigate("/register")}
+                        >
+                            Registrarse
+                        </Button>
+                    </div>
+                )}
+                {
+                    user && <Text fontSize='md'>{user.email}</Text>
+                }
+            </Flex>
+        </ToolbarContainer>
+    )
 }
 
 export default Toolbar

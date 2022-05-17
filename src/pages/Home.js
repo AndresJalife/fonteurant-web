@@ -17,6 +17,7 @@ const Home = () => {
         setRestaurants(restaurants)
     }
 
+
     useEffect(() => {
       getRestaurants()
     }, [])
