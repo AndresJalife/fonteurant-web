@@ -1,8 +1,9 @@
 function getHeaders() {
-    return {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json',
-    }
+  return {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': "*"
+  }
 }
 
 const ApiRoutes = {
@@ -31,6 +32,9 @@ const ApiRoutes = {
     }).then(r => r.json()),
 
     profile: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/profile`, {headers: getHeaders()})
+        .then(r => r.json()),
+
+    getRestaurants: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {headers: getHeaders()})
         .then(r => r.json())
 }
 

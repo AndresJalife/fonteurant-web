@@ -4,8 +4,7 @@ import {ImSpoonKnife} from "react-icons/all";
 import {useAuth} from "./AuthProvider";
 import {Text} from "@chakra-ui/layout";
 import {useNavigate} from "react-router";
-import {useCallback} from "react";
-
+import { NavLink } from 'react-router-dom'
 
 const ToolbarContainer = styled.div`
   position: fixed;
@@ -28,21 +27,17 @@ const LogoTitle = styled.div`
 const Toolbar = () => {
     const {user} = useAuth();
     let navigate = useNavigate();
-    const handleOnClick = useCallback(() => navigate('/', {replace: true}), [navigate]);
 
     return (
         <ToolbarContainer>
             <Flex alignItems='center'>
-                <ImSpoonKnife
+                <NavLink to={"/"}><ImSpoonKnife
                     className="cursor-pointer"
                     color='black'
                     size='28px'
                     style={{marginTop: '10px', marginRight: '5px'}}
-                    onClick={handleOnClick}
-                />
-                <LogoTitle className="cursor-pointer" onClick={handleOnClick}>
-                    Fonteurant
-                </LogoTitle>
+                /></NavLink>
+                <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
                 <Spacer/>
                 {!user && (
                     <div>
