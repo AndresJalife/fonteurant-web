@@ -1,10 +1,10 @@
 function getHeaders() {
-  return {
-    'Authorization': localStorage.getItem('token'),
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Access-Control-Allow-Origin': "*"
-  }
+    return {
+        'Authorization': localStorage.getItem('token'),
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': "*"
+    }
 }
 
 const ApiRoutes = {
@@ -32,27 +32,41 @@ const ApiRoutes = {
         }
     }).then(r => r.json()),
 
-  profile: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/profile`, {headers: getHeaders()})
-      .then(r => r.json()),
+    profile: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/profile`, {headers: getHeaders()})
+        .then(r => r.json()),
 
-  getRestaurants: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {headers: getHeaders()})
-      .then(r => r.json()),
+    getRestaurants: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {headers: getHeaders()})
+        .then(r => r.json()),
 
-  createRestaurant: (ownerId, name, address, cbu, wallet_address, schedule, location_scope) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {
-    method: 'POST',
-    body: JSON.stringify({
-      "owner_id": ownerId,
-      "name": name,
-      "address": address,
-      "cbu": cbu,
-      "wallet_address": wallet_address,
-      "schedule": schedule,
-      "location_scope": location_scope
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  }).then(r => r.json()),
+    createRestaurant: (ownerId, name, address, cbu, wallet_address, schedule, location_scope) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {
+        method: 'POST',
+        body: JSON.stringify({
+            "owner_id": ownerId,
+            "name": name,
+            "address": address,
+            "cbu": cbu,
+            "wallet_address": wallet_address,
+            "schedule": schedule,
+            "location_scope": location_scope
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(r => r.json()),
+    getRestaurant: (id) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${id}`,
+        {headers: getHeaders()}).then(r => r.json()),
+
+    postDish: (restaurantId, name, price, description) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish`, {
+            method: 'POST',
+            body: JSON.stringify({
+                restaurant_id: restaurantId,
+                name,
+                price,
+                description
+            }),
+            headers: getHeaders()
+        }
+    ).then(r => r.json()),
 }
 
 export default ApiRoutes;
