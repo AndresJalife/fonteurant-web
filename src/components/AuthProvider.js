@@ -9,8 +9,7 @@ export default function AuthProvider({children}) {
 
     let loadUser = async () => {
         const token = localStorage.getItem('token');
-        if (token)
-        {
+        if (token) {
             const response = await ApiRoutes.profile();
             setUser(response);
         }

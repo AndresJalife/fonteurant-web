@@ -11,7 +11,7 @@ const ToolbarContainer = styled.div`
   width: 100%;
   height: 70px;
   z-index: 999;
-  background-color: #FDF6EC ;
+  background-color: #FDF6EC;
   padding: 6px 16px;
   border-radius: 0 0 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -51,32 +51,6 @@ const Toolbar = () => {
                 </NavLink>
                 <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
                 <Spacer/>
-                {!user && (
-                    <div>
-                        <Button
-                            mt='8px'
-                            mr='4px'
-                            colorScheme='buttons'
-                            color="#565656"
-                            variant='solid'
-                            onClick={() => navigate("/login")}
-                            className="shadow"
-                        >
-                            Ingresar
-                        </Button>
-                        <Button
-                            mt='8px'
-                            ml='4px'
-                            colorScheme='buttons'
-                            color="#565656"
-                            variant='solid'
-                            onClick={() => navigate("/register")}
-                            className="shadow"
-                        >
-                            Registrarse
-                        </Button>
-                    </div>
-                )}
                 {
                     user && <div>
                         <UserText>{user.email}</UserText>
@@ -88,7 +62,7 @@ const Toolbar = () => {
                             variant='solid'
                             onClick={() => {
                                 signOut();
-                                navigate('/login')
+                                navigate('/')
                             }}
                         >
                             Salir

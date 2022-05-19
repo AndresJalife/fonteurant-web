@@ -29,10 +29,11 @@ const DishForm = ({restaurantId, show, onClose}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const fileUpload = useRef();
+    const initialRef = useRef()
 
     const handleClose = () => {
         setFormError(null)
-        if (onClose) onClose()
+        if (onClose && !isLoading) onClose()
     }
 
     const handleAddDish = async (e) => {
@@ -87,6 +88,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
             motionPreset='scale'
             isCentered
             closeOnOverlayClick={false}
+            initialFocusRef={initialRef}
         >
             <form onSubmit={handleAddDish}>
                 <ModalOverlay/>
@@ -110,7 +112,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
                                         pointerEvents="none"
                                         children={<CMdTitle color="gray.500"/>}
                                     />
-                                    <Input color='black' type="text" id={"name"} placeholder="Nombre"/>
+                                    <Input color='black' type="text" id={"name"} placeholder="Nombre" ref={initialRef}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
@@ -139,6 +141,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
 
                     <ModalFooter>
                         <Button
+                            rounded={'lg'}
                             type="submit"
                             variant="solid"
                             colorScheme="brand1"

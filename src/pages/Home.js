@@ -8,8 +8,14 @@ import {
 } from '@chakra-ui/react';
 
 import background from "../img/burger.jpg";
+import {useState} from "react";
+import Signup from "../components/Signup";
+import Login from "../components/Login";
 
 const Home = () => {
+    const [showLogin, setShowLogin] = useState(false)
+    const [showSignUp, setShowSignUp] = useState(false)
+
     return (
         <Flex
             w={'full'}
@@ -45,7 +51,8 @@ const Home = () => {
                     >
                         De los mejores restaurantes a tu casa.
                         <br/>
-                        Pagá con <span style={{color: "#f3d503"}}>criptomonedas</span> o con el medio <br/> de pago que más te guste.
+                        Pagá con <span style={{color: "#f3d503"}}>criptomonedas</span> o con el medio <br/> de pago que
+                        más te guste.
                     </Text>
                     <Stack direction={'row'} style={{marginTop: "40px"}}>
                         <Button
@@ -55,15 +62,22 @@ const Home = () => {
                             colorScheme={'brand1'}
                             color={'black'}
                             _hover={{bg: 'brand1.700'}}
+                            onClick={() => setShowSignUp(true)}
                         >
                             Registrarse
                         </Button>
-                        <Button rounded={'lg'} px={6}>
+                        <Button
+                            rounded={'lg'}
+                            px={6}
+                            onClick={() => setShowLogin(true)}
+                        >
                             Ingresar
                         </Button>
                     </Stack>
                 </Stack>
             </VStack>
+            <Signup show={showSignUp} onClose={() => setShowSignUp(false)}/>
+            <Login show={showLogin} onClose={() => setShowLogin(false)}/>
         </Flex>
     );
 }
