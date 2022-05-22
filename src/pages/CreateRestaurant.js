@@ -67,7 +67,7 @@ const Signup = () => {
                 verticalAlign='top'
                 marginTop="5%"
             >
-                <Heading color="#565656">Crear Restaurante</Heading>
+                <Heading color="#565656" className={"crearRestoLabel"}>Crear Restaurante</Heading>
                 <Box minW={{base: "90%", md: "468px"}}>
                     <form onSubmit={handleRegister}>
                         <Stack
