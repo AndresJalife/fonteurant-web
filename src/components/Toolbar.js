@@ -49,10 +49,11 @@ const Toolbar = () => {
 
     const goToMyRestaurant = () => {
         if (user?.my_restaurant) { // TODO: add my_restaurant to user info
-            navigate('/my-restaurant')
+            navigate('/my-restaurant', {state: {data: user.my_restaurant}})
         } else {
             navigate('/create-restaurant')
         }
+        // navigate('/my-restaurant', {state: {data: {"id": 2, "owner_id": 1, "name": "Resto1", "address": "unAddress", "cbu": "123", "wallet_address": "123", "schedule": "123", "location_scope": 5, "picture": null}}})
     }
 
     return (

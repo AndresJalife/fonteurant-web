@@ -23,7 +23,7 @@ const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
 const CFaAmilia = chakra(FaAmilia);
 const CFaMapLocation = chakra(FaMap);
 
-const Signup = () => {
+const CreateRestaurant = () => {
     const {user} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
@@ -152,4 +152,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default CreateRestaurant
