@@ -15,7 +15,7 @@ const RestaurantCard = (props) => {
             <Button
                 className={"restButton"}
                 colorScheme="brand1" color="565656"
-                onClick={goToRestaurant)}
+                onClick={goToRestaurant}
             >
                 Ver Restaurante
             </Button>
