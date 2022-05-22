@@ -11,7 +11,10 @@ export default function AuthProvider({children}) {
         const token = localStorage.getItem('token');
         if (token) {
             const response = await ApiRoutes.profile();
-            setUser(response);
+            if (response.id)
+                setUser(response);
+            else
+                signOut();
         }
     };
 
@@ -36,7 +39,7 @@ export default function AuthProvider({children}) {
         loadUser();
     }, []);
 
-    let value = {user, signIn, signOut};
+    let value = {user, signIn, signOut, loadUser};
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
