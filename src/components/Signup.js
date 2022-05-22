@@ -69,24 +69,31 @@ const Signup = ({show, onClose}) => {
         if (onClose && !isLoading) onClose()
     }
 
+    const isPasswordSecure = (password) => {
+        return password.length > 7 && password.toLowerCase() !== password;
+    }
+
     const handleRegister = async e => {
         e.preventDefault();
         setIsLoading(true);
         const elements = e.target.elements;
         console.log(elements);
-        if (elements.password.value !== elements.password_confirmation.value) {
+        const password = elements.password.value;
+        if (password !== elements.password_confirmation.value) {
             setFormError('Las contraseñas son distintas');
+        } else if (!isPasswordSecure(password)){
+            setFormError('La contraseña no es segura. \n Debe contener al menos 8 caracteres y una mayúscula.');
         } else {
             const result = await ApiRoutes.register(
                 elements.email.value,
-                elements.password.value,
+                password,
                 elements.location.value,
                 elements.phone_number.value
             );
             if (!result['id']) {
                 setFormError('Email invalido');
             } else {
-                await signIn(elements.email.value, elements.password.value);
+                await signIn(elements.email.value, password);
                 navigate('/restaurants');
             }
         }
