@@ -15,16 +15,13 @@ import {
     Stack,
     Textarea
 } from "@chakra-ui/react";
-import {useRef, useState} from "react";
-import FileUpload from "../FileUpload";
-import {AiFillDollarCircle, BiDish, MdTitle, FaMap} from "react-icons/all";
-import {uploadFile} from "../../utils/DropboxAPI";
+import {useState} from "react";
+import {BiDish, MdTitle, FaMap} from "react-icons/all";
 import ApiRoutes from "../../ApiRoutes";
 import {FaBitcoin, FaPhone} from "react-icons/fa";
 import {useAuth} from "../AuthProvider";
 
 const CMdTitle = chakra(MdTitle);
-const CAiFillDollarCircle = chakra(AiFillDollarCircle);
 const CBiDish = chakra(BiDish);
 const CFaMapLocation = chakra(FaMap);
 const CFaPhone = chakra(FaPhone);
