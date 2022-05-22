@@ -36,6 +36,11 @@ const EditUserForm = ({show, onClose}) => {
         if (onClose) onClose()
     }
 
+    const isPasswordSecure = (password) => {
+        return password.length > 7 && password.toLowerCase() !== password;
+    }
+
+
     const handleEditUser = async (e) => {
         e.preventDefault()
         setFormError(null)
