@@ -37,7 +37,8 @@ export default function AuthProvider({children}) {
 
     useEffect(() => {
         loadUser();
-    }, [loadUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     let value = {user, signIn, signOut, loadUser};
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
