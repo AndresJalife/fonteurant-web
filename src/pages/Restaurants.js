@@ -1,40 +1,32 @@
 import LayoutDefault from "../components/LayoutDefault";
-import {useState} from "react";
-import {Button, VStack} from '@chakra-ui/react'
+import {useEffect, useState} from "react";
+import {Heading, Wrap, WrapItem} from '@chakra-ui/react'
 import ApiRoutes from "../ApiRoutes";
 import RestaurantCard from "../components/Restaurant/RestaurantCard";
-import {useEffect} from "react";
-import {useAuth} from "../components/AuthProvider";
-import './Restaurants.css'
-import {NavLink} from "react-router-dom";
 
 const Restaurants = () => {
     const [restaurants, setRestaurants] = useState([]);
-    const {user} = useAuth();
-
-    let getRestaurants = async () => {
-        let response = await ApiRoutes.getRestaurants();
-        let restaurants = []
-        Object.values(response).forEach((resto) => {
-            restaurants.push(<RestaurantCard data={resto} key={resto.id}></RestaurantCard>)
-        })
-        setRestaurants(restaurants)
-    }
 
     useEffect(() => {
-        getRestaurants()
+        let getRestaurants = async () => {
+            let response = await ApiRoutes.getRestaurants();
+            return Object.values(response)
+                .map((resto) => (
+                    <WrapItem key={resto.id}>
+                        <RestaurantCard data={resto}></RestaurantCard>
+                    </WrapItem>
+                ))
+        }
+        getRestaurants().then((restaurants) => setRestaurants(restaurants))
     }, [])
 
     return (
         <LayoutDefault>
-            <NavLink className={"createRest"} to={"/createRestaurant"}>
-                <Button className={user ? "" : "hidden"} colorScheme="buttons"
-                        color="grey">{"Crear Restaurante"}</Button>
-            </NavLink>
-            <div className={"restList"}>
-                <VStack className={"restList"}>
+            <div style={{padding: '0 10%'}}>
+                <Heading color="#565656" pt="110px">Restaurantes</Heading>
+                <Wrap spacing='25px' width="100%" py="20px">
                     {restaurants}
-                </VStack>
+                </Wrap>
             </div>
         </LayoutDefault>
     )

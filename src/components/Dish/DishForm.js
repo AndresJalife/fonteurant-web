@@ -43,7 +43,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
         const elements = e.target.elements
         const name = elements?.name?.value
         const description = elements?.description?.value
-        const price = elements?.price?.value
+        const price = parseFloat(elements?.price?.value)
         const filename = fileUpload.current?.filename
         const file = fileUpload.current?.file
 

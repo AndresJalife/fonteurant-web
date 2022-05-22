@@ -64,6 +64,7 @@ const Signup = () => {
                 mb="2"
                 justifyContent="center"
                 alignItems="center"
+                verticalAlign='top'
                 marginTop="5%"
             >
                 <Heading color="#565656">Crear Restaurante</Heading>
@@ -134,7 +135,7 @@ const Signup = () => {
                                 borderRadius={0}
                                 type="submit"
                                 variant="solid"
-                                colorScheme="buttons"
+                                colorScheme="brand1"
                                 color='#565656'
                                 width="full"
                                 isLoading={isLoading}>
