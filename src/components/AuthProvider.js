@@ -37,7 +37,7 @@ export default function AuthProvider({children}) {
 
     useEffect(() => {
         loadUser();
-    }, []);
+    }, [loadUser]);
 
     let value = {user, signIn, signOut, loadUser};
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

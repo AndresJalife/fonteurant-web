@@ -12,8 +12,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Stack,
-    Textarea
+    Stack
 } from "@chakra-ui/react";
 import {useState} from "react";
 import {BiDish, MdTitle, FaMap} from "react-icons/all";
