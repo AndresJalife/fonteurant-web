@@ -1,9 +1,20 @@
-import {Button, Flex, Spacer} from "@chakra-ui/react";
+import {
+    Avatar,
+    Button,
+    Center,
+    Flex,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+    Spacer
+} from "@chakra-ui/react";
 import styled from 'styled-components'
-import {ImSpoonKnife} from "react-icons/all";
 import {useAuth} from "./AuthProvider";
 import {useNavigate} from "react-router";
 import {NavLink} from 'react-router-dom'
+import {ImSpoonKnife} from "react-icons/all";
 
 const ToolbarContainer = styled.div`
   position: fixed;
@@ -11,24 +22,22 @@ const ToolbarContainer = styled.div`
   width: 100%;
   height: 70px;
   z-index: 999;
-  background-color: #FDF6EC;
-  padding: 6px 16px;
+  background-color: #f3d503;
+  padding: 0 20px;
   border-radius: 0 0 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `
 
 const LogoTitle = styled.div`
   font-family: 'Roboto Slab', serif;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
-  margin-top: 8px;
   color: black;
 `
 
 const UserText = styled.span`
   font-size: 16px;
-  font-weight: bold;
-  margin-top: 12px;
+  font-weight: 700;
   margin-right: 8px;
   color: black;
 `
@@ -38,37 +47,83 @@ const Toolbar = () => {
     const {user, signOut} = useAuth();
     let navigate = useNavigate();
 
+    const goToMyRestaurant = () => {
+        if (user?.my_restaurant) { // TODO: add my_restaurant to user info
+            navigate('/my-restaurant')
+        } else {
+            navigate('/create-restaurant')
+        }
+    }
+
     return (
         <ToolbarContainer>
-            <Flex alignItems='center'>
-                <NavLink to={"/"}>
-                    <ImSpoonKnife
-                        className="cursor-pointer"
-                        color='black'
-                        size='28px'
-                        style={{marginTop: '10px', marginRight: '5px'}}
-                    />
-                </NavLink>
-                <LogoTitle><NavLink to={"/"}>Fonteurant</NavLink></LogoTitle>
+            <Flex alignItems="center" justifyContent="center">
+                <Center height="70px">
+                    <NavLink to={"/restaurants"}>
+                        <ImSpoonKnife
+                            className="cursor-pointer"
+                            color='black'
+                            size='24px'
+                            style={{marginRight: '5px'}}
+                        />
+                    </NavLink>
+                    <LogoTitle>
+                        <NavLink to={"/restaurants"}>FONTEURANT</NavLink>
+                    </LogoTitle>
+                </Center>
                 <Spacer/>
-                {
-                    user && <div>
-                        <UserText>{user.email}</UserText>
-                        <Button
-                            mt='8px'
-                            ml='4px'
-                            colorScheme='brand2'
-                            color="white"
-                            variant='solid'
-                            onClick={() => {
-                                signOut();
-                                navigate('/')
-                            }}
+
+                <Center height="70px">
+                    <Menu>
+                        <MenuButton
+                            as={Button}
+                            rounded={'full'}
+                            variant={'link'}
+                            cursor={'pointer'}
+                            minW={0}
+                            colorScheme="brand3.500"
+                            _hover={{ bg: "brand1" }}
+                            _focus={{ bg: "brand1" }}
                         >
-                            Salir
-                        </Button>
-                    </div>
-                }
+                            <Center height="70px">
+                                <UserText>{user.email}</UserText>
+                                <Avatar size={'sm'} bg='brand2.500' />
+                            </Center>
+                        </MenuButton>
+                        <MenuList fontSize="16px" color="black">
+                            <MenuItem onClick={() => navigate('/profile')}>
+                                <Button
+                                    color="black"
+                                    variant='link'
+                                >
+                                    Mi perfil
+                                </Button>
+                            </MenuItem>
+                            <MenuItem onClick={goToMyRestaurant}>
+                                <Button
+                                    color="black"
+                                    variant='link'
+                                >
+                                    Mi restaurante
+                                </Button>
+                            </MenuItem>
+                            <MenuDivider />
+                            <MenuItem
+                                onClick={() => {
+                                    signOut();
+                                    navigate('/')
+                                }}
+                            >
+                                <Button
+                                    color="red"
+                                    variant='link'
+                                >
+                                    Salir
+                                </Button>
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+                </Center>
             </Flex>
         </ToolbarContainer>
     )
