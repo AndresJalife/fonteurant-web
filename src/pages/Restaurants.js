@@ -1,9 +1,8 @@
 import LayoutDefault from "../components/LayoutDefault";
 import {useEffect, useState} from "react";
-import {VStack} from '@chakra-ui/react'
+import {Heading, Wrap, WrapItem} from '@chakra-ui/react'
 import ApiRoutes from "../ApiRoutes";
 import RestaurantCard from "../components/Restaurant/RestaurantCard";
-import './Restaurants.css'
 
 const Restaurants = () => {
     const [restaurants, setRestaurants] = useState([]);
@@ -13,7 +12,9 @@ const Restaurants = () => {
             let response = await ApiRoutes.getRestaurants();
             return Object.values(response)
                 .map((resto) => (
-                    <RestaurantCard data={resto} key={resto.id}></RestaurantCard>
+                    <WrapItem key={resto.id}>
+                        <RestaurantCard data={resto}></RestaurantCard>
+                    </WrapItem>
                 ))
         }
         getRestaurants().then((restaurants) => setRestaurants(restaurants))
@@ -21,10 +22,11 @@ const Restaurants = () => {
 
     return (
         <LayoutDefault>
-            <div className={"restList"}>
-                <VStack className={"restList"}>
+            <div style={{padding: '0 10%'}}>
+                <Heading color="#565656" pt="110px">Restaurantes</Heading>
+                <Wrap spacing='25px' width="100%" py="20px">
                     {restaurants}
-                </VStack>
+                </Wrap>
             </div>
         </LayoutDefault>
     )
