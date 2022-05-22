@@ -1,4 +1,4 @@
-const dropboxToken = "sl.BHv8XFBubR81Srzgg0SNHCVVLG1nrH-LHlpiY2bz6OyWXFeICZOMDJc4LETl9LSwZZg7B2xetSkl-qlSNL2gOFDPB45YGP-xk-U0J36Jvk69bv32vmYPgYnTtSA5OknxQOAsdteJ1gDy"
+const dropboxToken = "sl.BIEvxqjMRe1QZ2HOvM4qi67rBy7GJ5kLzYkwP89Xh2_F7o7pn7UGWE1gVenPjdp8rzqxnl4-phv1TtkYu7Q8byb4EQ_VguTQzoEvoHpejTBBNJMCSv-k2E3OKCF9IzlxgcFC9A2cD2vq"
 
 // See https://dropbox.tech/developers/how-formio-uses-dropbox-as-a-file-backend-for-javascript-apps
 export const uploadFile = (file, filename, id, onloadSucceed, onloadFailed, onprogress) => {
