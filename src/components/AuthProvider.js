@@ -7,15 +7,18 @@ let AuthContext = React.createContext(null);
 export default function AuthProvider({children}) {
     let [user, setUser] = React.useState(null);
 
-    let loadUser = async () => {
+    const loadUser = async () => {
         const token = localStorage.getItem('token');
         if (token) {
             const response = await ApiRoutes.profile();
-            setUser(response);
+            if (response.id)
+                setUser(response);
+            else
+                signOut();
         }
     };
 
-    let signIn = async (email, password) => {
+    const signIn = async (email, password) => {
         const response = await ApiRoutes.signIn(email, password);
         const token = response['Authorization'];
         if (!token) {
@@ -27,16 +30,17 @@ export default function AuthProvider({children}) {
         return {};
     };
 
-    let signOut = () => {
+    const signOut = () => {
         localStorage.removeItem('token');
         setUser(null);
     };
 
     useEffect(() => {
         loadUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    let value = {user, signIn, signOut};
+    let value = {user, signIn, signOut, loadUser};
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
