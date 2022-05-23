@@ -1,9 +1,14 @@
-import {Box, Divider, Flex, Image, Text, Tooltip, useColorModeValue} from '@chakra-ui/react';
+import {Box, chakra, Divider, Flex, Image, Text, Tooltip, useColorModeValue} from '@chakra-ui/react';
 import placeholder from "../../img/sushi.jpg";
 import {Button} from "@chakra-ui/button";
 import {Spacer} from "@chakra-ui/layout";
+import {AiFillDelete, AiFillEdit, AiOutlinePlus, MdAddShoppingCart} from "react-icons/all";
 
-const DishCard = ({dish: {id, name, price, picture, description}}) => {
+const CAiOutlinePlus = chakra(AiOutlinePlus)
+const CAiFillEdit = chakra(AiFillEdit)
+const CAiFillDelete = chakra(AiFillDelete)
+
+const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdit}) => {
     return (
         <Flex
             w="full"
@@ -86,15 +91,49 @@ const DishCard = ({dish: {id, name, price, picture, description}}) => {
                         <Box as="span" fontWeight="light" fontSize="2xl">${price}</Box>
                         <Spacer/>
                         <Box>
-                            <Tooltip
-                                label="Agregar al pedido"
-                                bg="white"
-                                placement={'top'}
-                                color={'gray.800'}
-                                fontSize={'1em'}
-                            >
-                                <Button colorScheme="brand1" color='black'>+</Button>
-                            </Tooltip>
+                            {isOwner ? (
+                                <>
+                                    <Tooltip
+                                        label="Editar plato"
+                                        bg="white"
+                                        placement={'top'}
+                                        color={'gray.800'}
+                                        fontSize={'1em'}
+                                    >
+                                        <Button
+                                            colorScheme="brand1"
+                                            color='black'
+                                            mr={1}
+                                            onClick={() => onEdit({id, name, price, picture, description})}
+                                        >
+                                            <CAiFillEdit color="black" />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip
+                                        label="Eliminar plato"
+                                        bg="white"
+                                        placement={'top'}
+                                        color={'gray.800'}
+                                        fontSize={'1em'}
+                                    >
+                                        <Button colorScheme="brand1" color='black'>
+                                            <CAiFillDelete color="black" />
+                                        </Button>
+                                    </Tooltip>
+                                </>
+                            ) : (
+                                <Tooltip
+                                    label="Agregar al pedido"
+                                    bg="white"
+                                    placement={'top'}
+                                    color={'gray.800'}
+                                    fontSize={'1em'}
+                                >
+                                    <Button colorScheme="brand1" color='black'>
+                                        <CAiOutlinePlus color="black" />
+                                    </Button>
+                                </Tooltip>
+                            )}
                         </Box>
                     </Flex>
                 </Box>

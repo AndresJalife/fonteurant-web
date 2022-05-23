@@ -15,7 +15,7 @@ import {
     Stack,
     Textarea
 } from "@chakra-ui/react";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import FileUpload from "../FileUpload";
 import {AiFillDollarCircle, BiDish, MdTitle} from "react-icons/all";
 import {uploadFile} from "../../utils/DropboxAPI";
@@ -25,25 +25,51 @@ const CMdTitle = chakra(MdTitle);
 const CAiFillDollarCircle = chakra(AiFillDollarCircle);
 const CBiDish = chakra(BiDish);
 
-const DishForm = ({restaurantId, show, onClose}) => {
+const DishForm = (
+    {
+        restaurantId,
+        show,
+        onClose,
+        edit,
+        onSubmit,
+        currentDish: {id, name, price, picture, description}
+    }) => {
+    const initialFormData = {
+        id: '',
+        name: '',
+        price: '',
+        picture: '',
+        description: ''
+    };
+    const [formData, setFormData] = useState(initialFormData)
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const fileUpload = useRef();
     const initialRef = useRef()
 
+    useEffect(() => {
+        if (edit) {
+            setFormData({id, name, price, picture, description})
+        }
+    }, [edit])
+
+    const onChangeForm = (key, value) => {
+        setFormData({...formData, [key]: value})
+    }
+
     const handleClose = () => {
+        setFormData(initialFormData)
         setFormError(null)
         if (onClose && !isLoading) onClose()
     }
 
-    const handleAddDish = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         setFormError(null)
 
-        const elements = e.target.elements
-        const name = elements?.name?.value
-        const description = elements?.description?.value
-        const price = parseFloat(elements?.price?.value)
+        const name = formData?.name
+        const description = formData?.description
+        const price = parseFloat(formData?.price)
         const filename = fileUpload.current?.filename
         const file = fileUpload.current?.file
 
@@ -59,7 +85,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
             setFormError('Precio requerido')
             return
         }
-        if (!filename || !file) {
+        if ((!filename || !file) && !edit) {
             setFormError('Foto requerida')
             return
         }
@@ -71,9 +97,18 @@ const DishForm = ({restaurantId, show, onClose}) => {
         }
 
         try {
-            const picture = `${filename}_${Date.now()}`
-            uploadFile(file, picture, closeCallback, closeCallback)
-            await ApiRoutes.postDish(restaurantId, name, price, description, picture)
+            let newPicture = picture || ''
+            if (filename && file) {
+                newPicture = `${Date.now()}_${filename}`
+                uploadFile(file, newPicture, closeCallback, closeCallback)
+            }
+            let dish
+            if (edit) {
+                dish = await ApiRoutes.putDish(restaurantId, id, name, price, description, newPicture)
+            } else {
+                dish = await ApiRoutes.postDish(restaurantId, name, price, description, newPicture)
+            }
+            onSubmit(dish)
             closeCallback()
         } catch (e) {
             console.log(e)
@@ -91,7 +126,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
             closeOnOverlayClick={false}
             initialFocusRef={initialRef}
         >
-            <form onSubmit={handleAddDish}>
+            <form onSubmit={handleSubmit}>
                 <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>
@@ -100,7 +135,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
                                 <Center mr={2}>
                                     <CBiDish color="gray.500"/>
                                 </Center>
-                                <div>Nuevo Plato</div>
+                                <div>{edit ? "Editar" : "Nuevo"} Plato</div>
                             </Flex>
                         </Center>
                     </ModalHeader>
@@ -113,15 +148,23 @@ const DishForm = ({restaurantId, show, onClose}) => {
                                         pointerEvents="none"
                                         children={<CMdTitle color="gray.500"/>}
                                     />
-                                    <Input color='black' type="text" id={"name"} placeholder="Nombre" ref={initialRef}/>
+                                    <Input
+                                        color='black'
+                                        type="text"
+                                        placeholder="Nombre"
+                                        value={formData.name}
+                                        onChange={(e) => onChangeForm("name", e.target.value)}
+                                        ref={initialRef}
+                                    />
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
                                 <InputGroup>
                                     <Textarea
-                                        id={"description"}
                                         placeholder='Descripción'
                                         resize='none'
+                                        value={formData.description}
+                                        onChange={(e) => onChangeForm("description", e.target.value)}
                                     />
                                 </InputGroup>
                             </FormControl>
@@ -131,8 +174,13 @@ const DishForm = ({restaurantId, show, onClose}) => {
                                         pointerEvents="none"
                                         children={<CAiFillDollarCircle color="gray.500"/>}
                                     />
-                                    <Input color='black' type="number" id={"price"}
-                                           placeholder="Precio"/>
+                                    <Input
+                                        color='black'
+                                        type="number"
+                                        placeholder="Precio"
+                                        value={formData.price}
+                                        onChange={(e) => onChangeForm("price", e.target.value)}
+                                    />
                                 </InputGroup>
                             </FormControl>
                             <FileUpload stateRef={fileUpload} name="Foto"/>
@@ -150,7 +198,7 @@ const DishForm = ({restaurantId, show, onClose}) => {
                             width="full"
                             isLoading={isLoading}
                         >
-                            Crear
+                            {edit ? "Editar" : "Crear"}
                         </Button>
                     </ModalFooter>
                 </ModalContent>

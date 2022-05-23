@@ -5,11 +5,24 @@ import DishForm from "../components/Dish/DishForm";
 import {Button, Heading, Wrap, WrapItem} from "@chakra-ui/react";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
+import {useAuth} from "../components/AuthProvider";
+
 
 const Restaurant = () => {
+    const initialDishData = {
+        id: '',
+        name: '',
+        price: '',
+        picture: '',
+        description: ''
+    };
     const [restaurantData, setRestaurantData] = useState({})
     const [menuData, setMenuData] = useState([])
     const [openDishModal, setOpenDishModal] = useState(false)
+    const [editMode, setEditMode] = useState(false)
+    const [currentDish, setCurrentDish] = useState(initialDishData)
+    const [newDish, setNewDish] = useState(initialDishData)
+    const {user} = useAuth();
     const {id} = useParams()
 
     useEffect(() => {
@@ -28,6 +41,27 @@ const Restaurant = () => {
         getDishes()
     }, [id])
 
+    useEffect(() => {
+        if (menuData.find(dish => dish?.id === newDish?.id)) {
+            setMenuData(menuData.map(dish => newDish.id === dish?.id ? newDish : dish))
+        } else {
+            setMenuData([newDish, ...menuData])
+        }
+    }, [newDish])
+
+    const isOwner = user?.my_restaurant_id !== id
+
+    const onClickEditDish = (dish) => {
+        setEditMode(true)
+        setCurrentDish(dish)
+        setOpenDishModal(true)
+    }
+
+    const onCloseDishForm = () => {
+        setEditMode(false)
+        setOpenDishModal(false)
+    }
+
     return (
         <LayoutDefault>
             <div style={{padding: '0 10%'}}>
@@ -40,28 +74,31 @@ const Restaurant = () => {
                     <div>Id dueño: {restaurantData?.owner_id}</div>
                     <div>Horarios: {restaurantData?.schedule}</div>
                     <div>Wallet: {restaurantData?.wallet_address}</div>
-                    <Button
-                        colorScheme="brand1"
-                        color='black'
-                        onClick={() => setOpenDishModal(true)}
-                    >
-                        Agregar Plato
-                    </Button>
+                    {isOwner && (
+                        <Button
+                            colorScheme="brand1"
+                            color='black'
+                            onClick={() => setOpenDishModal(true)}
+                        >
+                            Agregar Plato
+                        </Button>)
+                    }
                     <DishForm
                         restaurantId={restaurantData?.id}
                         show={openDishModal}
-                        onClose={() => setOpenDishModal(false)}
+                        onClose={onCloseDishForm}
+                        edit={editMode}
+                        onSubmit={setNewDish}
+                        currentDish={currentDish}
                     />
                 </div>
                 <Wrap spacing='25px' width="100%" py="20px">
-                    {menuData.map((dish) => {
-                        console.log(dish);
-                        return (
+                    {menuData.map((dish) => (
                             <WrapItem key={dish.id}>
-                                <DishCard dish={dish} />
+                                <DishCard dish={dish} isOwner={isOwner} onEdit={onClickEditDish}/>
                             </WrapItem>
-                        );
-                    })}
+                        )
+                    )}
                 </Wrap>
             </div>
         </LayoutDefault>

@@ -69,6 +69,18 @@ const ApiRoutes = {
         }
     ).then(r => r.json()),
 
+    putDish: (restaurantId, dishId, name, price, description, picture) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish/${restaurantId}/${dishId}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                name,
+                price,
+                description,
+                picture
+            }),
+            headers: getHeaders()
+        }
+    ).then(r => r.json()),
+
     getDishes: (restaurantId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish/${restaurantId}`, {headers: getHeaders()}).then(r => r.json()),
 
     editUser: (name, location, phone_number, address_wallet) => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/update`, {
