@@ -1,7 +1,7 @@
 const dropboxToken = "sl.BIEvxqjMRe1QZ2HOvM4qi67rBy7GJ5kLzYkwP89Xh2_F7o7pn7UGWE1gVenPjdp8rzqxnl4-phv1TtkYu7Q8byb4EQ_VguTQzoEvoHpejTBBNJMCSv-k2E3OKCF9IzlxgcFC9A2cD2vq"
 
 // See https://dropbox.tech/developers/how-formio-uses-dropbox-as-a-file-backend-for-javascript-apps
-export const uploadFile = (file, filename, id, onloadSucceed, onloadFailed, onprogress) => {
+export const uploadFile = (file, filename, onloadSucceed, onloadFailed, onprogress) => {
     let xhr = new XMLHttpRequest();
 
     xhr.upload.onprogress = (evt) => {
@@ -26,7 +26,7 @@ export const uploadFile = (file, filename, id, onloadSucceed, onloadFailed, onpr
     xhr.setRequestHeader('Authorization', 'Bearer ' + dropboxToken);
     xhr.setRequestHeader('Content-Type', 'application/octet-stream');
     xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
-        path: `/${id}-${filename}`,
+        path: `/${filename}`,
         mode: 'add',
         autorename: true,
         mute: false

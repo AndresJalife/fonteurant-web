@@ -1,10 +1,7 @@
-import {Box, chakra, Divider, Flex, Image, Text, Tooltip, useColorModeValue} from '@chakra-ui/react';
+import {Box, Divider, Flex, Image, Text, Tooltip, useColorModeValue} from '@chakra-ui/react';
 import placeholder from "../../img/sushi.jpg";
 import {Button} from "@chakra-ui/button";
-import {FaDollarSign} from "react-icons/all";
 import {Spacer} from "@chakra-ui/layout";
-
-const CFaDollarSign = chakra(FaDollarSign);
 
 const DishCard = ({dish: {id, name, price, picture, description}}) => {
     return (

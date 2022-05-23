@@ -48,7 +48,7 @@ const Toolbar = () => {
     let navigate = useNavigate();
 
     const goToMyRestaurant = () => {
-        if (user?.my_restaurant) { // TODO: add my_restaurant to user info
+        if (user?.my_restaurant_id) {
             navigate('/my-restaurant')
         } else {
             navigate('/create-restaurant')
@@ -82,12 +82,12 @@ const Toolbar = () => {
                             cursor={'pointer'}
                             minW={0}
                             colorScheme="brand3.500"
-                            _hover={{ bg: "brand1" }}
-                            _focus={{ bg: "brand1" }}
+                            _hover={{bg: "brand1"}}
+                            _focus={{bg: "brand1"}}
                         >
                             <Center height="70px">
                                 <UserText>{user.email}</UserText>
-                                <Avatar size={'sm'} bg='brand2.500' />
+                                <Avatar size={'sm'} bg='brand2.500'/>
                             </Center>
                         </MenuButton>
                         <MenuList fontSize="16px" color="black">
@@ -104,10 +104,10 @@ const Toolbar = () => {
                                     color="black"
                                     variant='link'
                                 >
-                                    Mi restaurante
+                                    {user?.my_restaurant_id ? "Mi restaurante" : "Crear restaurante"}
                                 </Button>
                             </MenuItem>
-                            <MenuDivider />
+                            <MenuDivider/>
                             <MenuItem
                                 onClick={() => {
                                     signOut();

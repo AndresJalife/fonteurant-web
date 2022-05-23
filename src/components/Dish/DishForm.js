@@ -71,9 +71,10 @@ const DishForm = ({restaurantId, show, onClose}) => {
         }
 
         try {
-            const dish = await ApiRoutes.postDish(restaurantId, name, price, description)
+            const picture = `${filename}_${Date.now()}`
+            uploadFile(file, picture, closeCallback, closeCallback)
+            await ApiRoutes.postDish(restaurantId, name, price, description, picture)
             closeCallback()
-            uploadFile(file, filename, dish?.id, closeCallback, closeCallback)
         } catch (e) {
             console.log(e)
             closeCallback()
