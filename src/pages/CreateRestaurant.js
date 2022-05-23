@@ -24,7 +24,7 @@ const CFaAmilia = chakra(FaAmilia);
 const CFaMapLocation = chakra(FaMap);
 
 const CreateRestaurant = () => {
-    const {user} = useAuth();
+    const {user, loadUser} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
@@ -48,10 +48,10 @@ const CreateRestaurant = () => {
             parseInt(elements.scope.value)
 
         );
-        console.log(result);
         if (!result['id']) {
             setFormError('El restaurante ya existe');
         } else {
+            loadUser()
             navigate("/");
         }
         setIsLoading(false);
@@ -61,6 +61,7 @@ const CreateRestaurant = () => {
         <LayoutDefault>
             <Stack
                 flexDir="column"
+                mt="4"
                 mb="2"
                 justifyContent="center"
                 alignItems="center"
@@ -141,9 +142,7 @@ const CreateRestaurant = () => {
                                 isLoading={isLoading}>
 
                                 Crear
-
                             </Button>
-
                         </Stack>
                     </form>
                 </Box>

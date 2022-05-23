@@ -1,7 +1,8 @@
-const dropboxToken = "sl.BIEvxqjMRe1QZ2HOvM4qi67rBy7GJ5kLzYkwP89Xh2_F7o7pn7UGWE1gVenPjdp8rzqxnl4-phv1TtkYu7Q8byb4EQ_VguTQzoEvoHpejTBBNJMCSv-k2E3OKCF9IzlxgcFC9A2cD2vq"
+const dropboxToken =
+    "sl.BILS19sD1iKykMBVkzVZeWXJXLHzJbnK27IVaCFw9sYDUeR_8MsBTjTPoFImfhlx56zgVQNJVNTHgS3THPsb4P54szXpBMkcPomxJyCdJ0BXQ1uP1MnmQNUnzoN-RKpcfLjCIUaTAiZP"
 
 // See https://dropbox.tech/developers/how-formio-uses-dropbox-as-a-file-backend-for-javascript-apps
-export const uploadFile = (file, filename, id, onloadSucceed, onloadFailed, onprogress) => {
+export const uploadFile = (file, filename, onloadSucceed, onloadFailed, onprogress) => {
     let xhr = new XMLHttpRequest();
 
     xhr.upload.onprogress = (evt) => {
@@ -26,7 +27,7 @@ export const uploadFile = (file, filename, id, onloadSucceed, onloadFailed, onpr
     xhr.setRequestHeader('Authorization', 'Bearer ' + dropboxToken);
     xhr.setRequestHeader('Content-Type', 'application/octet-stream');
     xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
-        path: `/${id}-${filename}`,
+        path: `/${filename}`,
         mode: 'add',
         autorename: true,
         mute: false
@@ -43,7 +44,7 @@ export const downloadFile = (path) => {
         if (xhr.status === 200) {
             const blob = new Blob([xhr.response], {type: 'application/octet-stream'});
             const urlCreator = window.URL || window.webkitURL;
-            return urlCreator.createObjectURL(blob);
+            return urlCreator.createObjectURL(blob)
         } else {
             // const errorMessage = xhr.response || 'Unable to download file';
             // Upload failed. Do something here with the error.
@@ -53,7 +54,7 @@ export const downloadFile = (path) => {
     xhr.open('POST', 'https://content.dropboxapi.com/2/files/download');
     xhr.setRequestHeader('Authorization', 'Bearer ' + dropboxToken);
     xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
-        path
+        path: `/${path}`
     }));
     xhr.send();
 }
