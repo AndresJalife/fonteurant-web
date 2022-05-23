@@ -2,13 +2,13 @@ import {Box, chakra, Divider, Flex, Image, Text, Tooltip, useColorModeValue} fro
 import placeholder from "../../img/sushi.jpg";
 import {Button} from "@chakra-ui/button";
 import {Spacer} from "@chakra-ui/layout";
-import {AiFillDelete, AiFillEdit, AiOutlinePlus, MdAddShoppingCart} from "react-icons/all";
+import {AiFillDelete, AiFillEdit, AiOutlinePlus} from "react-icons/all";
 
 const CAiOutlinePlus = chakra(AiOutlinePlus)
 const CAiFillEdit = chakra(AiFillEdit)
 const CAiFillDelete = chakra(AiFillDelete)
 
-const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdit}) => {
+const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdit, onDelete}) => {
     return (
         <Flex
             w="full"
@@ -107,7 +107,7 @@ const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdi
                                             mr={1}
                                             onClick={() => onEdit({id, name, price, picture, description})}
                                         >
-                                            <CAiFillEdit color="black" />
+                                            <CAiFillEdit color="black"/>
                                         </Button>
                                     </Tooltip>
                                     <Tooltip
@@ -117,8 +117,12 @@ const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdi
                                         color={'gray.800'}
                                         fontSize={'1em'}
                                     >
-                                        <Button colorScheme="brand1" color='black'>
-                                            <CAiFillDelete color="black" />
+                                        <Button
+                                            colorScheme="brand1"
+                                            color='black'
+                                            onClick={() => onDelete(id)}
+                                        >
+                                            <CAiFillDelete color="black"/>
                                         </Button>
                                     </Tooltip>
                                 </>
@@ -131,7 +135,7 @@ const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdi
                                     fontSize={'1em'}
                                 >
                                     <Button colorScheme="brand1" color='black'>
-                                        <CAiOutlinePlus color="black" />
+                                        <CAiOutlinePlus color="black"/>
                                     </Button>
                                 </Tooltip>
                             )}

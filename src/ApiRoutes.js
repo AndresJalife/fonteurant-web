@@ -81,6 +81,11 @@ const ApiRoutes = {
         }
     ).then(r => r.json()),
 
+    deleteDish: (restaurantId, dishId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish/${restaurantId}/${dishId}`, {
+        method: 'DELETE',
+        headers: getHeaders()
+    }),
+
     getDishes: (restaurantId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish/${restaurantId}`, {headers: getHeaders()}).then(r => r.json()),
 
     editUser: (name, location, phone_number, address_wallet) => fetch(`${process.env.REACT_APP_BACKEND_URL}/user/update`, {

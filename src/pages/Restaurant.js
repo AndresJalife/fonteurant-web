@@ -49,7 +49,7 @@ const Restaurant = () => {
         }
     }, [newDish])
 
-    const isOwner = user?.my_restaurant_id !== id
+    const isOwner = user?.my_restaurant_id === id
 
     const onClickEditDish = (dish) => {
         setEditMode(true)
@@ -60,6 +60,12 @@ const Restaurant = () => {
     const onCloseDishForm = () => {
         setEditMode(false)
         setOpenDishModal(false)
+    }
+
+    const onDeleteDish = (dishId) => {
+        ApiRoutes.deleteDish(id, dishId).then(() => {
+            setMenuData(menuData.filter(dish => dishId !== dish?.id))
+        })
     }
 
     return (
@@ -95,7 +101,12 @@ const Restaurant = () => {
                 <Wrap spacing='25px' width="100%" py="20px">
                     {menuData.map((dish) => (
                             <WrapItem key={dish.id}>
-                                <DishCard dish={dish} isOwner={isOwner} onEdit={onClickEditDish}/>
+                                <DishCard
+                                    dish={dish}
+                                    isOwner={isOwner}
+                                    onEdit={onClickEditDish}
+                                    onDelete={onDeleteDish}
+                                />
                             </WrapItem>
                         )
                     )}
