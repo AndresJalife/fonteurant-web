@@ -6,6 +6,7 @@ import {Button, Heading, Wrap, WrapItem} from "@chakra-ui/react";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 import {useAuth} from "../components/AuthProvider";
+import {downloadFile} from "../utils/DropboxAPI";
 
 
 const Restaurant = () => {
@@ -36,7 +37,7 @@ const Restaurant = () => {
     useEffect(() => {
         const getDishes = async () => {
             const data = await ApiRoutes.getDishes(id);
-            setMenuData(data)
+            setMenuData(data.map(dish => ({...dish, picture: dish?.picture ? downloadFile(dish.picture) : ''})))
         }
         getDishes()
     }, [id])

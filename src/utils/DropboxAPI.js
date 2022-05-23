@@ -44,9 +44,7 @@ export const downloadFile = (path) => {
         if (xhr.status === 200) {
             const blob = new Blob([xhr.response], {type: 'application/octet-stream'});
             const urlCreator = window.URL || window.webkitURL;
-            const url = urlCreator.createObjectURL(blob)
-            console.log(url)
-            return url;
+            return urlCreator.createObjectURL(blob)
         } else {
             // const errorMessage = xhr.response || 'Unable to download file';
             // Upload failed. Do something here with the error.
