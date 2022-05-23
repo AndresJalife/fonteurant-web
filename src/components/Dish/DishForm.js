@@ -51,7 +51,7 @@ const DishForm = (
         if (edit) {
             setFormData({id, name, price, picture, description})
         }
-    }, [edit])
+    }, [edit, id, name, price, picture, description])
 
     const onChangeForm = (key, value) => {
         setFormData({...formData, [key]: value})

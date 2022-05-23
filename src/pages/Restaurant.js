@@ -44,9 +44,9 @@ const Restaurant = () => {
 
     useEffect(() => {
         if (menuData.find(dish => dish?.id === newDish?.id)) {
-            setMenuData(menuData.map(dish => newDish.id === dish?.id ? newDish : dish))
-        } else {
-            setMenuData([newDish, ...menuData])
+            setMenuData(m => m.map(dish => newDish.id === dish?.id ? newDish : dish))
+        } else if (newDish?.id) {
+            setMenuData(m => [newDish, ...m])
         }
     }, [newDish])
 
