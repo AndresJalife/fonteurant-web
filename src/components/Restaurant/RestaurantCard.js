@@ -46,6 +46,7 @@ const RestaurantCard = (
 
                 <Image
                     src={picture || placeholder}
+                    fallbackSrc={placeholder}
                     alt="Picture of restaurant"
                     boxSize='350px'
                     roundedTop="lg"

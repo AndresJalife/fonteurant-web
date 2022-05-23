@@ -27,6 +27,7 @@ const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdi
 
                 <Image
                     src={picture || placeholder}
+                    fallbackSrc={placeholder}
                     alt="Picture of dish"
                     boxSize='350px'
                     roundedTop="lg"
