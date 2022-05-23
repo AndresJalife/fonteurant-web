@@ -1,13 +1,12 @@
-import {Box, chakra, Divider, Flex, Image, useColorModeValue, Grid} from '@chakra-ui/react';
+import {Box, chakra, Divider, Flex, Image, Text, Tooltip, useColorModeValue} from '@chakra-ui/react';
 import placeholder from "../../img/sushi.jpg";
 import {Button} from "@chakra-ui/button";
-import {FaDollarSign, MdTitle} from "react-icons/all";
+import {FaDollarSign} from "react-icons/all";
 import {Spacer} from "@chakra-ui/layout";
 
 const CFaDollarSign = chakra(FaDollarSign);
 
-const DishCard = ({dish: {id, name, price, picture, description}}) =>
-{
+const DishCard = ({dish: {id, name, price, picture, description}}) => {
     return (
         <Flex
             w="full"
@@ -31,7 +30,7 @@ const DishCard = ({dish: {id, name, price, picture, description}}) =>
                     roundedTop="lg"
                 />
 
-                <Box p="6">
+                <Box p="6" pt="0">
                     <Divider mb={2}/>
                     <Box d="flex" alignItems="baseline">
                         {/* Aca irian las tags */}
@@ -48,8 +47,19 @@ const DishCard = ({dish: {id, name, price, picture, description}}) =>
                                 fontWeight="semibold"
                                 as="h4"
                                 lineHeight="tight"
+                                height='40px'
                             >
-                                {name}
+                                <Tooltip
+                                    label={name}
+                                    bg="white"
+                                    placement={'top'}
+                                    color={'gray.800'}
+                                    fontSize={'1em'}
+                                >
+                                    <Text noOfLines={1}>
+                                        {name}
+                                    </Text>
+                                </Tooltip>
                             </Box>
                         </Flex>
                         <Flex mt="1" justifyContent="space-between" alignContent="center">
@@ -58,17 +68,36 @@ const DishCard = ({dish: {id, name, price, picture, description}}) =>
                                 fontWeight="light"
                                 as="p"
                                 lineHeight="tight"
+                                height='62px'
                             >
-                                {description}
+                                <Tooltip
+                                    label={description}
+                                    bg="white"
+                                    placement={'top'}
+                                    color={'gray.800'}
+                                    fontSize={'1em'}
+                                >
+                                    <Text color='gray.500' noOfLines={2}>
+                                        {description}
+                                    </Text>
+                                </Tooltip>
                             </Box>
                         </Flex>
                     </div>
 
                     <Flex>
                         <Box as="span" fontWeight="light" fontSize="2xl">${price}</Box>
-                        <Spacer />
+                        <Spacer/>
                         <Box>
-                            <Button colorScheme="brand1" color='black'>+</Button>
+                            <Tooltip
+                                label="Agregar al pedido"
+                                bg="white"
+                                placement={'top'}
+                                color={'gray.800'}
+                                fontSize={'1em'}
+                            >
+                                <Button colorScheme="brand1" color='black'>+</Button>
+                            </Tooltip>
                         </Box>
                     </Flex>
                 </Box>

@@ -51,7 +51,7 @@ const RestaurantCard = (
                     roundedTop="lg"
                 />
 
-                <Box p="6">
+                <Box p="6" pt="0">
                     <Divider mb={2}/>
                     <Box d="flex" alignItems="baseline">
                         {cbu && (

@@ -61,6 +61,7 @@ const Signup = () => {
         <LayoutDefault>
             <Stack
                 flexDir="column"
+                mt="4"
                 mb="2"
                 justifyContent="center"
                 alignItems="center"

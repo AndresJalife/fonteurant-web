@@ -3,7 +3,6 @@ import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
 import {Button, Heading, Wrap, WrapItem} from "@chakra-ui/react";
-import RestaurantCard from "../components/Restaurant/RestaurantCard";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 
