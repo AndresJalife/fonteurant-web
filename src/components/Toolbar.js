@@ -49,7 +49,7 @@ const Toolbar = () => {
 
     const goToMyRestaurant = () => {
         if (user?.my_restaurant_id) {
-            navigate('/my-restaurant')
+            navigate('/restaurant/' + user.my_restaurant_id)
         } else {
             navigate('/create-restaurant')
         }

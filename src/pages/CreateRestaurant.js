@@ -23,8 +23,8 @@ const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
 const CFaAmilia = chakra(FaAmilia);
 const CFaMapLocation = chakra(FaMap);
 
-const Signup = () => {
-    const {user} = useAuth();
+const CreateRestaurant = () => {
+    const {user, loadUser} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
@@ -48,10 +48,10 @@ const Signup = () => {
             parseInt(elements.scope.value)
 
         );
-        console.log(result);
         if (!result['id']) {
             setFormError('El restaurante ya existe');
         } else {
+            loadUser()
             navigate("/");
         }
         setIsLoading(false);
@@ -68,7 +68,7 @@ const Signup = () => {
                 verticalAlign='top'
                 marginTop="5%"
             >
-                <Heading color="#565656">Crear Restaurante</Heading>
+                <Heading color="#565656" className={"crearRestoLabel"}>Crear Restaurante</Heading>
                 <Box minW={{base: "90%", md: "468px"}}>
                     <form onSubmit={handleRegister}>
                         <Stack
@@ -142,9 +142,7 @@ const Signup = () => {
                                 isLoading={isLoading}>
 
                                 Crear
-
                             </Button>
-
                         </Stack>
                     </form>
                 </Box>
@@ -153,4 +151,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default CreateRestaurant

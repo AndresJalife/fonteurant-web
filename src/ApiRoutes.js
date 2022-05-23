@@ -49,10 +49,9 @@ const ApiRoutes = {
             "schedule": schedule,
             "location_scope": location_scope
         }),
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: getHeaders()
     }).then(r => r.json()),
+
     getRestaurant: (id) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${id}`,
         {headers: getHeaders()}).then(r => r.json()),
 
@@ -68,6 +67,19 @@ const ApiRoutes = {
             headers: getHeaders()
         }
     ).then(r => r.json()),
+
+    updateRestaurant: (restId, name, address, cbu, wallet_address, schedule, location_scope) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${restId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            "name": name,
+            "address": address,
+            "cbu": cbu,
+            "wallet_address": wallet_address,
+            "schedule": schedule,
+            "location_scope": location_scope
+        }),
+        headers: getHeaders()
+    }).then(r => r.json()),
 
     putDish: (restaurantId, dishId, name, price, description, picture) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish/${restaurantId}/${dishId}`, {
             method: 'PUT',

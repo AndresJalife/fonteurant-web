@@ -7,6 +7,8 @@ import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 import {useAuth} from "../components/AuthProvider";
 import {downloadFile} from "../utils/DropboxAPI";
+import EditRestaurant from "../components/Restaurant/EditRestaurant";
+import React from "react";
 
 
 const Restaurant = () => {
@@ -17,6 +19,7 @@ const Restaurant = () => {
         picture: '',
         description: ''
     };
+    const [showEditRestaurant, setShowEditRestaurant] = useState(false);
     const [restaurantData, setRestaurantData] = useState({})
     const [menuData, setMenuData] = useState([])
     const [openDishModal, setOpenDishModal] = useState(false)
@@ -52,7 +55,12 @@ const Restaurant = () => {
         }
     }, [newDish])
 
-    const isOwner = user?.my_restaurant_id === id
+    const isOwner = user?.my_restaurant_id === parseInt(id);
+
+    const fetchData = async () => {
+        const data = await ApiRoutes.getRestaurant(id)
+        setRestaurantData(data)
+    }
 
     const onClickEditDish = (dish) => {
         setEditMode(true)
@@ -69,6 +77,23 @@ const Restaurant = () => {
         ApiRoutes.deleteDish(id, dishId).then(() => {
             setMenuData(menuData.filter(dish => dishId !== dish?.id))
         })
+    }
+
+    const getEditButton = () => {
+        return <div>
+            <Button
+                colorScheme="brand1"
+                color='black'
+                onClick={() => setShowEditRestaurant(true)}
+                marginTop="1%"
+            >
+                Editar Restaurante
+            </Button>
+            <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
+                fetchData();
+                setShowEditRestaurant(false);
+            }}/>
+        </div>
     }
 
     return (
@@ -100,6 +125,7 @@ const Restaurant = () => {
                         onSubmit={setNewDish}
                         currentDish={currentDish}
                     />
+                    {isOwner && getEditButton()}
                 </div>
                 <Wrap spacing='25px' width="100%" py="20px">
                     {menuData.map((dish) => (
