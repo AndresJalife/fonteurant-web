@@ -3,14 +3,14 @@ import {
     Box,
     Button,
     chakra,
-    FormControl, FormLabel,
+    FormControl,
     Heading,
     Input,
     InputGroup,
     InputLeftElement,
     Stack
 } from "@chakra-ui/react";
-import {FaMap, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt, FaTags} from "react-icons/fa";
+import {FaMap, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt} from "react-icons/fa";
 import LayoutDefault from "../components/LayoutDefault";
 import ApiRoutes from "../ApiRoutes";
 import {useNavigate} from "react-router";
