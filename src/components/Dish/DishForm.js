@@ -52,12 +52,14 @@ const DishForm = (
     const currentTags = (tags ? tags : []).map((tag) => {
         return {"label": tag, "value": tag};
     });
-    const [dishTags, setDishTags] = useState();
+    const [dishTags, setDishTags] = useState([]);
 
     useEffect(() => {
         if (edit) {
             setFormData({id, name, price, picture, description})
             setDishTags(currentTags);
+        } else {
+            setDishTags([]);
         }
     }, [edit, id, name, price, picture, description, tags])
 
