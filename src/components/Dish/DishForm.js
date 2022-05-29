@@ -61,7 +61,7 @@ const DishForm = (
         } else {
             setDishTags([]);
         }
-    }, [edit, id, name, price, picture, description, tags])
+    }, [edit, id, name, price, picture, description, tags, currentTags])
 
     const onChangeForm = (key, value) => {
         setFormData({...formData, [key]: value})
