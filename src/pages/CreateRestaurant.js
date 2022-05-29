@@ -15,6 +15,7 @@ import LayoutDefault from "../components/LayoutDefault";
 import ApiRoutes from "../ApiRoutes";
 import {useNavigate} from "react-router";
 import {useAuth} from "../components/AuthProvider";
+import TagInput from "../components/TagInput";
 
 const CFaBitcoin = chakra(FaBitcoin);
 const CFaCreditCard = chakra(FaCreditCard);
@@ -27,6 +28,7 @@ const CreateRestaurant = () => {
     const {user, loadUser} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
+    const [values, setValues] = useState([]);
     const navigate = useNavigate();
 
     const handleRegister = async e => {
@@ -38,6 +40,7 @@ const CreateRestaurant = () => {
             return;
         }
         const elements = e.target.elements;
+        const tags = values.map((e) => e.value)
         const result = await ApiRoutes.createRestaurant(
             user.id,
             elements.name.value,
@@ -45,7 +48,8 @@ const CreateRestaurant = () => {
             elements.cbu.value,
             elements.wallet.value,
             elements.schedule.value,
-            parseInt(elements.scope.value)
+            parseInt(elements.scope.value),
+            tags
 
         );
         if (!result['id']) {
@@ -130,6 +134,9 @@ const CreateRestaurant = () => {
                                     />
                                     <Input color='black' type="number" id={"scope"} required placeholder="Radio de cobertura (KM)"/>
                                 </InputGroup>
+                            </FormControl>
+                            <FormControl>
+                                <TagInput values={values} setValues={setValues} ></TagInput>
                             </FormControl>
                             <p className={"error"}>{formError ? formError : ''}</p>
                             <Button

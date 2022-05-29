@@ -19,6 +19,7 @@ import {useAuth} from "../AuthProvider";
 import {BiDish, FaMap, MdTitle} from "react-icons/all";
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt} from "react-icons/fa";
 import ApiRoutes from "../../ApiRoutes";
+import TagInput from "../TagInput";
 
 
 const CMdTitle = chakra(MdTitle);
@@ -33,6 +34,12 @@ const EditRestaurant = ({data, show, onClose}) => {
     const {loadUser} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
+
+    const tags = data.tags.map((tag) => {
+        return {"label": tag, "value": tag}
+    })
+
+    const [values, setValues] = useState(tags);
 
     const handleClose = () => {
         setFormError(null)
@@ -50,6 +57,7 @@ const EditRestaurant = ({data, show, onClose}) => {
         const schedule = elements?.schedule?.value
         const address_wallet = elements?.address_wallet?.value
         const scope = elements?.location_scope?.value
+        const tags = values.map((e) => e.value)
 
         setIsLoading(true)
         const closeCallback = () => {
@@ -58,7 +66,7 @@ const EditRestaurant = ({data, show, onClose}) => {
         }
 
         try {
-            const response = await ApiRoutes.updateRestaurant(data.id, name, location, cbu, address_wallet, schedule, scope)
+            const response = await ApiRoutes.updateRestaurant(data.id, name, location, cbu, address_wallet, schedule, scope, tags)
             if (response.id) {
                 loadUser()
             }
@@ -147,6 +155,9 @@ const EditRestaurant = ({data, show, onClose}) => {
                                     />
                                     <Input color='black' type="number" id={"scope"} required placeholder="Radio de cobertura (KM)" defaultValue={data.location_scope}/>
                                 </InputGroup>
+                            </FormControl>
+                            <FormControl>
+                                <TagInput values={values} setValues={setValues} ></TagInput>
                             </FormControl>
                             <div style={{margin: "10px 5px -10px 5px", color: "red"}}>{formError ? formError : ''}</div>
                         </Stack>

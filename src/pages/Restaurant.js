@@ -96,6 +96,8 @@ const Restaurant = () => {
         </div>
     }
 
+    console.log(restaurantData?.tags)
+
     return (
         <LayoutDefault>
             <div style={{padding: '0 10%'}}>
@@ -108,6 +110,7 @@ const Restaurant = () => {
                     <div>Id dueño: {restaurantData?.owner_id}</div>
                     <div>Horarios: {restaurantData?.schedule}</div>
                     <div>Wallet: {restaurantData?.wallet_address}</div>
+                    <div>Tags: {restaurantData?.tags}</div>
                     {isOwner && (
                         <Button
                             colorScheme="brand1"
