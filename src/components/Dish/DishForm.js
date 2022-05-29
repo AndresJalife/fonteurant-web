@@ -20,6 +20,7 @@ import FileUpload from "../FileUpload";
 import {AiFillDollarCircle, BiDish, MdTitle} from "react-icons/all";
 import {uploadFile} from "../../utils/DropboxAPI";
 import ApiRoutes from "../../ApiRoutes";
+import TagInput from "../TagInput";
 
 const CMdTitle = chakra(MdTitle);
 const CAiFillDollarCircle = chakra(AiFillDollarCircle);
@@ -32,7 +33,7 @@ const DishForm = (
         onClose,
         edit,
         onSubmit,
-        currentDish: {id, name, price, picture, description}
+        currentDish: {id, name, price, picture, description, tags}
     }) => {
     const initialFormData = {
         id: '',
@@ -41,17 +42,24 @@ const DishForm = (
         picture: '',
         description: ''
     };
+
     const [formData, setFormData] = useState(initialFormData)
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
     const fileUpload = useRef();
-    const initialRef = useRef()
+    const initialRef = useRef();
+
+    const currentTags = (tags ? tags : []).map((tag) => {
+        return {"label": tag, "value": tag};
+    });
+    const [dishTags, setDishTags] = useState();
 
     useEffect(() => {
         if (edit) {
             setFormData({id, name, price, picture, description})
+            setDishTags(currentTags);
         }
-    }, [edit, id, name, price, picture, description])
+    }, [edit, id, name, price, picture, description, tags])
 
     const onChangeForm = (key, value) => {
         setFormData({...formData, [key]: value})
@@ -72,6 +80,7 @@ const DishForm = (
         const price = parseFloat(formData?.price)
         const filename = fileUpload.current?.filename
         const file = fileUpload.current?.file
+        const tags = dishTags.map(t => t.label);
 
         if (!name) {
             setFormError('Nombre requerido')
@@ -104,9 +113,9 @@ const DishForm = (
             }
             let dish
             if (edit) {
-                dish = await ApiRoutes.putDish(restaurantId, id, name, price, description, newPicture)
+                dish = await ApiRoutes.putDish(restaurantId, id, name, price, description, newPicture, tags)
             } else {
-                dish = await ApiRoutes.postDish(restaurantId, name, price, description, newPicture)
+                dish = await ApiRoutes.postDish(restaurantId, name, price, description, newPicture, tags)
             }
             onSubmit(dish)
             closeCallback()
@@ -184,6 +193,9 @@ const DishForm = (
                                 </InputGroup>
                             </FormControl>
                             <FileUpload stateRef={fileUpload} name="Foto"/>
+                            <FormControl>
+                                <TagInput values={dishTags} setValues={setDishTags} />
+                            </FormControl>
                             <div style={{margin: "10px 5px -10px 5px", color: "red"}}>{formError ? formError : ''}</div>
                         </Stack>
                     </ModalBody>
