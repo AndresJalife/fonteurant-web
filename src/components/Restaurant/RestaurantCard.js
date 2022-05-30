@@ -1,8 +1,9 @@
 import './RestaurantCard.css'
 import {useNavigate} from "react-router";
-import {Badge, Box, Center, chakra, Divider, Flex, Image, useColorModeValue} from '@chakra-ui/react';
+import {Badge, Box, Center, chakra, Divider, Flex, Image, Tooltip, useColorModeValue} from '@chakra-ui/react';
 import placeholder from "../../img/placeholder_restaurant.jpg";
 import {GrLocation} from "react-icons/all";
+import Tag from "../Tag";
 
 const CGrLocation = chakra(GrLocation)
 
@@ -17,15 +18,26 @@ const RestaurantCard = (
             wallet_address,
             schedule,
             location_scope,
+            tags,
             picture
         }
     }
 ) => {
     let navigate = useNavigate();
 
+    // const [viewTags, setViewTags] = useState([]);
+
     const goToRestaurant = () => {
         navigate(`/restaurant/${id}`)
     }
+
+    // useEffect(() => {
+    //     let aux = []
+    //     for(let tag in tags){
+    //         aux.push(<Tag value={tags[tag]}/>)
+    //     }
+    //     setViewTags(aux)
+    // }, [tags])
 
     return (
         <Flex
@@ -55,16 +67,16 @@ const RestaurantCard = (
                 <Box p="6" pt="0">
                     <Divider mb={2}/>
                     <Box d="flex" alignItems="baseline">
-                        {cbu && (
-                            <Badge rounded="full" px="2" fontSize="0.7em" colorScheme="blue" mr={1}>
-                                Tarjetas
-                            </Badge>
-                        )}
-                        {wallet_address && (
-                            <Badge rounded="full" px="2" fontSize="0.7em" colorScheme="pink">
-                                Criptomonedas
-                            </Badge>
-                        )}
+                        {cbu && ( <Tag value={"Tarjetas"} color={"blue"}/>)}
+                        {wallet_address && (<Tag value={"Criptomonedas"} color={"blue"}/>)}
+                        {/*{viewTags}*/}
+                        {tags && tags.length > 0 && (<Tooltip
+                            label={tags}
+                            bg="white"
+                            placement={'top'}
+                            color={'gray.800'}
+                            fontSize={'1em'}
+                        ><Tag value={"..."}/></Tooltip>)}
                     </Box>
                     <Flex mt="1" justifyContent="space-between" alignContent="center">
                         <Box
