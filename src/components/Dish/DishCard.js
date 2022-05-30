@@ -8,7 +8,8 @@ const CAiOutlinePlus = chakra(AiOutlinePlus)
 const CAiFillEdit = chakra(AiFillEdit)
 const CAiFillDelete = chakra(AiFillDelete)
 
-const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdit, onDelete}) => {
+const DishCard = ({dish, isOwner, onEdit, onDelete}) => {
+    const {id, name, price, picture, description, } = dish;
     return (
         <Flex
             w="full"
@@ -105,7 +106,7 @@ const DishCard = ({dish: {id, name, price, picture, description}, isOwner, onEdi
                                             colorScheme="brand1"
                                             color='black'
                                             mr={1}
-                                            onClick={() => onEdit({id, name, price, picture, description})}
+                                            onClick={() => onEdit(dish)}
                                         >
                                             <CAiFillEdit color="black"/>
                                         </Button>

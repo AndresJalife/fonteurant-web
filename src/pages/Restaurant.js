@@ -17,7 +17,8 @@ const Restaurant = () => {
         name: '',
         price: '',
         picture: '',
-        description: ''
+        description: '',
+        tags: []
     };
     const [showEditRestaurant, setShowEditRestaurant] = useState(false);
     const [restaurantData, setRestaurantData] = useState({})
@@ -95,8 +96,6 @@ const Restaurant = () => {
             }}/>
         </div>
     }
-
-    console.log(restaurantData?.tags)
 
     return (
         <LayoutDefault>

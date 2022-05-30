@@ -35,7 +35,7 @@ const EditRestaurant = ({data, show, onClose}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
 
-    const tags = data.tags.map((tag) => {
+    const tags = (data.tags ? data.tags : []).map((tag) => {
         return {"label": tag, "value": tag}
     })
 
@@ -157,7 +157,7 @@ const EditRestaurant = ({data, show, onClose}) => {
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
-                                <TagInput values={values} setValues={setValues} ></TagInput>
+                                <TagInput values={values} setValues={setValues} />
                             </FormControl>
                             <div style={{margin: "10px 5px -10px 5px", color: "red"}}>{formError ? formError : ''}</div>
                         </Stack>
