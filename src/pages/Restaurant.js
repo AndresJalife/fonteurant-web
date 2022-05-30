@@ -96,8 +96,6 @@ const Restaurant = () => {
         </div>
     }
 
-    console.log(restaurantData?.tags)
-
     return (
         <LayoutDefault>
             <div style={{padding: '0 10%'}}>
