@@ -18,7 +18,7 @@ const Restaurants = () => {
                 ))
         }
         getRestaurants().then((restaurants) => setRestaurants(restaurants))
-    }, [])
+    }, [restaurants])
 
     return (
         <LayoutDefault>
