@@ -157,7 +157,7 @@ const EditRestaurant = ({data, show, onClose}) => {
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
-                                <TagInput values={values} setValues={setValues} ></TagInput>
+                                <TagInput values={values} setValues={setValues} />
                             </FormControl>
                             <div style={{margin: "10px 5px -10px 5px", color: "red"}}>{formError ? formError : ''}</div>
                         </Stack>

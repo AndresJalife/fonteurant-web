@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 
 import {CreatableSelect} from "chakra-react-select";
 
@@ -9,7 +9,7 @@ const TagInput = ({values, setValues}) => {
         DropdownIndicator: null,
     };
 
-    const createOption = (label: string) => ({
+    const createOption = (label) => ({
         label,
         value: label
     });
@@ -34,6 +34,7 @@ const TagInput = ({values, setValues}) => {
     const handleInputChange = (inputValue) => {
         setInputValue(inputValue)
     };
+
     return (
         <CreatableSelect
             components={components}
