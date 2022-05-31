@@ -9,6 +9,8 @@ import {useAuth} from "../components/AuthProvider";
 import {downloadFile} from "../utils/DropboxAPI";
 import EditRestaurant from "../components/Restaurant/EditRestaurant";
 import React from "react";
+import StarRatings from "react-star-ratings";
+import ReviewModal from "../components/Restaurant/ReviewModal";
 
 
 const Restaurant = () => {
@@ -22,8 +24,10 @@ const Restaurant = () => {
     };
     const [showEditRestaurant, setShowEditRestaurant] = useState(false);
     const [restaurantData, setRestaurantData] = useState({})
+    const [reviews, setReviews] = useState([])
     const [menuData, setMenuData] = useState([])
     const [openDishModal, setOpenDishModal] = useState(false)
+    const [showReviews, setShowReviews] = useState(false)
     const [editMode, setEditMode] = useState(false)
     const [currentDish, setCurrentDish] = useState(initialDishData)
     const [newDish, setNewDish] = useState(initialDishData)
@@ -37,6 +41,14 @@ const Restaurant = () => {
         }
         fetchData()
     }, [id])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const reviews = await ApiRoutes.getRestaurantReviews(id);
+            setReviews(reviews);
+        }
+        fetchData()
+    }, [id]);
 
     useEffect(() => {
         const getDishes = async () => {
@@ -59,8 +71,8 @@ const Restaurant = () => {
     const isOwner = user?.my_restaurant_id === parseInt(id);
 
     const fetchData = async () => {
-        const data = await ApiRoutes.getRestaurant(id)
-        setRestaurantData(data)
+        const data = await ApiRoutes.getRestaurant(id);
+        setRestaurantData(data);
     }
 
     const onClickEditDish = (dish) => {
@@ -101,6 +113,18 @@ const Restaurant = () => {
         <LayoutDefault>
             <div style={{padding: '0 10%'}}>
                 <Heading color="#565656" pt="110px">{restaurantData?.name}</Heading>
+                <div>
+                    <StarRatings
+                        rating={(reviews.length > 0 ? reviews.map(r => r.score).reduce((c, s) => c + s, 0) / reviews.length : 0)}
+                        starDimension="30px"
+                        starSpacing="10px"
+                        starRatedColor="orange"
+                    />
+                    <br />
+                    <br />
+                    <Button onClick={() => setShowReviews(true)}>Ver opiniones</Button>
+                    <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
+                </div>
                 <div>
                     <div>Id: {restaurantData?.id}</div>
                     <div>Dirección: {restaurantData?.address}</div>
