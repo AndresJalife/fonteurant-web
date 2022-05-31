@@ -1,4 +1,5 @@
 import './RestaurantCard.css'
+import React from 'react';
 import {useNavigate} from "react-router";
 import {Badge, Box, Center, chakra, Divider, Flex, Image, Tooltip, useColorModeValue} from '@chakra-ui/react';
 import placeholder from "../../img/placeholder_restaurant.jpg";
@@ -25,19 +26,13 @@ const RestaurantCard = (
 ) => {
     let navigate = useNavigate();
 
-    // const [viewTags, setViewTags] = useState([]);
-
     const goToRestaurant = () => {
         navigate(`/restaurant/${id}`)
     }
 
-    // useEffect(() => {
-    //     let aux = []
-    //     for(let tag in tags){
-    //         aux.push(<Tag value={tags[tag]}/>)
-    //     }
-    //     setViewTags(aux)
-    // }, [tags])
+    const getTagsDelimited = (tags) => {
+        return tags.join(", ");
+    }
 
     return (
         <Flex
@@ -70,13 +65,14 @@ const RestaurantCard = (
                         {cbu && ( <Tag value={"Tarjetas"} color={"blue"}/>)}
                         {wallet_address && (<Tag value={"Criptomonedas"} color={"blue"}/>)}
                         {/*{viewTags}*/}
-                        {tags && tags.length > 0 && (<Tooltip
-                            label={tags}
-                            bg="white"
-                            placement={'top'}
-                            color={'gray.800'}
-                            fontSize={'1em'}
-                        ><Tag value={"..."}/></Tooltip>)}
+                        {tags && tags.length > 0 &&
+                            <Tooltip bg={"lightgray"}
+                                     placement={"top"}
+                                     color={"gray.800"}
+                                     fontSize={'1em'}
+                                     label={getTagsDelimited(tags)}>
+                                ...
+                            </Tooltip>}
                     </Box>
                     <Flex mt="1" justifyContent="space-between" alignContent="center">
                         <Box

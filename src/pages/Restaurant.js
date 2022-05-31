@@ -11,7 +11,7 @@ import EditRestaurant from "../components/Restaurant/EditRestaurant";
 import Tag from "../components/Tag";
 import React from "react";
 import './restaurant.css';
-import {FaAmilia, FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
+import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
 
 const Restaurant = () => {
     const initialDishData = {
@@ -36,7 +36,6 @@ const Restaurant = () => {
     const CFaCreditCard = chakra(FaCreditCard);
     const CFaCalendarTimes = chakra(FaCalendarTimes);
     const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
-    const CFaAmilia = chakra(FaAmilia);
     const CFaTags = chakra(FaTags);
 
     useEffect(() => {
