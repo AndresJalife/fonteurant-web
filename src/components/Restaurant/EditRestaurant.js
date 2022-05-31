@@ -14,7 +14,7 @@ import {
     ModalOverlay,
     Stack
 } from "@chakra-ui/react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuth} from "../AuthProvider";
 import {BiDish, FaMap, MdTitle} from "react-icons/all";
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt} from "react-icons/fa";
@@ -35,11 +35,14 @@ const EditRestaurant = ({data, show, onClose}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
 
-    const tags = data.tags?.map((tag) => {
-        return {"label": tag, "value": tag}
-    })
+    const [values, setValues] = useState([]);
 
-    const [values, setValues] = useState(tags);
+    useEffect(() => {
+        const initialTags = data.tags?.map((tag) => {
+            return {"label": tag, "value": tag}
+        })
+        setValues(initialTags)
+    }, [data.tags])
 
     const handleClose = () => {
         setFormError(null)
