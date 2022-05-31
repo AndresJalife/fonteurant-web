@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
     Button, Center,
     chakra, Flex,
@@ -61,7 +62,7 @@ const DishForm = (
         } else {
             setDishTags([]);
         }
-    }, [edit, id, name, price, picture, description, tags, currentTags])
+    }, [edit, id, name, price, picture, description, tags])
 
     const onChangeForm = (key, value) => {
         setFormData({...formData, [key]: value})

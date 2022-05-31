@@ -2,14 +2,16 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
-import {Button, Heading, Wrap, WrapItem} from "@chakra-ui/react";
+import {Button, chakra, Heading, Wrap, WrapItem} from "@chakra-ui/react";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 import {useAuth} from "../components/AuthProvider";
 import {downloadFile} from "../utils/DropboxAPI";
 import EditRestaurant from "../components/Restaurant/EditRestaurant";
+import Tag from "../components/Tag";
 import React from "react";
-
+import './restaurant.css';
+import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
 
 const Restaurant = () => {
     const initialDishData = {
@@ -29,6 +31,12 @@ const Restaurant = () => {
     const [newDish, setNewDish] = useState(initialDishData)
     const {user} = useAuth();
     const {id} = useParams()
+
+    const CFaBitcoin = chakra(FaBitcoin);
+    const CFaCreditCard = chakra(FaCreditCard);
+    const CFaCalendarTimes = chakra(FaCalendarTimes);
+    const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
+    const CFaTags = chakra(FaTags);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -97,19 +105,39 @@ const Restaurant = () => {
         </div>
     }
 
+    const getTags = () => {
+        if (restaurantData.tags && restaurantData.tags.length > 0) {
+            return restaurantData.tags.map((tag) => {
+                return <Tag value={tag}/>
+            } )
+        } else {
+            return "Sin Tags";
+        }
+    }
+
     return (
         <LayoutDefault>
-            <div style={{padding: '0 10%'}}>
-                <Heading color="#565656" pt="110px">{restaurantData?.name}</Heading>
+            <div className={"restoView"} style={{padding: '0 10%'}}>
+                <Heading mt={3} mb={10} color="#000000" pt="110px">{restaurantData?.name}</Heading>
                 <div>
-                    <div>Id: {restaurantData?.id}</div>
-                    <div>Dirección: {restaurantData?.address}</div>
-                    <div>Cobertura: {restaurantData?.location_scope}</div>
-                    <div>CBU: {restaurantData?.cbu}</div>
-                    <div>Id dueño: {restaurantData?.owner_id}</div>
-                    <div>Horarios: {restaurantData?.schedule}</div>
-                    <div>Wallet: {restaurantData?.wallet_address}</div>
-                    <div>Tags: {restaurantData?.tags}</div>
+                    <div className={"moneey"}>
+                        <CFaMapMarkerAlt mr={1}></CFaMapMarkerAlt>
+                        <div><b>Dirección:</b> {restaurantData?.address}</div>
+                    </div>
+                    <div className={"moneey"}>
+                        <CFaCreditCard mr={1}></CFaCreditCard>
+                        <div>CBU: {restaurantData?.cbu}</div>
+                        <CFaBitcoin ml={5} mr={1}></CFaBitcoin>
+                        <div>Wallet: {restaurantData?.wallet_address}</div>
+                    </div>
+                    <div className={"moneey"}>
+                        <CFaCalendarTimes mr={1}></CFaCalendarTimes>
+                        <div>Horarios: {restaurantData?.schedule}</div>
+                    </div>
+                    <div className={"moneey"}>
+                        <CFaTags mr={1}></CFaTags>
+                        <div>Tags: {getTags()}</div>
+                    </div>
                     {isOwner && (
                         <Button
                             colorScheme="brand1"
