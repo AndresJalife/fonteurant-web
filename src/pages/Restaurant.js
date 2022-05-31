@@ -10,6 +10,8 @@ import {downloadFile} from "../utils/DropboxAPI";
 import EditRestaurant from "../components/Restaurant/EditRestaurant";
 import Tag from "../components/Tag";
 import React from "react";
+import StarRatings from "react-star-ratings";
+import ReviewModal from "../components/Restaurant/ReviewModal";
 import './restaurant.css';
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
 
@@ -24,8 +26,10 @@ const Restaurant = () => {
     };
     const [showEditRestaurant, setShowEditRestaurant] = useState(false);
     const [restaurantData, setRestaurantData] = useState({})
+    const [reviews, setReviews] = useState([])
     const [menuData, setMenuData] = useState([])
     const [openDishModal, setOpenDishModal] = useState(false)
+    const [showReviews, setShowReviews] = useState(false)
     const [editMode, setEditMode] = useState(false)
     const [currentDish, setCurrentDish] = useState(initialDishData)
     const [newDish, setNewDish] = useState(initialDishData)
@@ -45,6 +49,14 @@ const Restaurant = () => {
         }
         fetchData()
     }, [id])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const reviews = await ApiRoutes.getRestaurantReviews(id);
+            setReviews(reviews);
+        }
+        fetchData()
+    }, [id]);
 
     useEffect(() => {
         const getDishes = async () => {
@@ -67,8 +79,8 @@ const Restaurant = () => {
     const isOwner = user?.my_restaurant_id === parseInt(id);
 
     const fetchData = async () => {
-        const data = await ApiRoutes.getRestaurant(id)
-        setRestaurantData(data)
+        const data = await ApiRoutes.getRestaurant(id);
+        setRestaurantData(data);
     }
 
     const onClickEditDish = (dish) => {
@@ -119,6 +131,18 @@ const Restaurant = () => {
         <LayoutDefault>
             <div className={"restoView"} style={{padding: '0 10%'}}>
                 <Heading mt={3} mb={10} color="#000000" pt="110px">{restaurantData?.name}</Heading>
+                <div style={{marginBottom: "50px"}}>
+                    <StarRatings
+                        rating={(reviews.length > 0 ? reviews.map(r => r.score).reduce((c, s) => c + s, 0) / reviews.length : 0)}
+                        starDimension="30px"
+                        starSpacing="10px"
+                        starRatedColor="orange"
+                    />
+                    <br />
+                    <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
+                    <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
+                    <br />
+                </div>
                 <div>
                     <div className={"moneey"}>
                         <CFaMapMarkerAlt mr={1}></CFaMapMarkerAlt>

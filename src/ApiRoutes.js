@@ -56,6 +56,9 @@ const ApiRoutes = {
     getRestaurant: (id) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${id}`,
         {headers: getHeaders()}).then(r => r.json()),
 
+    getRestaurantReviews: (id) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/review/${id}`,
+        {headers: getHeaders()}).then(r => r.json()),
+
     postDish: (restaurantId, name, price, description, picture, tags) => fetch(`${process.env.REACT_APP_BACKEND_URL}/dish`, {
             method: 'POST',
             body: JSON.stringify({
