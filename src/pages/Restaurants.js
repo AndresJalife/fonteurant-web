@@ -26,6 +26,7 @@ const Restaurants = () => {
             let response = await ApiRoutes.getRestaurants();
             return Object.values(response)
         }
+
         getRestaurants().then((restaurants) => {
             setSearch('')
             setRestaurants(restaurants)
@@ -37,13 +38,14 @@ const Restaurants = () => {
         setSearch(newSearch)
         setSelectedTags(newTags)
         const tags = newTags.filter(t => !fakeTags.some(dt => dt.value === t.value))
-        setRestaurantsFiltered(restaurants.filter(restaurant => {
+        let restos = restaurants.filter(restaurant => {
             const matchByName = restaurant?.name?.toLowerCase().includes(newSearch?.toLowerCase())
             const matchByTags = tags.every(tag => restaurant?.tags.includes(tag?.value))
             const matchByCreditTag = newTags.includes(creditTag) ? restaurant?.cbu : true
             const matchByCyptoTag = newTags.includes(cryptoTag) ? restaurant?.wallet_address : true
             return matchByName && matchByTags && matchByCreditTag && matchByCyptoTag
-        }))
+        })
+        setRestaurantsFiltered(restos)
     }
 
     return (

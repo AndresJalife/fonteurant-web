@@ -35,7 +35,7 @@ const EditRestaurant = ({data, show, onClose}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [formError, setFormError] = useState(null);
 
-    const tags = (data.tags ? data.tags : []).map((tag) => {
+    const tags = data.tags?.map((tag) => {
         return {"label": tag, "value": tag}
     })
 
