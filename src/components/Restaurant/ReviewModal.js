@@ -48,7 +48,7 @@ const ReviewModal = ({reviews, show, onClose}) => {
                                 </div>);
                             })
                         }
-                        {reviews.length == 0 && <div>No hay opiniones</div>}
+                        {reviews.length === 0 && <div>No hay opiniones</div>}
                     </Stack>
                 </ModalBody>
                 <ModalFooter>
