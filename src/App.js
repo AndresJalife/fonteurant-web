@@ -10,6 +10,7 @@ import Restaurant from "./pages/Restaurant";
 import Restaurants from "./pages/Restaurants";
 import Profile from "./pages/Profile";
 import MyRestaurant from "./pages/MyRestaurant";
+import Checkout from "./pages/Checkout";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/restaurant/:id" element={<PrivateRoute Component={Restaurant}/>}/>
                     <Route path="/profile" element={<PrivateRoute Component={Profile}/>}/>
                     <Route path="/my-restaurant" element={<PrivateRoute Component={MyRestaurant}/>}/>
+                    <Route path="/checkout" element={<PrivateRoute Component={Checkout}/>}/>
                 </Routes>
             </AuthProvider>
         </div>
