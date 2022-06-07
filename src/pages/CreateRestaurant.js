@@ -10,19 +10,20 @@ import {
     InputLeftElement,
     Stack
 } from "@chakra-ui/react";
-import {FaMap, FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt} from "react-icons/fa";
+import {FaBitcoin, FaCreditCard, FaCalendarTimes, FaAmilia, FaMapMarkerAlt} from "react-icons/fa";
 import LayoutDefault from "../components/LayoutDefault";
 import ApiRoutes from "../ApiRoutes";
 import {useNavigate} from "react-router";
 import {useAuth} from "../components/AuthProvider";
 import TagInput from "../components/TagInput";
+import {ImRadioChecked} from "react-icons/all";
 
 const CFaBitcoin = chakra(FaBitcoin);
 const CFaCreditCard = chakra(FaCreditCard);
 const CFaCalendarTimes = chakra(FaCalendarTimes);
 const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
 const CFaAmilia = chakra(FaAmilia);
-const CFaMapLocation = chakra(FaMap);
+const CFaMapLocation = chakra(ImRadioChecked);
 
 const CreateRestaurant = () => {
     const {user, loadUser} = useAuth();
@@ -105,7 +106,7 @@ const CreateRestaurant = () => {
                                         pointerEvents="none"
                                         children={<CFaCreditCard color="gray.500"/>}
                                     />
-                                    <Input color='black' id={"cbu"} required placeholder="CBU"/>
+                                    <Input color='black' id={"cbu"} placeholder="CBU"/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>

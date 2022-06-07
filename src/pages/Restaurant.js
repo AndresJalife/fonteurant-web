@@ -3,13 +3,19 @@ import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
 import {
-    Avatar, AvatarBadge,
+    Avatar,
+    AvatarBadge,
     Box,
-    Button, Center,
+    Button,
+    Center,
     chakra,
     Heading,
     IconButton,
-    Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
     ModalOverlay,
     useDisclosure,
     Wrap,
@@ -28,7 +34,8 @@ import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaShoppingCart
 import ShoppingCart from "../components/ShoppingCart/ShoppingCart";
 import Checkout from "../components/Checkout";
 import {TiTick} from "react-icons/all";
-
+import UploadReviewModal from "../components/Restaurant/UploadReviewModal";
+import MetricsModal from "../components/Restaurant/MetricsModal";
 
 const Restaurant = () => {
     const initialDishData = {
@@ -42,9 +49,13 @@ const Restaurant = () => {
     const [showEditRestaurant, setShowEditRestaurant] = useState(false);
     const [restaurantData, setRestaurantData] = useState({})
     const [reviews, setReviews] = useState([])
+    const [metrics, setMetrics] = useState([])
     const [menuData, setMenuData] = useState([])
     const [openDishModal, setOpenDishModal] = useState(false)
     const [showReviews, setShowReviews] = useState(false)
+    const [showUploadReview, setShowUploadReview] = useState(false)
+    const [userReviewd, setUserReviewd] = useState(false)
+    const [showMetrics, setShowMetrics] = useState(false)
     const [editMode, setEditMode] = useState(false)
     const [currentDish, setCurrentDish] = useState(initialDishData)
     const [newDish, setNewDish] = useState(initialDishData)
@@ -73,11 +84,25 @@ const Restaurant = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const reviews = await ApiRoutes.getRestaurantReviews(id);
-            setReviews(reviews);
+            const moneyMetrics = await ApiRoutes.getMoneyMetrics(id)
+            const orderMetrics = await ApiRoutes.getOrdersMetrics(id)
+            setMetrics([moneyMetrics, orderMetrics])
         }
         fetchData()
-    }, [id]);
+    }, [id])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const reviews = await ApiRoutes.getRestaurantReviews(id);
+            setReviews(reviews);
+            reviews.forEach((e) => {
+                if (e['user_id'] === user.id) {
+                    setUserReviewd(true)
+                }
+            })
+        }
+        fetchData()
+    }, [id, user.id]);
 
     useEffect(() => {
         const getDishes = async () => {
@@ -102,6 +127,16 @@ const Restaurant = () => {
     const fetchData = async () => {
         const data = await ApiRoutes.getRestaurant(id);
         setRestaurantData(data);
+        const reviews = await ApiRoutes.getRestaurantReviews(id);
+        setReviews(reviews);
+        reviews.forEach((e) => {
+            if (e['user_id'] === user.id) {
+                setUserReviewd(true)
+            }
+        })
+        const moneyMetrics = await ApiRoutes.getMoneyMetrics(id)
+        const orderMetrics = await ApiRoutes.getOrdersMetrics(id)
+        setMetrics([moneyMetrics, orderMetrics])
     }
 
     const onClickEditDish = (dish) => {
@@ -119,23 +154,6 @@ const Restaurant = () => {
         ApiRoutes.deleteDish(id, dishId).then(() => {
             setMenuData(menuData.filter(dish => dishId !== dish?.id))
         })
-    }
-
-    const getEditButton = () => {
-        return <div>
-            <Button
-                colorScheme="brand1"
-                color='black'
-                onClick={() => setShowEditRestaurant(true)}
-                marginTop="1%"
-            >
-                Editar Restaurante
-            </Button>
-            <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
-                fetchData();
-                setShowEditRestaurant(false);
-            }}/>
-        </div>
     }
 
     const getTags = () => {
@@ -187,6 +205,13 @@ const Restaurant = () => {
                     <br/>
                     <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
                     <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)}/>
+                    {!userReviewd && !isOwner && (
+                        <Button onClick={() => setShowUploadReview(true)} style={{marginTop: "10px", marginLeft: "1%"}}>Cargar
+                            opinion</Button>)}
+                    <UploadReviewModal show={showUploadReview} onClose={() => {
+                        setShowUploadReview(false);
+                        fetchData();
+                    }} restoName={restaurantData.name} restoId={restaurantData.id}></UploadReviewModal>
                     <br/>
                 </div>
                 <div>
@@ -208,15 +233,40 @@ const Restaurant = () => {
                         <CFaTags mr={1}></CFaTags>
                         <div>Tags: {getTags()}</div>
                     </div>
-                    {isOwner && (
-                        <Button
+                    <div>
+                        {isOwner && (
+                            <Button
+                                colorScheme="brand1"
+                                color='black'
+                                onClick={() => setOpenDishModal(true)}
+                            >
+                                Agregar Plato
+                            </Button>)
+                        }
+                        {isOwner && (
+                            <Button
+                                colorScheme="brand1"
+                                color='black'
+                                onClick={() => setShowMetrics(true)}
+                                marginLeft="1%"
+                            >
+                                Ver Métricas
+                            </Button>)}
+                        {isOwner && (<Button
                             colorScheme="brand1"
                             color='black'
-                            onClick={() => setOpenDishModal(true)}
+                            onClick={() => setShowEditRestaurant(true)}
+                            marginLeft="1%"
                         >
-                            Agregar Plato
-                        </Button>)
-                    }
+                            Editar Restaurante
+                        </Button>)}
+                    </div>
+                    {isOwner && (<EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
+                        fetchData();
+                        setShowEditRestaurant(false);
+                    }}/>)}
+                    {isOwner && (
+                        <MetricsModal metrics={metrics} show={showMetrics} onClose={() => setShowMetrics(false)}/>)}
                     <DishForm
                         restaurantId={restaurantData?.id}
                         show={openDishModal}
@@ -225,7 +275,7 @@ const Restaurant = () => {
                         onSubmit={setNewDish}
                         currentDish={currentDish}
                     />
-                    {isOwner && getEditButton()}
+
                 </div>
                 <Wrap spacing='25px' width="100%" py="20px">
                     {menuData.map((dish) => (
