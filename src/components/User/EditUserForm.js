@@ -46,23 +46,6 @@ const EditUserForm = ({show, onClose}) => {
         const phone_number = elements?.phone_number?.value
         const address_wallet = elements?.address_wallet?.value
 
-        if (!name) {
-            setFormError('Nombre requerido')
-            return
-        }
-        if (!location) {
-            setFormError('Ubicación requerida')
-            return
-        }
-        if (!phone_number) {
-            setFormError('Teléfono requerido')
-            return
-        }
-        if (!address_wallet) {
-            setFormError('Billetera de criptomonedas requerida')
-            return
-        }
-
         setIsLoading(true)
         const closeCallback = () => {
             setIsLoading(false)

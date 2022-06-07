@@ -58,7 +58,7 @@ const EditRestaurant = ({data, show, onClose}) => {
         const location = elements?.location?.value
         const cbu = elements?.cbu?.value
         const schedule = elements?.schedule?.value
-        const address_wallet = elements?.address_wallet?.value
+        const address_wallet = elements?.wallet?.value
         const scope = elements?.location_scope?.value
         const tags = values.map((e) => e.value)
 
@@ -129,7 +129,7 @@ const EditRestaurant = ({data, show, onClose}) => {
                                         pointerEvents="none"
                                         children={<CFaCreditCard color="gray.500"/>}
                                     />
-                                    <Input color='black' id={"cbu"} required placeholder="CBU" defaultValue={data.cbu}/>
+                                    <Input color='black' id={"cbu"} placeholder="CBU" defaultValue={data.cbu}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
