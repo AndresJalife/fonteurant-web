@@ -1,19 +1,19 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
-import {Button, chakra, Heading, Wrap, WrapItem} from "@chakra-ui/react";
+import {Box, Button, chakra, Heading, IconButton, useDisclosure, Wrap, WrapItem} from "@chakra-ui/react";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 import {useAuth} from "../components/AuthProvider";
 import {downloadFile} from "../utils/DropboxAPI";
 import EditRestaurant from "../components/Restaurant/EditRestaurant";
 import Tag from "../components/Tag";
-import React from "react";
 import StarRatings from "react-star-ratings";
 import ReviewModal from "../components/Restaurant/ReviewModal";
 import './restaurant.css';
-import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
+import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaShoppingCart, FaTags} from "react-icons/fa";
+import ShoppingCart from "../components/ShoppingCart/ShoppingCart";
 
 const Restaurant = () => {
     const initialDishData = {
@@ -35,12 +35,15 @@ const Restaurant = () => {
     const [newDish, setNewDish] = useState(initialDishData)
     const {user} = useAuth();
     const {id} = useParams()
+    const {isOpen, onOpen, onClose} = useDisclosure()
+    const [order, setOrder] = useState([])
 
     const CFaBitcoin = chakra(FaBitcoin);
     const CFaCreditCard = chakra(FaCreditCard);
     const CFaCalendarTimes = chakra(FaCalendarTimes);
     const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
     const CFaTags = chakra(FaTags);
+    const CFaShoppingCart = chakra(FaShoppingCart);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -121,10 +124,35 @@ const Restaurant = () => {
         if (restaurantData.tags && restaurantData.tags.length > 0) {
             return restaurantData.tags.map((tag) => {
                 return <Tag value={tag}/>
-            } )
+            })
         } else {
             return "Sin Tags";
         }
+    }
+
+    const sortOrder = (order) => {
+        return order.sort((d1, d2) => d1.id - d2.id)
+    }
+
+    const addToOrder = (newDish) => {
+        const dish = order.find(d => d.id === newDish.id) || newDish
+        dish.amount = dish?.amount ? (dish.amount + 1) : 1
+        setOrder(sortOrder([dish, ...order.filter(d => d.id !== dish.id)]))
+    }
+
+    const subtractFromOrder = (dishId) => {
+        const dish = order.find(d => d.id === dishId && d?.amount > 1)
+        const orderWithoutCurrentDish = order.filter(d => d.id !== dishId)
+        if (dish) {
+            dish.amount = dish?.amount - 1
+            setOrder(sortOrder([dish, ...orderWithoutCurrentDish]))
+        } else {
+            setOrder(sortOrder([...orderWithoutCurrentDish]))
+        }
+    }
+
+    const removeFromOrder = (dishId) => {
+        setOrder(sortOrder([...order.filter(d => d.id !== dishId)]))
     }
 
     return (
@@ -138,10 +166,10 @@ const Restaurant = () => {
                         starSpacing="10px"
                         starRatedColor="orange"
                     />
-                    <br />
+                    <br/>
                     <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
-                    <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
-                    <br />
+                    <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)}/>
+                    <br/>
                 </div>
                 <div>
                     <div className={"moneey"}>
@@ -187,6 +215,7 @@ const Restaurant = () => {
                                 <DishCard
                                     dish={dish}
                                     isOwner={isOwner}
+                                    onAdd={addToOrder}
                                     onEdit={onClickEditDish}
                                     onDelete={onDeleteDish}
                                 />
@@ -195,6 +224,29 @@ const Restaurant = () => {
                     )}
                 </Wrap>
             </div>
+            <Box
+                position='fixed'
+                top='100px'
+                right='30px'
+                zIndex={1}
+            >
+                <IconButton
+                    onClick={onOpen}
+                    colorScheme='brand1'
+                    aria-label='Ver carrito'
+                    size='lg'
+                    icon={<CFaShoppingCart color='#565656' size="22" mr={1} />}
+                />
+            </Box>
+
+            <ShoppingCart
+                isOpen={isOpen}
+                onClose={onClose}
+                order={order}
+                addToOrder={addToOrder}
+                subtractFromOrder={subtractFromOrder}
+                removeFromOrder={removeFromOrder}
+            />
         </LayoutDefault>
     )
 }

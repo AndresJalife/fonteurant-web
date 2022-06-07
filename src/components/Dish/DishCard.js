@@ -8,7 +8,7 @@ const CAiOutlinePlus = chakra(AiOutlinePlus)
 const CAiFillEdit = chakra(AiFillEdit)
 const CAiFillDelete = chakra(AiFillDelete)
 
-const DishCard = ({dish, isOwner, onEdit, onDelete}) => {
+const DishCard = ({dish, isOwner, onEdit, onDelete, onAdd}) => {
     const {id, name, price, picture, description, } = dish;
     return (
         <Flex
@@ -135,7 +135,11 @@ const DishCard = ({dish, isOwner, onEdit, onDelete}) => {
                                     color={'gray.800'}
                                     fontSize={'1em'}
                                 >
-                                    <Button colorScheme="brand1" color='black'>
+                                    <Button
+                                        colorScheme="brand1"
+                                        color='black'
+                                        onClick={() => onAdd(dish)}
+                                    >
                                         <CAiOutlinePlus color="black"/>
                                     </Button>
                                 </Tooltip>
