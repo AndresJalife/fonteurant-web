@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Button} from "@chakra-ui/button";
 import {
-    Center,
+    Center, chakra,
     Divider,
     Drawer,
     DrawerBody,
@@ -10,7 +10,7 @@ import {
     DrawerHeader,
     DrawerOverlay,
     Flex,
-    Heading,
+    Heading, Input, InputGroup, InputLeftElement, InputRightElement,
     Radio,
     RadioGroup,
     Stack,
@@ -19,15 +19,23 @@ import {
 } from "@chakra-ui/react";
 import {useAuth} from "./AuthProvider";
 import ApiRoutes from "../ApiRoutes";
+import {AiFillBank, AiFillCreditCard} from "react-icons/all";
+import {useClipboard} from '@chakra-ui/react'
 
-const PaymentMethod = {1: "CASH", 2: "CREDIT_CARD", 3: "BANK_TRANSFER", 4: "CRYPTO"}
+const PaymentMethod = {1: "CASH", 2: "BANK_TRANSFER", 3: "CRYPTO", 4: "CREDIT_CARD"}
+const CAiFillCreditCard = chakra(AiFillCreditCard);
+const CAiFillBank = chakra(AiFillBank);
 
 const Checkout = ({isOpen, onClose, onSubmit, order, restaurant}) => {
     const [payment, setPayment] = useState('1')
     const [isLoading, setIsLoading] = useState(false)
+    const {hasCopied, onCopy} = useClipboard(restaurant?.cbu)
     const {user} = useAuth();
+    const [userCreditCard, setUserCreditCard] = useState(user?.credit_card)
 
     const total = order?.map(d => d.amount * d.price)?.reduce((p1, p2) => p1 + p2, 0)
+
+    const disableCreditPayment = (payment === '4') && !userCreditCard
 
     const postOrder = async () => {
         setIsLoading(true)
@@ -131,7 +139,8 @@ const Checkout = ({isOpen, onClose, onSubmit, order, restaurant}) => {
                                             <RadioGroup onChange={setPayment} value={payment}>
                                                 <Stack direction='row'>
                                                     <Radio value='1' isDisabled={isLoading}>Efectivo</Radio>
-                                                    <Radio value='2' isDisabled={isLoading}>Transferencia</Radio>
+                                                    {restaurant?.cbu &&
+                                                    <Radio value='2' isDisabled={isLoading}>Transferencia</Radio>}
                                                     {restaurant?.wallet_address &&
                                                     <Radio value='3' isDisabled={isLoading}>Metamask</Radio>}
                                                     {restaurant?.cbu &&
@@ -139,6 +148,35 @@ const Checkout = ({isOpen, onClose, onSubmit, order, restaurant}) => {
                                                 </Stack>
                                             </RadioGroup>
                                         </div>
+                                        {payment === '2' && <div>
+                                            <InputGroup>
+                                                <InputLeftElement
+                                                    pointerEvents="none"
+                                                    children={<CAiFillBank size='20px' color="gray.500"/>}
+                                                />
+                                                <Input readOnly color='black' id={"cbu"} placeholder="CBU"
+                                                       defaultValue={restaurant?.cbu}/>
+                                                <InputRightElement width='5.2rem'>
+                                                    <Button h='1.75rem' size='sm' onClick={onCopy}>
+                                                        {hasCopied ? 'Copiado' : 'Copiar'}
+                                                    </Button>
+                                                </InputRightElement>
+                                            </InputGroup>
+                                        </div>}
+                                        {payment === '4' && <div>
+                                            <InputGroup>
+                                                <InputLeftElement
+                                                    pointerEvents="none"
+                                                    children={<CAiFillCreditCard color="gray.500"/>}
+                                                />
+                                                <Input
+                                                    color='black' type="text"
+                                                    onChange={(e) => setUserCreditCard(e.target.value)}
+                                                    placeholder="Tarjeta de crédito"
+                                                    defaultValue={user?.credit_card || ''}
+                                                />
+                                            </InputGroup>
+                                        </div>}
                                         <div>
                                             {payment === '1' && (<Button
                                                 bg={'brand1.500'}
@@ -184,6 +222,7 @@ const Checkout = ({isOpen, onClose, onSubmit, order, restaurant}) => {
                                                 }}
                                                 width="full"
                                                 onClick={postOrder}
+                                                disabled={disableCreditPayment}
                                                 isLoading={isLoading}
                                             >
                                                 Pagar con tarjeta

@@ -1,6 +1,8 @@
 import {
-    Button, Center,
-    chakra, Flex,
+    Button,
+    Center,
+    chakra,
+    Flex,
     FormControl,
     Input,
     InputGroup,
@@ -15,16 +17,16 @@ import {
     Stack
 } from "@chakra-ui/react";
 import {useState} from "react";
-import {BiDish, MdTitle, FaMap} from "react-icons/all";
+import {AiFillCreditCard, BiDish, FaMap, MdTitle} from "react-icons/all";
 import ApiRoutes from "../../ApiRoutes";
-import {FaBitcoin, FaPhone} from "react-icons/fa";
+import {FaPhone} from "react-icons/fa";
 import {useAuth} from "../AuthProvider";
 
 const CMdTitle = chakra(MdTitle);
 const CBiDish = chakra(BiDish);
 const CFaMapLocation = chakra(FaMap);
 const CFaPhone = chakra(FaPhone);
-const CFaBitcoin = chakra(FaBitcoin);
+const CAiFillCreditCard = chakra(AiFillCreditCard);
 
 const EditUserForm = ({show, onClose}) => {
     const {user, loadUser} = useAuth();
@@ -44,7 +46,7 @@ const EditUserForm = ({show, onClose}) => {
         const name = elements?.name?.value
         const location = elements?.location?.value
         const phone_number = elements?.phone_number?.value
-        const address_wallet = elements?.address_wallet?.value
+        const credit_card = elements?.credit_card?.value
 
         setIsLoading(true)
         const closeCallback = () => {
@@ -53,7 +55,7 @@ const EditUserForm = ({show, onClose}) => {
         }
 
         try {
-            const response = await ApiRoutes.editUser(name, location, phone_number, address_wallet)
+            const response = await ApiRoutes.editUser(name, location, phone_number, credit_card)
             if (response.id) {
                 loadUser()
             }
@@ -95,7 +97,8 @@ const EditUserForm = ({show, onClose}) => {
                                         pointerEvents="none"
                                         children={<CMdTitle color="gray.500"/>}
                                     />
-                                    <Input color='black' type="text" id={"name"} placeholder="Nombre" defaultValue={user.name}/>
+                                    <Input color='black' type="text" id={"name"} placeholder="Nombre"
+                                           defaultValue={user.name}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
@@ -126,10 +129,10 @@ const EditUserForm = ({show, onClose}) => {
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents="none"
-                                        children={<CFaBitcoin color="gray.500"/>}
+                                        children={<CAiFillCreditCard color="gray.500"/>}
                                     />
-                                    <Input color='black' type="text" id={"address_wallet"}
-                                           placeholder="Billetera de Criptomonedas" defaultValue={user.address_wallet}/>
+                                    <Input color='black' type="text" id={"credit_card"}
+                                           placeholder="Tarjeta de crédito" defaultValue={user.credit_card}/>
                                 </InputGroup>
                             </FormControl>
                             <div style={{margin: "10px 5px -10px 5px", color: "red"}}>{formError ? formError : ''}</div>
