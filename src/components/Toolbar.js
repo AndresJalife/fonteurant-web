@@ -70,7 +70,6 @@ const Toolbar = () => {
                     <LogoTitle>
                         <NavLink to={"/restaurants"}>FONTEURANT</NavLink>
                     </LogoTitle>
-                    <NavLink to={"/checkout"}>checkout (borrar)</NavLink>
                 </Center>
                 <Spacer/>
 

@@ -2,7 +2,18 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
-import {Box, Button, chakra, Heading, IconButton, useDisclosure, Wrap, WrapItem} from "@chakra-ui/react";
+import {
+    Box,
+    Button, Center,
+    chakra,
+    Heading,
+    IconButton,
+    Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
+    ModalOverlay,
+    useDisclosure,
+    Wrap,
+    WrapItem
+} from "@chakra-ui/react";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 import {useAuth} from "../components/AuthProvider";
@@ -14,6 +25,9 @@ import ReviewModal from "../components/Restaurant/ReviewModal";
 import './restaurant.css';
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaShoppingCart, FaTags} from "react-icons/fa";
 import ShoppingCart from "../components/ShoppingCart/ShoppingCart";
+import Checkout from "../components/Checkout";
+import {TiTick} from "react-icons/all";
+
 
 const Restaurant = () => {
     const initialDishData = {
@@ -35,8 +49,10 @@ const Restaurant = () => {
     const [newDish, setNewDish] = useState(initialDishData)
     const {user} = useAuth();
     const {id} = useParams()
-    const {isOpen, onOpen, onClose} = useDisclosure()
     const [order, setOrder] = useState([])
+    const {isOpen: isOpenCart, onOpen: onOpenCart, onClose: onCloseCart} = useDisclosure()
+    const {isOpen: isOpenCheckout, onOpen: onOpenCheckout, onClose: onCloseCheckout} = useDisclosure()
+    const {isOpen: isOpenCompletedOrder, onOpen: onOpenCompletedOrder, onClose: onCloseCompletedOrder} = useDisclosure()
 
     const CFaBitcoin = chakra(FaBitcoin);
     const CFaCreditCard = chakra(FaCreditCard);
@@ -44,6 +60,7 @@ const Restaurant = () => {
     const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
     const CFaTags = chakra(FaTags);
     const CFaShoppingCart = chakra(FaShoppingCart);
+    const CTiTick = chakra(TiTick);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -231,22 +248,65 @@ const Restaurant = () => {
                 zIndex={1}
             >
                 <IconButton
-                    onClick={onOpen}
+                    onClick={onOpenCart}
                     colorScheme='brand1'
                     aria-label='Ver carrito'
                     size='lg'
-                    icon={<CFaShoppingCart color='#565656' size="22" mr={1} />}
+                    icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
                 />
             </Box>
 
             <ShoppingCart
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpenCart}
+                onClose={onCloseCart}
+                onSubmit={() => {
+                    onCloseCart()
+                    onOpenCheckout()
+                }}
                 order={order}
                 addToOrder={addToOrder}
                 subtractFromOrder={subtractFromOrder}
                 removeFromOrder={removeFromOrder}
             />
+            <Checkout
+                isOpen={isOpenCheckout}
+                onClose={() => {
+                    onCloseCheckout()
+                    onOpenCart()
+                }}
+                onSubmit={() => {
+                    onCloseCheckout()
+                    setOrder([])
+                    onOpenCompletedOrder()
+                    console.log('Pedido completado')
+                }}
+                order={order}
+                restaurant={restaurantData}
+            />
+            <Modal isOpen={isOpenCompletedOrder} onClose={onCloseCompletedOrder}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader style={{textAlign: "center"}}>
+                        Orden completada
+                    </ModalHeader>
+                    <ModalBody>
+                        <Center>
+                            <CTiTick color="green" size={100} />
+                        </Center>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button
+                            colorScheme='brand1'
+                            width="full"
+                            color='#565656'
+                            onClick={onCloseCompletedOrder}
+                        >
+                            OK
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </LayoutDefault>
     )
 }

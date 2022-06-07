@@ -1,6 +1,6 @@
 import {
     Box,
-    chakra,
+    chakra, Divider,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
@@ -22,7 +22,7 @@ const CAiOutlinePlus = chakra(AiOutlinePlus)
 const CAiOutlineMinus = chakra(AiOutlineMinus)
 
 
-const ShoppingCart = ({isOpen, onClose, order, addToOrder, subtractFromOrder, removeFromOrder}) => {
+const ShoppingCart = ({isOpen, onClose, order, addToOrder, subtractFromOrder, removeFromOrder, onSubmit}) => {
     const total = order?.map(d => d.amount * d.price)?.reduce((p1, p2) =>  p1 + p2, 0)
     return (
         <>
@@ -120,6 +120,9 @@ const ShoppingCart = ({isOpen, onClose, order, addToOrder, subtractFromOrder, re
                     </DrawerBody>
 
                     <DrawerFooter>
+                        <Divider />
+                    </DrawerFooter>
+                    <DrawerFooter>
                         <HStack width='100%'>
                             <Box
                                 fontSize="lg"
@@ -142,6 +145,7 @@ const ShoppingCart = ({isOpen, onClose, order, addToOrder, subtractFromOrder, re
                             width="full"
                             color='#565656'
                             disabled={order?.length === 0}
+                            onClick={onSubmit}
                         >
                             Continuar con el pago
                         </Button>

@@ -118,6 +118,18 @@ const ApiRoutes = {
             headers: getHeaders()
         }
     ).then(r => r.json()),
+
+    postOrder: (dishes, payment_method, user_id, restaurant_id) => fetch(`${process.env.REACT_APP_BACKEND_URL}/order`, {
+            method: 'POST',
+            body: JSON.stringify({
+                dishes,
+                payment_method,
+                user_id,
+                restaurant_id
+            }),
+            headers: getHeaders()
+        }
+    ).then(r => r.json()),
 }
 
 export default ApiRoutes;
