@@ -120,6 +120,17 @@ const ApiRoutes = {
             headers: getHeaders()
         }
     ).then(r => r.json()),
+
+    uploadReview: (rating, comment, restoId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/review/${restoId}`, {
+        method: 'POST',
+        body: JSON.stringify({
+            score: rating,
+            review: comment,
+        }),
+        headers: getHeaders()
+    }),
+    getMoneyMetrics: (restoId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${restoId}/metrics/money`, {headers: getHeaders()}).then(r => r.json()),
+    getOrdersMetrics: (restoId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${restoId}/metrics/orders`, {headers: getHeaders()}).then(r => r.json())
 }
 
 export default ApiRoutes;

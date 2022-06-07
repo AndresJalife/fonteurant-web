@@ -25,3 +25,20 @@
 .crearRestoLabel{
     margin-top: 2%;
 }
+
+.romboTkm{
+    text-align: center;
+    align-self: center;
+}
+
+#seleect{
+    margin-bottom: 5%;
+    width: 30%;
+}
+
+.graph{
+    float: left;
+}
+.centeral{
+    text-align: -webkit-center;
+}

@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../AuthProvider";
-import {BiDish, FaMap, MdTitle} from "react-icons/all";
+import {BiDish, ImRadioChecked, MdTitle} from "react-icons/all";
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt} from "react-icons/fa";
 import ApiRoutes from "../../ApiRoutes";
 import TagInput from "../TagInput";
@@ -29,7 +29,7 @@ const CFaBitcoin = chakra(FaBitcoin);
 const CFaCreditCard = chakra(FaCreditCard);
 const CFaCalendarTimes = chakra(FaCalendarTimes);
 const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
-const CFaMapLocation = chakra(FaMap);
+const CFaMapLocation = chakra(ImRadioChecked);
 const CBiDish = chakra(BiDish);
 
 const EditRestaurant = ({data, show, onClose}) => {
@@ -61,7 +61,7 @@ const EditRestaurant = ({data, show, onClose}) => {
         const location = elements?.location?.value
         const cbu = elements?.cbu?.value
         const schedule = elements?.schedule?.value
-        const address_wallet = elements?.address_wallet?.value
+        const address_wallet = elements?.wallet?.value
         const scope = elements?.location_scope?.value
         const file = fileUpload.current?.file
         const tags = values.map((e) => e.value)
@@ -139,7 +139,7 @@ const EditRestaurant = ({data, show, onClose}) => {
                                         pointerEvents="none"
                                         children={<CFaCreditCard color="gray.500"/>}
                                     />
-                                    <Input color='black' id={"cbu"} required placeholder="CBU" defaultValue={data.cbu}/>
+                                    <Input color='black' id={"cbu"} placeholder="CBU" defaultValue={data.cbu}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
