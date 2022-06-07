@@ -33,8 +33,8 @@ const MetricsModal = ({metrics, show, onClose}) => {
                 <ModalBody>
                     {metrics.length && (
                         <div>
-                            <img src={metrics[0]['plot_hash']}/>
-                            <img src={metrics[1]['plot_hash']}/>
+                            <img src={metrics[0]['plot_hash']} alt="Money Metrics"/>
+                            <img src={metrics[1]['plot_hash']} alt="Orders Metrics"/>
                         </div>
                     )}
                 </ModalBody>
