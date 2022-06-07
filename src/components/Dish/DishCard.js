@@ -9,7 +9,7 @@ const CAiFillEdit = chakra(AiFillEdit)
 const CAiFillDelete = chakra(AiFillDelete)
 
 const DishCard = ({dish, isOwner, onEdit, onDelete, onAdd}) => {
-    const {id, name, price, picture, description, } = dish;
+    const {id, name, price, picture, description,} = dish;
     console.log(dish);
     return (
         <Flex

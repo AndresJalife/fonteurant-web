@@ -199,7 +199,7 @@ const Restaurant = () => {
         <LayoutDefault>
             <div className={"restoView"} style={{padding: '0 10%'}}>
                 <center>
-                <SimpleGrid columns={2} spacing='10px' pt="110px" mb="8" maxWidth={"920px"}>
+                    <SimpleGrid columns={2} spacing='10px' pt="110px" mb="8" maxWidth={"920px"}>
                         <div>
                             <Image
                                 src={restaurantData?.picture || placeholder}
@@ -218,15 +218,19 @@ const Restaurant = () => {
                                     starSpacing="10px"
                                     starRatedColor="orange"
                                 />
-                                <br />
-                                <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
-                                <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
-                                {!userReviewd && !isOwner && (<Button onClick={() => setShowUploadReview(true)} style={{marginTop: "10px", marginLeft: "1%"}}>Cargar opinion</Button>)}
+                                <br/>
+                                <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver
+                                    opiniones</Button>
+                                <ReviewModal reviews={reviews} show={showReviews}
+                                             onClose={() => setShowReviews(false)}/>
+                                {!userReviewd && !isOwner && (<Button onClick={() => setShowUploadReview(true)}
+                                                                      style={{marginTop: "10px", marginLeft: "1%"}}>Cargar
+                                    opinion</Button>)}
                                 <UploadReviewModal show={showUploadReview} onClose={() => {
                                     setShowUploadReview(false);
                                     fetchData();
                                 }} restoName={restaurantData.name} restoId={restaurantData.id}></UploadReviewModal>
-                                <br />
+                                <br/>
                             </div>
                             <div>
                                 <div className={"moneey"}>
@@ -275,11 +279,13 @@ const Restaurant = () => {
                                         Editar Restaurante
                                     </Button>)}
                                 </div>
-                                {isOwner && ( <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
-                                    fetchData();
-                                    setShowEditRestaurant(false);
-                                }}/>)}
-                                {isOwner && (<MetricsModal metrics={metrics} show={showMetrics} onClose={() => setShowMetrics(false)} />)}
+                                {isOwner && (
+                                    <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
+                                        fetchData();
+                                        setShowEditRestaurant(false);
+                                    }}/>)}
+                                {isOwner && (<MetricsModal metrics={metrics} show={showMetrics}
+                                                           onClose={() => setShowMetrics(false)}/>)}
                                 <DishForm
                                     restaurantId={restaurantData?.id}
                                     show={openDishModal}
@@ -290,7 +296,7 @@ const Restaurant = () => {
                                 />
                             </div>
                         </div>
-                </SimpleGrid>
+                    </SimpleGrid>
                 </center>
                 <div className={"moneey"}>
                     <CFaTags mr={1}></CFaTags>
