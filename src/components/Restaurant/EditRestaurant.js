@@ -14,12 +14,14 @@ import {
     ModalOverlay,
     Stack
 } from "@chakra-ui/react";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../AuthProvider";
 import {BiDish, FaMap, MdTitle} from "react-icons/all";
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt} from "react-icons/fa";
 import ApiRoutes from "../../ApiRoutes";
 import TagInput from "../TagInput";
+import FileUpload from "../FileUpload";
+import {isValidImage, processImage} from "../../utils/ImageProcessing";
 
 
 const CMdTitle = chakra(MdTitle);
@@ -36,6 +38,7 @@ const EditRestaurant = ({data, show, onClose}) => {
     const [formError, setFormError] = useState(null);
 
     const [values, setValues] = useState([]);
+    const fileUpload = useRef();
 
     useEffect(() => {
         const initialTags = data.tags?.map((tag) => {
@@ -60,7 +63,13 @@ const EditRestaurant = ({data, show, onClose}) => {
         const schedule = elements?.schedule?.value
         const address_wallet = elements?.address_wallet?.value
         const scope = elements?.location_scope?.value
+        const file = fileUpload.current?.file
         const tags = values.map((e) => e.value)
+
+        if (file && !isValidImage(file)) {
+            setFormError('Las fotos deben pesar menos de 1MB')
+            return
+        }
 
         setIsLoading(true)
         const closeCallback = () => {
@@ -69,7 +78,8 @@ const EditRestaurant = ({data, show, onClose}) => {
         }
 
         try {
-            const response = await ApiRoutes.updateRestaurant(data.id, name, location, cbu, address_wallet, schedule, scope, tags)
+            const picture = file ? await processImage(file) : data.picture;
+            const response = await ApiRoutes.updateRestaurant(data.id, name, location, cbu, address_wallet, schedule, scope, tags, picture)
             if (response.id) {
                 loadUser()
             }
@@ -159,6 +169,7 @@ const EditRestaurant = ({data, show, onClose}) => {
                                     <Input color='black' type="number" id={"scope"} required placeholder="Radio de cobertura (KM)" defaultValue={data.location_scope}/>
                                 </InputGroup>
                             </FormControl>
+                            <FileUpload stateRef={fileUpload} name="Foto"/>
                             <FormControl>
                                 <TagInput values={values} setValues={setValues} />
                             </FormControl>

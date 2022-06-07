@@ -100,8 +100,8 @@ const DishForm = (
             setFormError('Foto requerida')
             return
         }
-        if (!isValidImage(file)) {
-            setFormError('Las fotos deben pesar menos de 512KB')
+        if (file && !isValidImage(file)) {
+            setFormError('Las fotos deben pesar menos de 1MB')
             return
         }
 
