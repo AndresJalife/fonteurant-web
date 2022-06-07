@@ -66,6 +66,8 @@ const Restaurant = () => {
     const {isOpen: isOpenCheckout, onOpen: onOpenCheckout, onClose: onCloseCheckout} = useDisclosure()
     const {isOpen: isOpenCompletedOrder, onOpen: onOpenCompletedOrder, onClose: onCloseCompletedOrder} = useDisclosure()
 
+    const totalDishesInOrder = order?.map(d => d?.amount)?.reduce((a1, a2) => a1 + a2, 0)
+
     const CFaBitcoin = chakra(FaBitcoin);
     const CFaCreditCard = chakra(FaCreditCard);
     const CFaCalendarTimes = chakra(FaCalendarTimes);
@@ -308,7 +310,7 @@ const Restaurant = () => {
                                 icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
                             />
                             <AvatarBadge boxSize="1.5em" bg="green" color="white">
-                                {order.length}
+                                {totalDishesInOrder}
                             </AvatarBadge>
                         </Avatar>
                     ) :

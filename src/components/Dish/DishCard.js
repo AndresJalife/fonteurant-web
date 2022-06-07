@@ -139,6 +139,12 @@ const DishCard = ({dish, isOwner, onEdit, onDelete, onAdd}) => {
                                         colorScheme="brand1"
                                         color='black'
                                         onClick={() => onAdd(dish)}
+                                        _hover={{
+                                            bg: 'brand1.700',
+                                        }}
+                                        _active={{
+                                            bg: 'green.500',
+                                        }}
                                     >
                                         <CAiOutlinePlus color="black"/>
                                     </Button>
