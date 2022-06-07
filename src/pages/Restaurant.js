@@ -70,7 +70,7 @@ const Restaurant = () => {
             const reviews = await ApiRoutes.getRestaurantReviews(id);
             setReviews(reviews);
             reviews.forEach((e) => {
-                if (e['id'] === user.id){
+                if (e['user_id'] === user.id){
                     setUserReviewd(true)
                 }
             })
