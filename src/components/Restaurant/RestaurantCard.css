@@ -36,6 +36,9 @@
     width: 30%;
 }
 
+.graph{
+    float: left;
+}
 .centeral{
     text-align: -webkit-center;
 }

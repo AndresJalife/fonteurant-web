@@ -126,7 +126,9 @@ const ApiRoutes = {
             review: comment,
         }),
         headers: getHeaders()
-    })
+    }),
+    getMoneyMetrics: (restoId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${restoId}/metrics/money`, {headers: getHeaders()}).then(r => r.json()),
+    getOrdersMetrics: (restoId) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${restoId}/metrics/orders`, {headers: getHeaders()}).then(r => r.json())
 }
 
 export default ApiRoutes;
