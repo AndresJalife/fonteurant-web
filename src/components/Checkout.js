@@ -22,7 +22,7 @@ import ApiRoutes from "../ApiRoutes";
 import {AiFillBank, AiFillCreditCard} from "react-icons/all";
 import {useClipboard} from '@chakra-ui/react'
 
-const PaymentMethod = {1: "CASH", 2: "CREDIT_CARD", 3: "BANK_TRANSFER", 4: "CRYPTO"}
+const PaymentMethod = {1: "CASH", 2: "BANK_TRANSFER", 3: "CRYPTO", 4: "CREDIT_CARD"}
 const CAiFillCreditCard = chakra(AiFillCreditCard);
 const CAiFillBank = chakra(AiFillBank);
 
