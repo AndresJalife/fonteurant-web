@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {
     Box,
     Button,
@@ -16,8 +16,9 @@ import ApiRoutes from "../ApiRoutes";
 import {useNavigate} from "react-router";
 import {useAuth} from "../components/AuthProvider";
 import TagInput from "../components/TagInput";
+import {isValidImage, processImage} from "../utils/ImageProcessing";
+import FileUpload from "../components/FileUpload";
 import {ImRadioChecked} from "react-icons/all";
-
 const CFaBitcoin = chakra(FaBitcoin);
 const CFaCreditCard = chakra(FaCreditCard);
 const CFaCalendarTimes = chakra(FaCalendarTimes);
@@ -31,6 +32,7 @@ const CreateRestaurant = () => {
     const [formError, setFormError] = useState(null);
     const [values, setValues] = useState([]);
     const navigate = useNavigate();
+    const fileUpload = useRef();
 
     const handleRegister = async e => {
         e.preventDefault();
@@ -41,7 +43,15 @@ const CreateRestaurant = () => {
             return;
         }
         const elements = e.target.elements;
+        const file = fileUpload.current?.file
         const tags = values.map((e) => e.value)
+        const picture = await processImage(file)
+
+        if (!isValidImage(file)) {
+            setFormError('Las fotos deben pesar menos de 1MB')
+            return
+        }
+
         const result = await ApiRoutes.createRestaurant(
             user.id,
             elements.name.value,
@@ -50,7 +60,8 @@ const CreateRestaurant = () => {
             elements.wallet.value,
             elements.schedule.value,
             parseInt(elements.scope.value),
-            tags
+            tags,
+            picture
 
         );
         if (!result['id']) {
@@ -136,6 +147,7 @@ const CreateRestaurant = () => {
                                     <Input color='black' type="number" id={"scope"} required placeholder="Radio de cobertura (KM)"/>
                                 </InputGroup>
                             </FormControl>
+                            <FileUpload stateRef={fileUpload} name="Foto"/>
                             <FormControl>
                                 <TagInput values={values} setValues={setValues} ></TagInput>
                             </FormControl>

@@ -2,11 +2,10 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
-import {Button, chakra, Heading, Wrap, WrapItem} from "@chakra-ui/react";
+import {Button, chakra, Heading, Image, Wrap, WrapItem} from "@chakra-ui/react";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 import {useAuth} from "../components/AuthProvider";
-import {downloadFile} from "../utils/DropboxAPI";
 import EditRestaurant from "../components/Restaurant/EditRestaurant";
 import Tag from "../components/Tag";
 import React from "react";
@@ -14,6 +13,8 @@ import StarRatings from "react-star-ratings";
 import ReviewModal from "../components/Restaurant/ReviewModal";
 import './restaurant.css';
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
+import placeholder from "../img/placeholder_restaurant.jpg";
+import {SimpleGrid} from "@chakra-ui/layout";
 import UploadReviewModal from "../components/Restaurant/UploadReviewModal";
 import MetricsModal from "../components/Restaurant/MetricsModal";
 
@@ -81,7 +82,7 @@ const Restaurant = () => {
     useEffect(() => {
         const getDishes = async () => {
             const data = await ApiRoutes.getDishes(id);
-            setMenuData(data.map(dish => ({...dish, picture: dish?.picture ? downloadFile(dish.picture) : ''})))
+            setMenuData(data.map(dish => ({...dish, picture: dish?.picture})))
         }
         getDishes()
     }, [id])
@@ -143,85 +144,103 @@ const Restaurant = () => {
     return (
         <LayoutDefault>
             <div className={"restoView"} style={{padding: '0 10%'}}>
-                <Heading mt={3} mb={10} color="#000000" pt="110px">{restaurantData?.name}</Heading>
-                <div style={{marginBottom: "50px"}}>
-                    <StarRatings
-                        rating={(reviews.length > 0 ? reviews.map(r => r.score).reduce((c, s) => c + s, 0) / reviews.length : 0)}
-                        starDimension="30px"
-                        starSpacing="10px"
-                        starRatedColor="orange"
-                    />
-                    <br />
-                    <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
-                    <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
-                    {!userReviewd && !isOwner && (<Button onClick={() => setShowUploadReview(true)} style={{marginTop: "10px", marginLeft: "1%"}}>Cargar opinion</Button>)}
-                    <UploadReviewModal show={showUploadReview} onClose={() => {
-                        setShowUploadReview(false);
-                        fetchData();
-                    }} restoName={restaurantData.name} restoId={restaurantData.id}></UploadReviewModal>
-                    <br />
-                </div>
-                <div>
-                    <div className={"moneey"}>
-                        <CFaMapMarkerAlt mr={1}></CFaMapMarkerAlt>
-                        <div><b>Dirección:</b> {restaurantData?.address}</div>
-                    </div>
-                    <div className={"moneey"}>
-                        <CFaCreditCard mr={1}></CFaCreditCard>
-                        <div>CBU: {restaurantData?.cbu}</div>
-                        <CFaBitcoin ml={5} mr={1}></CFaBitcoin>
-                        <div>Wallet: {restaurantData?.wallet_address}</div>
-                    </div>
-                    <div className={"moneey"}>
-                        <CFaCalendarTimes mr={1}></CFaCalendarTimes>
-                        <div>Horarios: {restaurantData?.schedule}</div>
-                    </div>
-                    <div className={"moneey"}>
-                        <CFaTags mr={1}></CFaTags>
-                        <div>Tags: {getTags()}</div>
-                    </div>
-                    <div>
-                        {isOwner && (
-                            <Button
-                                colorScheme="brand1"
-                                color='black'
-                                onClick={() => setOpenDishModal(true)}
-                            >
-                                Agregar Plato
-                            </Button>)
-                        }
-                        {isOwner && (
-                            <Button
-                                colorScheme="brand1"
-                                color='black'
-                                onClick={() => setShowMetrics(true)}
-                                marginLeft="1%"
-                            >
-                                Ver Métricas
-                            </Button>)}
-                        {isOwner && (<Button
-                            colorScheme="brand1"
-                            color='black'
-                            onClick={() => setShowEditRestaurant(true)}
-                            marginLeft="1%"
-                        >
-                            Editar Restaurante
-                        </Button>)}
-                    </div>
-                    {isOwner && ( <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
-                        fetchData();
-                        setShowEditRestaurant(false);
-                    }}/>)}
-                    {isOwner && (<MetricsModal metrics={metrics} show={showMetrics} onClose={() => setShowMetrics(false)} />)}
-                    <DishForm
-                        restaurantId={restaurantData?.id}
-                        show={openDishModal}
-                        onClose={onCloseDishForm}
-                        edit={editMode}
-                        onSubmit={setNewDish}
-                        currentDish={currentDish}
-                    />
-
+                <center>
+                <SimpleGrid columns={2} spacing='10px' pt="110px" mb="8" maxWidth={"920px"}>
+                        <div>
+                            <Image
+                                src={restaurantData?.picture || placeholder}
+                                fallbackSrc={placeholder}
+                                alt="Picture of restaurant"
+                                boxSize='400px'
+                                borderRadius='full'
+                            />
+                        </div>
+                        <div>
+                            <Heading mt={3} mb={10} color="#000000">{restaurantData?.name}</Heading>
+                            <div style={{marginBottom: "50px"}}>
+                                <StarRatings
+                                    rating={(reviews.length > 0 ? reviews.map(r => r.score).reduce((c, s) => c + s, 0) / reviews.length : 0)}
+                                    starDimension="30px"
+                                    starSpacing="10px"
+                                    starRatedColor="orange"
+                                />
+                                <br />
+                                <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
+                                <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
+                                {!userReviewd && !isOwner && (<Button onClick={() => setShowUploadReview(true)} style={{marginTop: "10px", marginLeft: "1%"}}>Cargar opinion</Button>)}
+                                <UploadReviewModal show={showUploadReview} onClose={() => {
+                                    setShowUploadReview(false);
+                                    fetchData();
+                                }} restoName={restaurantData.name} restoId={restaurantData.id}></UploadReviewModal>
+                                <br />
+                            </div>
+                            <div>
+                                <div className={"moneey"}>
+                                    <CFaMapMarkerAlt mr={1}></CFaMapMarkerAlt>
+                                    <div><b>Dirección:</b> {restaurantData?.address}</div>
+                                </div>
+                                <div className={"moneey"}>
+                                    <CFaCreditCard mr={1}></CFaCreditCard>
+                                    <div>CBU: {restaurantData?.cbu}</div>
+                                    <CFaBitcoin ml={5} mr={1}></CFaBitcoin>
+                                    <div>Wallet: {restaurantData?.wallet_address}</div>
+                                </div>
+                                <div className={"moneey"}>
+                                    <CFaCalendarTimes mr={1}></CFaCalendarTimes>
+                                    <div>Horarios: {restaurantData?.schedule}</div>
+                                </div>
+                                <div className={"moneey"}>
+                                    <CFaTags mr={1}></CFaTags>
+                                    <div>Tags: {getTags()}</div>
+                                </div>
+                                <div>
+                                    {isOwner && (
+                                        <Button
+                                            colorScheme="brand1"
+                                            color='black'
+                                            onClick={() => setOpenDishModal(true)}
+                                        >
+                                            Agregar Plato
+                                        </Button>)
+                                    }
+                                    {isOwner && (
+                                        <Button
+                                            colorScheme="brand1"
+                                            color='black'
+                                            onClick={() => setShowMetrics(true)}
+                                            marginLeft="1%"
+                                        >
+                                            Ver Métricas
+                                        </Button>)}
+                                    {isOwner && (<Button
+                                        colorScheme="brand1"
+                                        color='black'
+                                        onClick={() => setShowEditRestaurant(true)}
+                                        marginLeft="1%"
+                                    >
+                                        Editar Restaurante
+                                    </Button>)}
+                                </div>
+                                {isOwner && ( <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
+                                    fetchData();
+                                    setShowEditRestaurant(false);
+                                }}/>)}
+                                {isOwner && (<MetricsModal metrics={metrics} show={showMetrics} onClose={() => setShowMetrics(false)} />)}
+                                <DishForm
+                                    restaurantId={restaurantData?.id}
+                                    show={openDishModal}
+                                    onClose={onCloseDishForm}
+                                    edit={editMode}
+                                    onSubmit={setNewDish}
+                                    currentDish={currentDish}
+                                />
+                            </div>
+                        </div>
+                </SimpleGrid>
+                </center>
+                <div className={"moneey"}>
+                    <CFaTags mr={1}></CFaTags>
+                    <div>Tags: {getTags()}</div>
                 </div>
                 <Wrap spacing='25px' width="100%" py="20px">
                     {menuData.map((dish) => (

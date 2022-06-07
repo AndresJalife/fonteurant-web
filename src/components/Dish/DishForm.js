@@ -19,9 +19,9 @@ import {
 import {useEffect, useRef, useState} from "react";
 import FileUpload from "../FileUpload";
 import {AiFillDollarCircle, BiDish, MdTitle} from "react-icons/all";
-import {uploadFile} from "../../utils/DropboxAPI";
 import ApiRoutes from "../../ApiRoutes";
 import TagInput from "../TagInput";
+import {isValidImage, processImage} from "../../utils/ImageProcessing";
 
 const CMdTitle = chakra(MdTitle);
 const CAiFillDollarCircle = chakra(AiFillDollarCircle);
@@ -81,7 +81,6 @@ const DishForm = (
         const name = formData?.name
         const description = formData?.description
         const price = parseFloat(formData?.price)
-        const filename = fileUpload.current?.filename
         const file = fileUpload.current?.file
         const tags = dishTags.map(t => t.label);
 
@@ -97,8 +96,12 @@ const DishForm = (
             setFormError('Precio requerido')
             return
         }
-        if ((!filename || !file) && !edit) {
+        if (!file && !edit) {
             setFormError('Foto requerida')
+            return
+        }
+        if (file && !isValidImage(file)) {
+            setFormError('Las fotos deben pesar menos de 1MB')
             return
         }
 
@@ -110,9 +113,8 @@ const DishForm = (
 
         try {
             let newPicture = picture || ''
-            if (filename && file) {
-                newPicture = `${Date.now()}_${filename}`
-                uploadFile(file, newPicture, closeCallback, closeCallback)
+            if (file) {
+                newPicture = await processImage(file);
             }
             let dish
             if (edit) {

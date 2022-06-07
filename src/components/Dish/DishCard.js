@@ -10,6 +10,7 @@ const CAiFillDelete = chakra(AiFillDelete)
 
 const DishCard = ({dish, isOwner, onEdit, onDelete}) => {
     const {id, name, price, picture, description, } = dish;
+    console.log(dish);
     return (
         <Flex
             w="full"
