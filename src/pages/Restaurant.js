@@ -4,7 +4,8 @@ import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
 import {
     Avatar,
-    AvatarBadge, Badge,
+    AvatarBadge,
+    Badge,
     Box,
     Button,
     Center,
@@ -237,7 +238,8 @@ const Restaurant = () => {
                                     <CFaMapMarkerAlt mr={1}></CFaMapMarkerAlt>
                                     <div>
                                         <b>Dirección:</b> {restaurantData?.address}
-                                        <Badge rounded="full" px="2" fontSize="0.6em" colorScheme="pink" ml={2} variant="outline">
+                                        <Badge rounded="full" px="2" fontSize="0.6em" colorScheme="pink" ml={2}
+                                               variant="outline">
                                             Hasta {restaurantData?.location_scope} km
                                         </Badge>
                                     </div>
