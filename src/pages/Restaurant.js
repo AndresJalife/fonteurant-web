@@ -1,18 +1,39 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
-import {Button, chakra, Heading, Image, Wrap, WrapItem} from "@chakra-ui/react";
+import {
+    Avatar,
+    AvatarBadge,
+    Box,
+    Button,
+    Center,
+    chakra,
+    Heading,
+    IconButton,
+    Image,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useDisclosure,
+    Wrap,
+    WrapItem
+} from "@chakra-ui/react";
 import LayoutDefault from "../components/LayoutDefault";
 import DishCard from "../components/Dish/DishCard";
 import {useAuth} from "../components/AuthProvider";
 import EditRestaurant from "../components/Restaurant/EditRestaurant";
 import Tag from "../components/Tag";
-import React from "react";
 import StarRatings from "react-star-ratings";
 import ReviewModal from "../components/Restaurant/ReviewModal";
 import './restaurant.css';
-import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
+import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaShoppingCart, FaTags} from "react-icons/fa";
+import ShoppingCart from "../components/ShoppingCart/ShoppingCart";
+import Checkout from "../components/Checkout";
+import {TiTick} from "react-icons/all";
 import placeholder from "../img/placeholder_restaurant.jpg";
 import {SimpleGrid} from "@chakra-ui/layout";
 import UploadReviewModal from "../components/Restaurant/UploadReviewModal";
@@ -42,12 +63,20 @@ const Restaurant = () => {
     const [newDish, setNewDish] = useState(initialDishData)
     const {user} = useAuth();
     const {id} = useParams()
+    const [order, setOrder] = useState([])
+    const {isOpen: isOpenCart, onOpen: onOpenCart, onClose: onCloseCart} = useDisclosure()
+    const {isOpen: isOpenCheckout, onOpen: onOpenCheckout, onClose: onCloseCheckout} = useDisclosure()
+    const {isOpen: isOpenCompletedOrder, onOpen: onOpenCompletedOrder, onClose: onCloseCompletedOrder} = useDisclosure()
+
+    const totalDishesInOrder = order?.map(d => d?.amount)?.reduce((a1, a2) => a1 + a2, 0)
 
     const CFaBitcoin = chakra(FaBitcoin);
     const CFaCreditCard = chakra(FaCreditCard);
     const CFaCalendarTimes = chakra(FaCalendarTimes);
     const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
     const CFaTags = chakra(FaTags);
+    const CFaShoppingCart = chakra(FaShoppingCart);
+    const CTiTick = chakra(TiTick);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,7 +100,7 @@ const Restaurant = () => {
             const reviews = await ApiRoutes.getRestaurantReviews(id);
             setReviews(reviews);
             reviews.forEach((e) => {
-                if (e['user_id'] === user.id){
+                if (e['user_id'] === user.id) {
                     setUserReviewd(true)
                 }
             })
@@ -105,7 +134,7 @@ const Restaurant = () => {
         const reviews = await ApiRoutes.getRestaurantReviews(id);
         setReviews(reviews);
         reviews.forEach((e) => {
-            if (e['user_id'] === user.id){
+            if (e['user_id'] === user.id) {
                 setUserReviewd(true)
             }
         })
@@ -135,10 +164,35 @@ const Restaurant = () => {
         if (restaurantData.tags && restaurantData.tags.length > 0) {
             return restaurantData.tags.map((tag) => {
                 return <Tag value={tag}/>
-            } )
+            })
         } else {
             return "Sin Tags";
         }
+    }
+
+    const sortOrder = (order) => {
+        return order.sort((d1, d2) => d1.id - d2.id)
+    }
+
+    const addToOrder = (newDish) => {
+        const dish = order.find(d => d.id === newDish.id) || newDish
+        dish.amount = dish?.amount ? (dish.amount + 1) : 1
+        setOrder(sortOrder([dish, ...order.filter(d => d.id !== dish.id)]))
+    }
+
+    const subtractFromOrder = (dishId) => {
+        const dish = order.find(d => d.id === dishId && d?.amount > 1)
+        const orderWithoutCurrentDish = order.filter(d => d.id !== dishId)
+        if (dish) {
+            dish.amount = dish?.amount - 1
+            setOrder(sortOrder([dish, ...orderWithoutCurrentDish]))
+        } else {
+            setOrder(sortOrder([...orderWithoutCurrentDish]))
+        }
+    }
+
+    const removeFromOrder = (dishId) => {
+        setOrder(sortOrder([...order.filter(d => d.id !== dishId)]))
     }
 
     return (
@@ -248,6 +302,7 @@ const Restaurant = () => {
                                 <DishCard
                                     dish={dish}
                                     isOwner={isOwner}
+                                    onAdd={addToOrder}
                                     onEdit={onClickEditDish}
                                     onDelete={onDeleteDish}
                                 />
@@ -256,6 +311,88 @@ const Restaurant = () => {
                     )}
                 </Wrap>
             </div>
+            <Box
+                position='fixed'
+                top='100px'
+                right='30px'
+                zIndex={1}
+            >
+                {order?.length ? (
+                        <Avatar>
+                            <IconButton
+                                onClick={onOpenCart}
+                                colorScheme='brand1'
+                                aria-label='Ver carrito'
+                                size='lg'
+                                icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
+                            />
+                            <AvatarBadge boxSize="1.5em" bg="green" color="white">
+                                {totalDishesInOrder}
+                            </AvatarBadge>
+                        </Avatar>
+                    ) :
+                    (
+                        <IconButton
+                            onClick={onOpenCart}
+                            colorScheme='brand1'
+                            aria-label='Ver carrito'
+                            size='lg'
+                            icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
+                        />
+                    )}
+            </Box>
+
+            <ShoppingCart
+                isOpen={isOpenCart}
+                onClose={onCloseCart}
+                onSubmit={() => {
+                    onCloseCart()
+                    onOpenCheckout()
+                }}
+                order={order}
+                addToOrder={addToOrder}
+                subtractFromOrder={subtractFromOrder}
+                removeFromOrder={removeFromOrder}
+            />
+            <Checkout
+                isOpen={isOpenCheckout}
+                onClose={() => {
+                    onCloseCheckout()
+                    onOpenCart()
+                }}
+                onSubmit={() => {
+                    onCloseCheckout()
+                    setOrder([])
+                    onOpenCompletedOrder()
+                    console.log('Pedido completado')
+                }}
+                order={order}
+                restaurant={restaurantData}
+            />
+            <Modal isOpen={isOpenCompletedOrder} onClose={onCloseCompletedOrder}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader style={{textAlign: "center"}}>
+                        Orden completada
+                    </ModalHeader>
+                    <ModalBody>
+                        <Center>
+                            <CTiTick color="green" size={100}/>
+                        </Center>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button
+                            colorScheme='brand1'
+                            width="full"
+                            color='#565656'
+                            onClick={onCloseCompletedOrder}
+                        >
+                            OK
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </LayoutDefault>
     )
 }
