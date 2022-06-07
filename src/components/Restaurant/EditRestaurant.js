@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import {useEffect, useState} from "react";
 import {useAuth} from "../AuthProvider";
-import {BiDish, FaMap, MdTitle} from "react-icons/all";
+import {BiDish, ImRadioChecked, MdTitle} from "react-icons/all";
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt} from "react-icons/fa";
 import ApiRoutes from "../../ApiRoutes";
 import TagInput from "../TagInput";
@@ -27,7 +27,7 @@ const CFaBitcoin = chakra(FaBitcoin);
 const CFaCreditCard = chakra(FaCreditCard);
 const CFaCalendarTimes = chakra(FaCalendarTimes);
 const CFaMapMarkerAlt = chakra(FaMapMarkerAlt);
-const CFaMapLocation = chakra(FaMap);
+const CFaMapLocation = chakra(ImRadioChecked);
 const CBiDish = chakra(BiDish);
 
 const EditRestaurant = ({data, show, onClose}) => {
