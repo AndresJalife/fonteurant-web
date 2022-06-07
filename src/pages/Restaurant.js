@@ -14,6 +14,7 @@ import StarRatings from "react-star-ratings";
 import ReviewModal from "../components/Restaurant/ReviewModal";
 import './restaurant.css';
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
+import UploadReviewModal from "../components/Restaurant/UploadReviewModal";
 
 const Restaurant = () => {
     const initialDishData = {
@@ -30,6 +31,8 @@ const Restaurant = () => {
     const [menuData, setMenuData] = useState([])
     const [openDishModal, setOpenDishModal] = useState(false)
     const [showReviews, setShowReviews] = useState(false)
+    const [showUploadReview, setShowUploadReview] = useState(false)
+    const [userReviewd, setUserReviewd] = useState(false)
     const [editMode, setEditMode] = useState(false)
     const [currentDish, setCurrentDish] = useState(initialDishData)
     const [newDish, setNewDish] = useState(initialDishData)
@@ -54,9 +57,14 @@ const Restaurant = () => {
         const fetchData = async () => {
             const reviews = await ApiRoutes.getRestaurantReviews(id);
             setReviews(reviews);
+            reviews.forEach((e) => {
+                if (e['id'] === user.id){
+                    setUserReviewd(true)
+                }
+            })
         }
         fetchData()
-    }, [id]);
+    }, [id, user.id]);
 
     useEffect(() => {
         const getDishes = async () => {
@@ -81,6 +89,13 @@ const Restaurant = () => {
     const fetchData = async () => {
         const data = await ApiRoutes.getRestaurant(id);
         setRestaurantData(data);
+        const reviews = await ApiRoutes.getRestaurantReviews(id);
+        setReviews(reviews);
+        reviews.forEach((e) => {
+            if (e['user_id'] === user.id){
+                setUserReviewd(true)
+            }
+        })
     }
 
     const onClickEditDish = (dish) => {
@@ -141,6 +156,11 @@ const Restaurant = () => {
                     <br />
                     <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
                     <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
+                    {!userReviewd && !isOwner && (<Button onClick={() => setShowUploadReview(true)} style={{marginTop: "10px", marginLeft: "1%"}}>Cargar opinion</Button>)}
+                    <UploadReviewModal show={showUploadReview} onClose={() => {
+                        setShowUploadReview(false);
+                        fetchData();
+                    }} restoName={restaurantData.name} restoId={restaurantData.id}></UploadReviewModal>
                     <br />
                 </div>
                 <div>
