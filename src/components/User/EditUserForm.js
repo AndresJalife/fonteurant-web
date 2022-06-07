@@ -1,6 +1,8 @@
 import {
-    Button, Center,
-    chakra, Flex,
+    Button,
+    Center,
+    chakra,
+    Flex,
     FormControl,
     Input,
     InputGroup,
@@ -15,9 +17,9 @@ import {
     Stack
 } from "@chakra-ui/react";
 import {useState} from "react";
-import {BiDish, MdTitle, FaMap, AiFillCreditCard} from "react-icons/all";
+import {AiFillCreditCard, BiDish, FaMap, MdTitle} from "react-icons/all";
 import ApiRoutes from "../../ApiRoutes";
-import {FaBitcoin, FaPhone} from "react-icons/fa";
+import {FaPhone} from "react-icons/fa";
 import {useAuth} from "../AuthProvider";
 
 const CMdTitle = chakra(MdTitle);
@@ -95,7 +97,8 @@ const EditUserForm = ({show, onClose}) => {
                                         pointerEvents="none"
                                         children={<CMdTitle color="gray.500"/>}
                                     />
-                                    <Input color='black' type="text" id={"name"} placeholder="Nombre" defaultValue={user.name}/>
+                                    <Input color='black' type="text" id={"name"} placeholder="Nombre"
+                                           defaultValue={user.name}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
