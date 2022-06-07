@@ -14,7 +14,7 @@ import ReviewModal from "../components/Restaurant/ReviewModal";
 import './restaurant.css';
 import {FaBitcoin, FaCalendarTimes, FaCreditCard, FaMapMarkerAlt, FaTags} from "react-icons/fa";
 import placeholder from "../img/placeholder_restaurant.jpg";
-import {Box, Flex, Grid, GridItem, SimpleGrid} from "@chakra-ui/layout";
+import {SimpleGrid} from "@chakra-ui/layout";
 import UploadReviewModal from "../components/Restaurant/UploadReviewModal";
 import MetricsModal from "../components/Restaurant/MetricsModal";
 
