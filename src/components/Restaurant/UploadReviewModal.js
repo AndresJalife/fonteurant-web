@@ -14,15 +14,14 @@ import {useState} from "react";
 import apiRoutes from "../../ApiRoutes";
 
 const UploadReviewModal = ({show, onClose, restoName, restoId}) => {
-
     const [comment, setComment] = useState('')
-
 
     const onClose2 = () => {
         const rating = document.getElementById('rating');
         const value = parseInt(rating.options[rating.selectedIndex].value);
-        apiRoutes.uploadReview(value, comment, restoId);
-        // alert(value)
+        if (!isNaN(value)) {
+            apiRoutes.uploadReview(value, comment, restoId);
+        }
         onClose()
     }
 
@@ -59,12 +58,12 @@ const UploadReviewModal = ({show, onClose, restoName, restoId}) => {
                         <Stack>
                             <FormControl>
                                 <InputGroup id="seleect">
-                                    <Select placeholder='' id="rating" >
-                                        <option value='1'>1</option>
-                                        <option value='2'>2</option>
-                                        <option value='3'>3</option>
-                                        <option value='4'>4</option>
-                                        <option value='5'>5</option>
+                                    <Select placeholder='Rating' id="rating" >
+                                        <option value='1'>1 (Muy malo)</option>
+                                        <option value='2'>2 (Malo)</option>
+                                        <option value='3'>3 (Normal)</option>
+                                        <option value='4'>4 (Bueno)</option>
+                                        <option value='5'>5 (Muy Bueno)</option>
                                     </Select>
                                 </InputGroup>
                             </FormControl>
