@@ -15,6 +15,8 @@ import {useAuth} from "./AuthProvider";
 import {useNavigate} from "react-router";
 import {NavLink} from 'react-router-dom'
 import {ImSpoonKnife} from "react-icons/all";
+import React, {useState} from "react";
+import EditUserForm from "./User/EditUserForm";
 
 const ToolbarContainer = styled.div`
   position: fixed;
@@ -46,6 +48,7 @@ const UserText = styled.span`
 const Toolbar = () => {
     const {user, signOut} = useAuth();
     let navigate = useNavigate();
+    const [showEditUser, setShowEditUser] = useState(false);
 
     const goToMyRestaurant = () => {
         if (user?.my_restaurant_id) {
@@ -57,6 +60,7 @@ const Toolbar = () => {
 
     return (
         <ToolbarContainer>
+            <EditUserForm show={showEditUser} onClose={() => setShowEditUser(false)}/>
             <Flex alignItems="center" justifyContent="center">
                 <Center height="70px">
                     <NavLink to={"/restaurants"}>
@@ -91,12 +95,12 @@ const Toolbar = () => {
                             </Center>
                         </MenuButton>
                         <MenuList fontSize="16px" color="black">
-                            <MenuItem onClick={() => navigate('/profile')}>
+                            <MenuItem onClick={() => setShowEditUser(true)}>
                                 <Button
                                     color="black"
                                     variant='link'
                                 >
-                                    Mi perfil
+                                    Editar perfil
                                 </Button>
                             </MenuItem>
                             <MenuItem onClick={goToMyRestaurant}>

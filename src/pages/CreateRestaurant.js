@@ -105,7 +105,7 @@ const CreateRestaurant = () => {
                                         pointerEvents="none"
                                         children={<CFaCreditCard color="gray.500"/>}
                                     />
-                                    <Input color='black' id={"cbu"} required placeholder="CBU"/>
+                                    <Input color='black' id={"cbu"} placeholder="CBU"/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
