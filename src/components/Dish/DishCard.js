@@ -3,10 +3,14 @@ import placeholder from "../../img/sushi.jpg";
 import {Button} from "@chakra-ui/button";
 import {Spacer} from "@chakra-ui/layout";
 import {AiFillDelete, AiFillEdit, AiOutlinePlus} from "react-icons/all";
+import React from "react";
+import {FaTags} from "react-icons/fa";
+import Tag from "../Tag";
 
 const CAiOutlinePlus = chakra(AiOutlinePlus)
 const CAiFillEdit = chakra(AiFillEdit)
 const CAiFillDelete = chakra(AiFillDelete)
+const CFaTags = chakra(FaTags);
 
 const DishCard = ({dish, isOwner, onEdit, onDelete, onAdd}) => {
     const {id, name, price, picture, description,} = dish;
@@ -89,6 +93,23 @@ const DishCard = ({dish, isOwner, onEdit, onDelete, onAdd}) => {
                             </Box>
                         </Flex>
                     </div>
+
+                    <Flex>
+                        {dish?.tags?.length ? (
+                            <Box pb={4} height='25px'>
+                                <div className={"moneey"}>
+                                    <CFaTags mr={1} mt={1}></CFaTags>
+                                    <Text noOfLines={1} style={{textAlign: 'left'}}>
+                                        {dish?.tags?.map(tag => (
+                                            <Tag value={tag}/>
+                                        ))}
+                                    </Text>
+                                </div>
+                            </Box>
+                        ) : (
+                            <Box pb={4} height='25px'/>
+                        )}
+                    </Flex>
 
                     <Flex>
                         <Box as="span" fontWeight="light" fontSize="2xl">${price}</Box>
