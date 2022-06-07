@@ -10,7 +10,7 @@ const CAiFillDelete = chakra(AiFillDelete)
 
 const DishCard = ({dish, isOwner, onEdit, onDelete, onAdd}) => {
     const {id, name, price, picture, description, } = dish;
-    console.log(dish);
+
     return (
         <Flex
             w="full"
@@ -82,7 +82,7 @@ const DishCard = ({dish, isOwner, onEdit, onDelete, onAdd}) => {
                                     color={'gray.800'}
                                     fontSize={'1em'}
                                 >
-                                    <Text color='gray.500' noOfLines={2}>
+                                    <Text color='gray.500' noOfLines={2} style={{textAlign: 'left'}}>
                                         {description}
                                     </Text>
                                 </Tooltip>

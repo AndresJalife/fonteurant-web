@@ -4,7 +4,7 @@ import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
 import {
     Avatar,
-    AvatarBadge,
+    AvatarBadge, Badge,
     Box,
     Button,
     Center,
@@ -199,7 +199,7 @@ const Restaurant = () => {
         <LayoutDefault>
             <div className={"restoView"} style={{padding: '0 10%'}}>
                 <center>
-                <SimpleGrid columns={2} spacing='10px' pt="110px" mb="8" maxWidth={"920px"}>
+                    <SimpleGrid columns={2} spacing='10px' pt="110px" mb="8" maxWidth={"920px"}>
                         <div>
                             <Image
                                 src={restaurantData?.picture || placeholder}
@@ -218,27 +218,36 @@ const Restaurant = () => {
                                     starSpacing="10px"
                                     starRatedColor="orange"
                                 />
-                                <br />
-                                <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver opiniones</Button>
-                                <ReviewModal reviews={reviews} show={showReviews} onClose={() => setShowReviews(false)} />
-                                {!userReviewd && !isOwner && (<Button onClick={() => setShowUploadReview(true)} style={{marginTop: "10px", marginLeft: "1%"}}>Cargar opinion</Button>)}
+                                <br/>
+                                <Button onClick={() => setShowReviews(true)} style={{marginTop: "10px"}}>Ver
+                                    opiniones</Button>
+                                <ReviewModal reviews={reviews} show={showReviews}
+                                             onClose={() => setShowReviews(false)}/>
+                                {!userReviewd && !isOwner && (<Button onClick={() => setShowUploadReview(true)}
+                                                                      style={{marginTop: "10px", marginLeft: "1%"}}>Cargar
+                                    opinion</Button>)}
                                 <UploadReviewModal show={showUploadReview} onClose={() => {
                                     setShowUploadReview(false);
                                     fetchData();
                                 }} restoName={restaurantData.name} restoId={restaurantData.id}></UploadReviewModal>
-                                <br />
+                                <br/>
                             </div>
                             <div>
                                 <div className={"moneey"}>
                                     <CFaMapMarkerAlt mr={1}></CFaMapMarkerAlt>
-                                    <div><b>Dirección:</b> {restaurantData?.address}</div>
+                                    <div>
+                                        <b>Dirección:</b> {restaurantData?.address}
+                                        <Badge rounded="full" px="2" fontSize="0.6em" colorScheme="pink" ml={2} variant="outline">
+                                            Hasta {restaurantData?.location_scope} km
+                                        </Badge>
+                                    </div>
                                 </div>
-                                <div className={"moneey"}>
+                                {isOwner && <div className={"moneey"}>
                                     <CFaCreditCard mr={1}></CFaCreditCard>
                                     <div>CBU: {restaurantData?.cbu}</div>
                                     <CFaBitcoin ml={5} mr={1}></CFaBitcoin>
                                     <div>Wallet: {restaurantData?.wallet_address}</div>
-                                </div>
+                                </div>}
                                 <div className={"moneey"}>
                                     <CFaCalendarTimes mr={1}></CFaCalendarTimes>
                                     <div>Horarios: {restaurantData?.schedule}</div>
@@ -275,11 +284,13 @@ const Restaurant = () => {
                                         Editar Restaurante
                                     </Button>)}
                                 </div>
-                                {isOwner && ( <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
-                                    fetchData();
-                                    setShowEditRestaurant(false);
-                                }}/>)}
-                                {isOwner && (<MetricsModal metrics={metrics} show={showMetrics} onClose={() => setShowMetrics(false)} />)}
+                                {isOwner && (
+                                    <EditRestaurant data={restaurantData} show={showEditRestaurant} onClose={() => {
+                                        fetchData();
+                                        setShowEditRestaurant(false);
+                                    }}/>)}
+                                {isOwner && (<MetricsModal metrics={metrics} show={showMetrics}
+                                                           onClose={() => setShowMetrics(false)}/>)}
                                 <DishForm
                                     restaurantId={restaurantData?.id}
                                     show={openDishModal}
@@ -290,7 +301,7 @@ const Restaurant = () => {
                                 />
                             </div>
                         </div>
-                </SimpleGrid>
+                    </SimpleGrid>
                 </center>
                 <div className={"moneey"}>
                     <CFaTags mr={1}></CFaTags>
@@ -311,88 +322,92 @@ const Restaurant = () => {
                     )}
                 </Wrap>
             </div>
-            <Box
-                position='fixed'
-                top='100px'
-                right='30px'
-                zIndex={1}
-            >
-                {order?.length ? (
-                        <Avatar>
-                            <IconButton
-                                onClick={onOpenCart}
-                                colorScheme='brand1'
-                                aria-label='Ver carrito'
-                                size='lg'
-                                icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
-                            />
-                            <AvatarBadge boxSize="1.5em" bg="green" color="white">
-                                {totalDishesInOrder}
-                            </AvatarBadge>
-                        </Avatar>
-                    ) :
-                    (
-                        <IconButton
-                            onClick={onOpenCart}
-                            colorScheme='brand1'
-                            aria-label='Ver carrito'
-                            size='lg'
-                            icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
-                        />
-                    )}
-            </Box>
+            {!isOwner && (
+                <>
+                    <Box
+                        position='fixed'
+                        top='100px'
+                        right='30px'
+                        zIndex={1}
+                    >
+                        {order?.length ? (
+                                <Avatar>
+                                    <IconButton
+                                        onClick={onOpenCart}
+                                        colorScheme='brand1'
+                                        aria-label='Ver carrito'
+                                        size='lg'
+                                        icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
+                                    />
+                                    <AvatarBadge boxSize="1.5em" bg="green" color="white">
+                                        {totalDishesInOrder}
+                                    </AvatarBadge>
+                                </Avatar>
+                            ) :
+                            (
+                                <IconButton
+                                    onClick={onOpenCart}
+                                    colorScheme='brand1'
+                                    aria-label='Ver carrito'
+                                    size='lg'
+                                    icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
+                                />
+                            )}
+                    </Box>
 
-            <ShoppingCart
-                isOpen={isOpenCart}
-                onClose={onCloseCart}
-                onSubmit={() => {
-                    onCloseCart()
-                    onOpenCheckout()
-                }}
-                order={order}
-                addToOrder={addToOrder}
-                subtractFromOrder={subtractFromOrder}
-                removeFromOrder={removeFromOrder}
-            />
-            <Checkout
-                isOpen={isOpenCheckout}
-                onClose={() => {
-                    onCloseCheckout()
-                    onOpenCart()
-                }}
-                onSubmit={() => {
-                    onCloseCheckout()
-                    setOrder([])
-                    onOpenCompletedOrder()
-                    console.log('Pedido completado')
-                }}
-                order={order}
-                restaurant={restaurantData}
-            />
-            <Modal isOpen={isOpenCompletedOrder} onClose={onCloseCompletedOrder}>
-                <ModalOverlay/>
-                <ModalContent>
-                    <ModalHeader style={{textAlign: "center"}}>
-                        Orden completada
-                    </ModalHeader>
-                    <ModalBody>
-                        <Center>
-                            <CTiTick color="green" size={100}/>
-                        </Center>
-                    </ModalBody>
+                    <ShoppingCart
+                        isOpen={isOpenCart}
+                        onClose={onCloseCart}
+                        onSubmit={() => {
+                            onCloseCart()
+                            onOpenCheckout()
+                        }}
+                        order={order}
+                        addToOrder={addToOrder}
+                        subtractFromOrder={subtractFromOrder}
+                        removeFromOrder={removeFromOrder}
+                    />
+                    <Checkout
+                        isOpen={isOpenCheckout}
+                        onClose={() => {
+                            onCloseCheckout()
+                            onOpenCart()
+                        }}
+                        onSubmit={() => {
+                            onCloseCheckout()
+                            setOrder([])
+                            onOpenCompletedOrder()
+                            console.log('Pedido completado')
+                        }}
+                        order={order}
+                        restaurant={restaurantData}
+                    />
+                    <Modal isOpen={isOpenCompletedOrder} onClose={onCloseCompletedOrder}>
+                        <ModalOverlay/>
+                        <ModalContent>
+                            <ModalHeader style={{textAlign: "center"}}>
+                                Orden completada
+                            </ModalHeader>
+                            <ModalBody>
+                                <Center>
+                                    <CTiTick color="green" size={100}/>
+                                </Center>
+                            </ModalBody>
 
-                    <ModalFooter>
-                        <Button
-                            colorScheme='brand1'
-                            width="full"
-                            color='#565656'
-                            onClick={onCloseCompletedOrder}
-                        >
-                            OK
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+                            <ModalFooter>
+                                <Button
+                                    colorScheme='brand1'
+                                    width="full"
+                                    color='#565656'
+                                    onClick={onCloseCompletedOrder}
+                                >
+                                    OK
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
+                </>)
+            }
         </LayoutDefault>
     )
 }
