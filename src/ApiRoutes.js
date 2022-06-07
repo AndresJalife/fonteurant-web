@@ -38,7 +38,7 @@ const ApiRoutes = {
     getRestaurants: () => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {headers: getHeaders()})
         .then(r => r.json()),
 
-    createRestaurant: (ownerId, name, address, cbu, wallet_address, schedule, location_scope, tags) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {
+    createRestaurant: (ownerId, name, address, cbu, wallet_address, schedule, location_scope, tags, picture) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant`, {
         method: 'POST',
         body: JSON.stringify({
             "owner_id": ownerId,
@@ -48,7 +48,8 @@ const ApiRoutes = {
             "wallet_address": wallet_address,
             "schedule": schedule,
             "location_scope": location_scope,
-            "tags": tags
+            "tags": tags,
+            "picture": picture
         }),
         headers: getHeaders()
     }).then(r => r.json()),
@@ -73,7 +74,7 @@ const ApiRoutes = {
         }
     ).then(r => r.json()),
 
-    updateRestaurant: (restId, name, address, cbu, wallet_address, schedule, location_scope, tags) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${restId}`, {
+    updateRestaurant: (restId, name, address, cbu, wallet_address, schedule, location_scope, tags, picture) => fetch(`${process.env.REACT_APP_BACKEND_URL}/restaurant/${restId}`, {
         method: 'PUT',
         body: JSON.stringify({
             "name": name,
@@ -82,7 +83,8 @@ const ApiRoutes = {
             "wallet_address": wallet_address,
             "schedule": schedule,
             "location_scope": location_scope,
-            "tags": tags
+            "tags": tags,
+            "picture": picture
         }),
         headers: getHeaders()
     }).then(r => r.json()),
