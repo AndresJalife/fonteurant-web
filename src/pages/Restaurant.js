@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import ApiRoutes from "../ApiRoutes";
 import DishForm from "../components/Dish/DishForm";
 import {
+    Avatar, AvatarBadge,
     Box,
     Button, Center,
     chakra,
@@ -247,13 +248,29 @@ const Restaurant = () => {
                 right='30px'
                 zIndex={1}
             >
-                <IconButton
-                    onClick={onOpenCart}
-                    colorScheme='brand1'
-                    aria-label='Ver carrito'
-                    size='lg'
-                    icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
-                />
+                {order?.length ? (
+                        <Avatar>
+                            <IconButton
+                                onClick={onOpenCart}
+                                colorScheme='brand1'
+                                aria-label='Ver carrito'
+                                size='lg'
+                                icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
+                            />
+                            <AvatarBadge boxSize="1.5em" bg="green" color="white">
+                                {order.length}
+                            </AvatarBadge>
+                        </Avatar>
+                    ) :
+                    (
+                        <IconButton
+                            onClick={onOpenCart}
+                            colorScheme='brand1'
+                            aria-label='Ver carrito'
+                            size='lg'
+                            icon={<CFaShoppingCart color='#565656' size="22" mr={1}/>}
+                        />
+                    )}
             </Box>
 
             <ShoppingCart
@@ -291,7 +308,7 @@ const Restaurant = () => {
                     </ModalHeader>
                     <ModalBody>
                         <Center>
-                            <CTiTick color="green" size={100} />
+                            <CTiTick color="green" size={100}/>
                         </Center>
                     </ModalBody>
 

@@ -37,6 +37,8 @@ const Checkout = ({isOpen, onClose, onSubmit, order, restaurant}) => {
                 await handleCryptoPayment()
             }
             await ApiRoutes.postOrder(dishes, PaymentMethod[payment], user?.id, restaurant?.id)
+        } catch (e) {
+            console.log(e)
         } finally {
             setIsLoading(false)
             onSubmit()
@@ -169,7 +171,7 @@ const Checkout = ({isOpen, onClose, onSubmit, order, restaurant}) => {
                                                     bg: 'brand1.700',
                                                 }}
                                                 width="full"
-                                                onClick={handleCryptoPayment}
+                                                onClick={postOrder}
                                                 isLoading={isLoading}
                                             >
                                                 Pagar con Metamask
@@ -181,7 +183,7 @@ const Checkout = ({isOpen, onClose, onSubmit, order, restaurant}) => {
                                                     bg: 'brand1.700',
                                                 }}
                                                 width="full"
-                                                onClick={handleCryptoPayment}
+                                                onClick={postOrder}
                                                 isLoading={isLoading}
                                             >
                                                 Pagar con tarjeta
